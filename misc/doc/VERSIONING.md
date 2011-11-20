@@ -18,9 +18,15 @@ Dans le fichier de configuration ~/.hgrc :
     hgext.bookmarks =
     hggit =
 
-Récupérer une copie du dépot GitHub :
+Récupérer une copie du dépot GitHub
 
     hg clone git+ssh://git@github.com:ramnes/Babel.git
+
+Dans le fichier de configuration Babel/.hg/hgrc :
+
+    [paths]
+    default = git+ssh://git@github.com:ramnes/Babel.git
+    kscm = ssh://kscm@koala-rendus.epitech.net/babel-2014-adau_m
 
 Propager le code sur GitHub, puis kscm
 
@@ -29,7 +35,7 @@ Propager le code sur GitHub, puis kscm
     hg push
     hg push kscm
 
-Mettre à jour la version locale :
+Mettre à jour la version locale
 
     hg pull
 
