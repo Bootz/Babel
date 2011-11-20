@@ -1,7 +1,7 @@
 Babel Project
 =============
 
-Short description about the Babel project.
+Short description about Babel project.
 
 Usage
 =====
