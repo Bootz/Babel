@@ -4,14 +4,12 @@ Gestionnaire de version (hg/hg-git/github)
 Linux (apt)
 -----------
 
-* Installer
+Installer mercurial et hg-git
 
     sudo apt-get install mercurial
     sudo easy_install hg-git
 
-* Configurer
-
-Dans ~/.hgrc :
+Dans le fichier de configuration ~/.hgrc :
 
     [ui]
     username = Prénom NOM <adresse@email.fr>
@@ -20,22 +18,22 @@ Dans ~/.hgrc :
     hgext.bookmarks =
     hggit =
 
-* Récupérer le code
+Récupérer une copie du dépot GitHub :
 
     hg clone git+ssh://git@github.com:ramnes/Babel.git
 
-* Propager le code
+Propager le code sur GitHub, puis kscm
 
     hg add
     hg commit -m "Message en francais, clair et concis"
     hg push
     hg push kscm
 
-* Mettre à jour
+Mettre à jour la version locale :
 
     hg pull
 
-* Plus ?
+Besoin de plus d'aide ?
 
     hg help
 
