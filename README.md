@@ -1,16 +1,16 @@
-Babel Project
-=============
+Projet Babel
+============
 
-Short description about Babel project.
+Petite description du Babel.
 
-Usage
-=====
+Utilisation
+===========
 
-This how you use it :
+Comme ceci :
 
      babel arg1 arg2 [opt1] [opt2]
 
-Authors
+Auteurs
 =======
 
-Read AUTHORS
+Lire le fichier AUTHORS.
