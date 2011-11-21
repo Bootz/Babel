@@ -1,0 +1,153 @@
+<h1>Protocole Babel</h1>
+
+<p>Le protocole BABEL est un protocole binaire, développé sur des systèmes
+utilisant le protocole réseau UDP et TCP. Le BABEL est un système d'audio-
+conférence multiplateforme qui (grâce à l'utilisation d'un modèle client
+serveur) est adapté à une exécution sur de nombreuses machines, de façon
+distribuée. Une configuration type comprend un processus unique (le serveur)
+qui fournit un point d'accès pour les clients, leur permettant d'obtenir les
+informations nécessaires à leurs connexions.</p>
+
+<h1>Serveur</h1>
+
+<p>Il agit comme un nœud central sur lequel chaque client doit obligatoirement
+s'enregistrer. Il permet de faire le relais entre sa base de données,
+contenant les informations sur les clients.</p>
+
+<h1>Clients</h1>
+
+<p>Est un client tout ce qui se connecte à un serveur et qui n'est pas un
+serveur.
+Chaque client se différencie des autres par un pseudonyme unique, d'une
+longueur maximal de trente caractères.</p>
+
+<h1>Protocole</h1>
+
+<p>Le jeu de caractères reconnu est <code>US-ASCII</code>.</p>
+
+<p>Les messages du protocole doivent être extraits du flux continu d'octets.
+La solution actuelle consiste à désigner deux caractères donnés, CR et LF,
+comme séparateurs de messages. Les messages vides sont ignorés en silence,
+ce qui permet l'usage d'une suite de CR-LF entre les messages sans problèmes
+supplémentaires.</p>
+
+<h2>Format des messages</h2>
+
+<p><code>
+&lt;MESSAGE&gt;   ::= &lt;COMMAND&gt; &lt;PARAM&gt; &lt;CRLF&gt; <br />
+&lt;COMMAND&gt;   ::= [A-Z]* <br />
+&lt;PARAM&gt;     ::= [A-Z] &lt;ESPACE&gt; [A-Z]+ <br />
+&lt;ESPACE&gt;    ::= [' '] <br />
+&lt;CRLF&gt;      ::= ["CR" + "LF"]
+</code></p>
+
+<p>Note : <code>&lt;ESPACE&gt;</code> ne peut être constitué que du caractère ASCII <code>0x20</code>.</p>
+
+<h2>Commandes <code>CL_</code> (relatives aux clients)</h2>
+
+<h3><code>CL_REGISTER &lt;login&gt; &lt;mot de passe&gt;</code></h3>
+
+<p>La commande <code>CL_REGISTER</code> est utilisée pour enregistrer un nouveau client.
+Le mot de passe doit être défini avant toute tentative de connexion. Il
+n'est pas possible d'envoyer plusieurs commandes <code>CL_REGISTER</code> avant de
+s'enregistrer.</p>
+
+<p>Réponses numériques : <code>ERR_NEEDMOREPARAMS</code>, <code>ERR_ALREADYREGISTERED</code>, <code>OK</code></p>
+
+<h3><code>CL_LOGIN &lt;login&gt; &lt;mot de passe&gt; &lt;host&gt;</code></h3>
+
+<p>La commande <code>CL_LOGIN</code> est utilisée pour connecter un client déjà enregistré.
+Le message <code>CL_LOGIN</code> est utilisé au début d'une connexion pour spécifier le
+login d'utilisateur.</p>
+
+<p>Réponses numériques : <code>ERR_NEEDMOREPARAMS</code>, <code>ERR_NOTREGISTRED</code>, <code>OK</code></p>
+
+<h3><code>CL_INFO [login]</code></h3>
+
+<p>La commande <code>CL_INFO</code> est utilisée pour récupérer des informations sur un ou
+plusieurs clients connectés sur le serveur. Si aucun paramètre n'est passé
+alors le serveur envoie les infos de tous les clients connectés. S'il y a un
+paramètre alors il envoie les informations du login passé en paramètre.</p>
+
+<p>Réponses numériques : <code>ERR_UNKNOWNKNLOGIN</code></p>
+
+<h3><code>CL_UPDATE &lt;login&gt;</code></h3>
+
+<p><em>ramnes: commande inutile, si il y a une update à faire, le serveur envoie
+directement un CL</em>INFO <login du client en question> à tout les autres clients._</p>
+
+<p>La commande <code>CL_UPDATE</code> est utilisée pour que le serveur fasse savoir au client
+qu'il y a des données à mettre à jour pour sa base (changement d'état, nouveau
+client connecté ...). Le client répondra par <code>GET_INFO</code> suivi du login passé en
+paramètre.</p>
+
+<h3><code>CL_QUIT</code></h3>
+
+<p>Une session de client se termine par un message <code>CL_QUIT</code>. Le serveur doit
+rompre la connexion avec le client qui envoie un message <code>CL_QUIT</code>. Si pour une
+autre raison une connexion d'un client est fermée sans que le client ait envoyé
+de message <code>CL_QUIT</code>, (par exemple, le programme client se termine, et une fin
+de fichier est envoyée sur le socket), le serveur doit rompre la connexion avec
+ce client et le signaler aux autres. Si le client envoie <code>CL_QUIT</code> alors qu'il est
+en communication il doit d'abord mettre fin à cette communication.</p>
+
+<p>Réponses numériques : <code>OK_QUITDONE</code>, <code>ERR_CALLING</code></p>
+
+<h2>Commandes <code>SV_</code> (relatives au serveur)</h2>
+
+<h3><code>SV_END</code></h3>
+
+<p>Le message <code>SV_END</code> est nécessaire pour signaler le départ ou la mort du serveur.
+Si un serveur souhaite rompre une connexion il doit envoyer un message <code>SV_END</code>
+ce qui clôt la connexion, quittant le réseau.</p>
+
+<h2>Commandes <code>C_</code> (relatives au appels)</h2>
+
+<p>Lors de l'établissement d'une connexion client / client, tous les messages doivent
+passer par le serveur qui se charge de transmettre les informations.</p>
+
+<h3><code>C_CALL &lt;login&gt;</code></h3>
+
+<p>Le message <code>C_CALL</code> est utilisé lorsqu'un client souhaite initialiser une conférence
+audio avec un autre client connecté. Il envoie <code>C_CALL &lt;login à appeler&gt;</code> au
+serveur qui va transmettre au login passé en paramètre <code>C_CALL &lt;login appelant&gt;</code>.
+Avant d'envoyer ce message le client doit initialiser ses deux sockets, si rien
+n'a échoué alors il peut envoyer le message.</p>
+
+<p>Réponses numériques : <code>ERR_NOSUCHLOGIN</code></p>
+
+<h3><code>C_ACCEPT [login]</code></h3>
+
+<p>Le message <code>C_ACCEPT</code> est utilisé lorsqu'un client souhaite accepter l'invitation
+d'un autre client à une conférence. Il envoie <code>C_ACCEPT &lt;login appelant&gt;</code> au
+serveur, qui va transmettre <code>C_ACCEPT</code> au login passé en paramètre.
+Avant d'envoyer ce message le client doit initialiser ses sockets, si rien n'a
+échoué alors il peut envoyer le message.
+Le serveur quant à lui doit transmettre <code>C_ACCEPT</code> sans paramètre.
+Une fois que le client a reçu <code>C_ACCEPT</code> sans paramètre il connecte ses sockets
+afin de commencer la connexion.</p>
+
+<p><em>ramnes: étrange</em></p>
+
+<p>Réponses numériques : <code>ERR_NOSUCHLOGIN</code></p>
+
+<h3><code>C_REFUSE [login]</code></h3>
+
+<p>Le message <code>C_REFUSE</code> est utilisé lorsqu'un client souhaite refuser l'invitation
+d'un autre client à une conférence. Il envoie <code>C_REFUSE &lt;login appelant&gt;</code> au
+serveur, qui va transmettre au login passe en paramètre.
+Le serveur quant à lui doit transmettre <code>C_REFUSE</code> sans le paramètre.
+Une fois que le client a reçu <code>C_REFUSE</code> sans paramètre, il déconnecte ses sockets.</p>
+
+<p>Réponses numériques : <code>ERR_NOSUCHLOGIN</code></p>
+
+<h3><code>C_END &lt;login&gt;</code></h3>
+
+<p>Le message <code>C_END</code> est utilisé lorsqu'un client souhaite mettre un terme a une
+conférence. Il envoie <code>C_END</code> <login appelant> au serveur qui va transmettre au
+login passe en paramètre.
+Le serveur quant à lui doit transmettre <code>C_END</code> sans le paramètre.
+Une fois que le client a reçu <code>C_END</code> sans paramètre il déconnecte ses sockets et
+met fin à la connexion.</p>
+
+<p>Réponses numériques : <code>ERR_NOSUCHLOGIN</code></p>
