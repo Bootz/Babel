@@ -9,11 +9,10 @@
 utilisant le protocole réseau UDP et TCP.</p>
 
 <p>Le BABEL est un système d'audio-conférence multiplateforme qui (grâce à
-l'utilisation d'un modèle client/serveur) est adapté à une exécution sur
-de nombreuses machines, de façon distribuée. Une configuration type comprend
-un processus unique (le serveur) qui fournit un point d'accès pour les
-clients, leur permettant d'obtenir les informations nécessaires à leurs
-connexions.</p>
+l'utilisation d'un modèle client/serveur) est adapté à une exécution sur de
+nombreuses machines, de façon distribuée. Une configuration type comprend un
+processus unique (le serveur) qui fournit un point d'accès pour les clients,
+leur permettant d'obtenir les informations nécessaires à leurs connexions.</p>
 
 <h1>Serveur</h1>
 
@@ -49,57 +48,103 @@ supplémentaires.</p>
 
 <p>Note : <code>&lt;ESPACE&gt;</code> ne peut être constitué que du caractère ASCII <code>0x20</code>.</p>
 
-<h2>Commandes <code>CL_</code> (relatives aux clients)</h2>
+<h2>Commandes <code>CL_</code></h2>
+
+<p>(<code>CL_</code> == <strong>CL</strong>ient: commandes relatives aux actions globales du clients)</p>
 
 <h3><code>CL_REGISTER &lt;login&gt; &lt;mot de passe&gt;</code></h3>
 
-<p>La commande <code>CL_REGISTER</code> est utilisée pour enregistrer un nouveau client.
-Le mot de passe doit être défini avant toute tentative de connexion. Il
-n'est pas possible d'envoyer plusieurs commandes <code>CL_REGISTER</code> avant de
-s'enregistrer.</p>
+<p>Permet de s'enregistrer sur le serveur maître avec un nom d'utilisateur et un
+mot de passe.</p>
 
-<p>Réponses numériques : <code>ERR_NEEDMOREPARAMS</code>, <code>ERR_ALREADYREGISTERED</code>, <code>OK</code></p>
+<h3><code>CL_LOGIN &lt;login&gt; &lt;mot de passe&gt;</code></h3>
 
-<h3><code>CL_LOGIN &lt;login&gt; &lt;mot de passe&gt; &lt;host&gt;</code></h3>
+<p>Permet de s'authentifier vis-à-vis du serveur.</p>
 
-<p>La commande <code>CL_LOGIN</code> est utilisée pour connecter un client déjà enregistré.
-Le message <code>CL_LOGIN</code> est utilisé au début d'une connexion pour spécifier le
-login d'utilisateur.</p>
+<h3><code>CL_INFO [login1] [login2] [...]</code></h3>
 
-<p>Réponses numériques : <code>ERR_NEEDMOREPARAMS</code>, <code>ERR_NOTREGISTRED</code>, <code>OK</code></p>
+<p>Permet de récupérer des informations sur un ou plusieurs clients.</p>
 
-<h3><code>CL_INFO [login]</code></h3>
-
-<p>La commande <code>CL_INFO</code> est utilisée pour récupérer des informations sur un ou
-plusieurs clients connectés sur le serveur. Si aucun paramètre n'est passé
-alors le serveur envoie les infos de tous les clients connectés. S'il y a un
-paramètre alors il envoie les informations du login passé en paramètre.</p>
-
-<p>Réponses numériques : <code>ERR_UNKNOWNKNLOGIN</code></p>
-
-<h3><code>CL_UPDATE &lt;login&gt;</code></h3>
-
-<p><em>ramnes: commande inutile, si il y a une update à faire, le serveur envoie
-directement un <code>CL_INFO &lt;login du client en question&gt;</code> à tout les autres clients.</em></p>
-
-<p>La commande <code>CL_UPDATE</code> est utilisée pour que le serveur fasse savoir au client
-qu'il y a des données à mettre à jour pour sa base (changement d'état, nouveau
-client connecté ...). Le client répondra par <code>GET_INFO</code> suivi du login passé en
-paramètre.</p>
+<p>Le serveur envois les informations de chaque client passé en paramètre.
+Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.</p>
 
 <h3><code>CL_QUIT</code></h3>
 
-<p>Une session de client se termine par un message <code>CL_QUIT</code>. Le serveur doit
-rompre la connexion avec le client qui envoie un message <code>CL_QUIT</code>. Si pour une
-autre raison une connexion d'un client est fermée sans que le client ait envoyé
-de message <code>CL_QUIT</code>, (par exemple, le programme client se termine, et une fin
-de fichier est envoyée sur le socket), le serveur doit rompre la connexion avec
-ce client et le signaler aux autres. Si le client envoie <code>CL_QUIT</code> alors qu'il est
-en communication il doit d'abord mettre fin à cette communication.</p>
+<p>Permet de quitter le serveur (se déconnecter).</p>
 
-<p>Réponses numériques : <code>OK_QUITDONE</code>, <code>ERR_CALLING</code></p>
+<p>Le serveur rompt la connexion avec le client.
+Si la  connexion d'un client est fermée sans que le client ait envoyé <code>CL_QUIT</code>,
+(par exemple, le programme client se termine, et une fin de fichier est envoyée
+sur le socket), le serveur doit rompre la connexion avec ce client et le
+signaler aux autres.</p>
 
-<h2>Commandes <code>SV_</code> (relatives au serveur)</h2>
+<h2>Commandes <code>CC_</code></h2>
+
+<p>(<code>CC_</code> == <strong>C</strong>lient<strong>C</strong>all : commandes relatives aux actions d'appel du
+client)</p>
+
+<h3><code>CC_CALL &lt;login&gt;</code></h3>
+
+<p>Initialise une conférence audio avec un autre client connecté.</p>
+
+<p>Le serveur qui va transmettre au login passé en paramètre un <code>CC_INCOMING</code>.</p>
+
+<h3><code>CC_ACCEPT &lt;login&gt;</code></h3>
+
+<p>Accepter l'invitation d'un autre client à une conférence.
+Est aussi utilisé pour reprendre un appel en attente.</p>
+
+<p>Le serveur envoie alors un <code>CC_ACCEPTED</code> à l'appelant.
+Avant d'envoyer ce message le client doit initialiser ses sockets ; à la
+reception du <code>CC_ACCEPTED</code>, l'appelant se connecte.</p>
+
+<h3><code>CC_REFUSE &lt;login&gt;</code></h3>
+
+<p>Permet de refuser l'invitation d'un autre client à une conférence.</p>
+
+<p>Il envoie <code>CC_REFUSE &lt;login appelant&gt;</code> au serveur, qui va transmettre au login
+passe en paramètre. Le serveur répond <code>CC_REFUSED</code> à l'appelant.</p>
+
+<h3><code>CC_WAIT &lt;login&gt;</code></h3>
+
+<p>Met en attente un appel.</p>
+
+<p>Il peut être utilisé à la reception de l'appel ou en plein milieu, et transmet
+un <code>CC_PENDING</code> à l'autre client.</p>
+
+<h3><code>CC_END &lt;login&gt;</code></h3>
+
+<p>Met un terme a une conférence.</p>
+
+<p>Le serveur lance un <code>CC_ENDED</code> à l'autre client.
+Une fois que le client a reçu <code>CC_ENDED</code> il déconnecte ses sockets et met fin à
+la connexion.</p>
+
+<h2>Commandes <code>CI_</code> (serveur)</h2>
+
+<p>(<code>CI_</code> = <strong>C</strong>alls<strong>I</strong>nfo) </p>
+
+<h3><code>CI_INCOMING &lt;login&gt;</code></h3>
+
+<p>Le serveur prévient le client que <login> essaye de le joindre.</p>
+
+<h3><code>CI_PENDING &lt;login&gt;</code></h3>
+
+<p>Le serveur prévient le client que <login> a mis en attente son appel.</p>
+
+<h3><code>CI_ENDED &lt;login&gt;</code></h3>
+
+<p>Le serveur prévient le client que <login> a raccroché.</p>
+
+<h3><code>CI_ACCEPTED &lt;login&gt;</code></h3>
+
+<p>Le serveur prévient le client que <login> a accepté un appel de sa part.</p>
+
+<h3><code>CI_REFUSED &lt;login&gt;</code></h3>
+
+<p>Le serveur prévient le client que <login> a refusé son appel.</p>
+
+<h2>Commandes <code>SV_</code> (serveur)</h2>
 
 <h3><code>SV_END</code></h3>
 
@@ -107,53 +152,82 @@ en communication il doit d'abord mettre fin à cette communication.</p>
 Si un serveur souhaite rompre une connexion il doit envoyer un message <code>SV_END</code>
 ce qui clôt la connexion, quittant le réseau.</p>
 
-<h2>Commandes <code>C_</code> (relatives au appels)</h2>
+<h2>Réponses numériques</h2>
 
-<p>Lors de l'établissement d'une connexion client / client, tous les messages doivent
-passer par le serveur qui se charge de transmettre les informations.</p>
+<p>(Très largement inspiré des codes HTTP/SIP.) <br />
+Envoyées par le serveur en réponse aux requètes des clients.</p>
 
-<h3><code>C_CALL &lt;login&gt;</code></h3>
+<p><strong>1xx</strong> <em>Informations</em>      -- la requête a été reçue, en attente de traitement <br />
+<strong>2xx</strong> <em>Succès</em>       -- la requête a été reçue, comprise et acceptée <br />
+<strong>3xx</strong> <em>Redirection</em>       -- d'autres actions sont nécessaires pour compléter la requête <br />
+<strong>4xx</strong> <em>Erreurs client</em>    -- la requête envoyée n'est pas valide <br />
+<strong>5xx</strong> <em>Erreurs serveur</em>   -- le serveur ne peut pas répondre à une requête valide  </p>
 
-<p>Le message <code>C_CALL</code> est utilisé lorsqu'un client souhaite initialiser une conférence
-audio avec un autre client connecté. Il envoie <code>C_CALL &lt;login à appeler&gt;</code> au
-serveur qui va transmettre au login passé en paramètre <code>C_CALL &lt;login appelant&gt;</code>.
-Avant d'envoyer ce message le client doit initialiser ses deux sockets, si rien
-n'a échoué alors il peut envoyer le message.</p>
+<h3>1xx Informations</h3>
 
-<p>Réponses numériques : <code>ERR_NOSUCHLOGIN</code></p>
+<p><strong>100</strong> <code>TRYING</code>    -- action en cours (connexion, ça sonne, etc)</p>
 
-<h3><code>C_ACCEPT [login]</code></h3>
+<h3>2XX Succès</h3>
 
-<p>Le message <code>C_ACCEPT</code> est utilisé lorsqu'un client souhaite accepter l'invitation
-d'un autre client à une conférence. Il envoie <code>C_ACCEPT &lt;login appelant&gt;</code> au
-serveur, qui va transmettre <code>C_ACCEPT</code> au login passé en paramètre.
-Avant d'envoyer ce message le client doit initialiser ses sockets, si rien n'a
-échoué alors il peut envoyer le message.
-Le serveur quant à lui doit transmettre <code>C_ACCEPT</code> sans paramètre.
-Une fois que le client a reçu <code>C_ACCEPT</code> sans paramètre il connecte ses sockets
-afin de commencer la connexion.</p>
+<p><strong>200</strong> <code>OK</code>        -- action terminée avec succès</p>
 
-<p><em>ramnes: étrange</em></p>
+<h3>3XX Redirection</h3>
 
-<p>Réponses numériques : <code>ERR_NOSUCHLOGIN</code></p>
+<h3>4XX Erreurs</h3>
 
-<h3><code>C_REFUSE [login]</code></h3>
+<p><strong>400</strong> <code>ERR_BADREQUEST</code>    -- la requête est invalide
+<strong>401</strong> <code>ERR_AUTHREQUIRED</code>  -- authentification requise <br />
+<strong>402</strong> <code>ERR_PAYMENTREQUIRED</code>   -- lol <br />
+<strong>403</strong> <code>ERR_FORBIDDEN</code>     -- accès refusé (login ou mot de passe invalide) <br />
+<strong>404</strong> <code>ERR_NOTFOUND</code>      -- ressource non trouvée <br />
+<strong>405</strong> <code>ERR_NOTAVAILABLE</code>  -- ressource non disponible</p>
 
-<p>Le message <code>C_REFUSE</code> est utilisé lorsqu'un client souhaite refuser l'invitation
-d'un autre client à une conférence. Il envoie <code>C_REFUSE &lt;login appelant&gt;</code> au
-serveur, qui va transmettre au login passe en paramètre.
-Le serveur quant à lui doit transmettre <code>C_REFUSE</code> sans le paramètre.
-Une fois que le client a reçu <code>C_REFUSE</code> sans paramètre, il déconnecte ses sockets.</p>
+<h3>5XX Erreurs du serveur maître</h3>
 
-<p>Réponses numériques : <code>ERR_NOSUCHLOGIN</code></p>
+<p><strong>500</strong> <code>ERR_SV_ERROR</code>      -- erreur du serveur <br />
+<strong>501</strong> <code>ERR_SV_NOTIMPLEMENTED</code> -- fonctionnalité non implémentée <br />
+<strong>502</strong> <code>ERR_SV_BADGATEWAY</code> -- mauvaise gateway <br />
+<strong>503</strong> <code>ERR_SV_UNAVAILABLE</code>    -- le serveur est en maintenance <br />
+<strong>504</strong> <code>ERR_SV_TIMEOUT</code>    -- le serveur ne répond plus   </p>
 
-<h3><code>C_END &lt;login&gt;</code></h3>
+<h2>Exemple de communication</h2>
 
-<p>Le message <code>C_END</code> est utilisé lorsqu'un client souhaite mettre un terme a une
-conférence. Il envoie <code>C_END</code> <login appelant> au serveur qui va transmettre au
-login passe en paramètre.
-Le serveur quant à lui doit transmettre <code>C_END</code> sans le paramètre.
-Une fois que le client a reçu <code>C_END</code> sans paramètre il déconnecte ses sockets et
-met fin à la connexion.</p>
+<p><strong>?</strong> (<em>230.402.19.301</em>) : CL_REGISTER bab3l ForTheWin <br />
+<strong>-></strong> 200</p>
 
-<p>Réponses numériques : <code>ERR_NOSUCHLOGIN</code></p>
+<p><strong>?</strong> (<em>230.402.19.301</em>) : CL_LOGIN bab3l ForTheWin <br />
+<strong>-></strong> 200</p>
+
+<p><strong>bab3l</strong> (<em>230.402.19.301</em>) : CL_INFO <br />
+<strong>-></strong> [envoi d'une liste de BabelUser]</p>
+
+<p><strong>bab3l</strong> (<em>230.402.19.301</em>) : CC_CALL Mark0 <br />
+<strong>-></strong> 404</p>
+
+<p><strong>?</strong> (<em>211.12.156.3</em>) : CL_REGISTER Mark0 2143 <br />
+<strong>-></strong> 200</p>
+
+<p><strong>bab3l</strong> (<em>230.402.19.301</em>) : CC_CALL Mark0 <br />
+<strong>-></strong> 405</p>
+
+<p><strong>?</strong> (<em>211.12.156.3</em>) : CL_LOGIN Mark0 2143 <br />
+<strong>-></strong> 200</p>
+
+<p><strong>bab3l</strong> (<em>230.402.19.301</em>) : CC_CALL Mark0 <br />
+<strong>-></strong> 100</p>
+
+<p><strong>Server to Mark0</strong> : CI_INCOMING bab3l</p>
+
+<p><strong>Mark0</strong> (<em>211.12.156.3</em>) : CC_WAIT bab3l <br />
+<strong>-></strong> 200</p>
+
+<p><strong>Server to bab3l</strong> : CI_PENDING Mark0</p>
+
+<p><strong>Mark0</strong> (<em>211.12.156.3</em>) : CC_ACCEPT bab3l <br />
+<strong>-></strong> 200</p>
+
+<p><strong>Server to bab3l</strong> : CI_ACCEPTED Mark0 <br />
+...</p>
+
+<p>Note : Toute la vérification de requète s'effectue coté client, avant l'envoi de
+celle-ci. Une erreur 400 ne doit pas être possible.</p>
