@@ -1,0 +1,53 @@
+<h1>Gestionnaire de version (hg/hg-git/github)</h1>
+
+<h2>Linux (apt)</h2>
+
+<p>Installer mercurial et hg-git</p>
+
+<pre><code>sudo apt-get install mercurial
+sudo easy_install hg-git
+</code></pre>
+
+<p>Dans le fichier de configuration ~/.hgrc :</p>
+
+<pre><code>[ui]
+username = Prénom NOM &lt;adresse@email.fr&gt;
+
+[extensions]
+hgext.bookmarks =
+hggit =
+</code></pre>
+
+<p>Récupérer une copie du dépot GitHub</p>
+
+<pre><code>hg clone git+ssh://git@github.com:ramnes/Babel.git
+</code></pre>
+
+<p>Dans le fichier de configuration Babel/.hg/hgrc :</p>
+
+<pre><code>[paths]
+default = git+ssh://git@github.com:ramnes/Babel.git
+kscm = ssh://kscm@koala-rendus.epitech.net/babel-2014-adau_m
+</code></pre>
+
+<p>Propager le code sur GitHub, puis kscm</p>
+
+<pre><code>hg add
+hg commit -m "Message en francais, clair et concis"
+hg push
+hg push kscm
+</code></pre>
+
+<p>Mettre à jour la version locale</p>
+
+<pre><code>hg pull
+</code></pre>
+
+<p>Besoin de plus d'aide ?</p>
+
+<pre><code>hg help
+</code></pre>
+
+<h2>Windows</h2>
+
+<p><a href="http://candidcode.com/2010/01/12/a-guide-to-converting-from-mercurial-hg-to-git-on-a-windows-client/">hg-git sous Windows (EN)</a></p>
