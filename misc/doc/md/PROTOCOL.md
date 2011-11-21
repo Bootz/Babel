@@ -2,12 +2,14 @@ Protocole Babel
 ===============
 
 Le protocole BABEL est un protocole binaire, développé sur des systèmes
-utilisant le protocole réseau UDP et TCP. Le BABEL est un système d'audio-
-conférence multiplateforme qui (grâce à l'utilisation d'un modèle client
-serveur) est adapté à une exécution sur de nombreuses machines, de façon
-distribuée. Une configuration type comprend un processus unique (le serveur)
-qui fournit un point d'accès pour les clients, leur permettant d'obtenir les
-informations nécessaires à leurs connexions.
+utilisant le protocole réseau UDP et TCP.
+
+Le BABEL est un système d'audio- conférence multiplateforme qui (grâce à
+l'utilisation d'un modèle client/serveur) est adapté à une exécution sur
+de nombreuses machines, de façon distribuée. Une configuration type comprend
+un processus unique (le serveur) qui fournit un point d'accès pour les
+clients, leur permettant d'obtenir les informations nécessaires à leurs
+connexions.
 
 Serveur
 =======
@@ -40,14 +42,11 @@ supplémentaires.
 Format des messages
 -------------------
 
-
-`
-<MESSAGE>	::= <COMMAND> <PARAM> <CRLF>  
-<COMMAND>	::= [A-Z]*  
-<PARAM>		::= [A-Z] <ESPACE> [A-Z]+  
-<ESPACE>	::= [' ']  
-<CRLF>		::= ["CR" + "LF"]  
-`
+    <MESSAGE>	::= <COMMAND> <PARAM> <CRLF>
+    <COMMAND>	::= [A-Z]*
+    <PARAM>	::= [A-Z] <ESPACE> [A-Z]+
+    <ESPACE>	::= [' ']
+    <CRLF>	::= ["CR" + "LF"]
 
 Note : `<ESPACE>` ne peut être constitué que du caractère ASCII `0x20`.
 

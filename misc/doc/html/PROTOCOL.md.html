@@ -1,12 +1,14 @@
 <h1>Protocole Babel</h1>
 
 <p>Le protocole BABEL est un protocole binaire, développé sur des systèmes
-utilisant le protocole réseau UDP et TCP. Le BABEL est un système d'audio-
-conférence multiplateforme qui (grâce à l'utilisation d'un modèle client
-serveur) est adapté à une exécution sur de nombreuses machines, de façon
-distribuée. Une configuration type comprend un processus unique (le serveur)
-qui fournit un point d'accès pour les clients, leur permettant d'obtenir les
-informations nécessaires à leurs connexions.</p>
+utilisant le protocole réseau UDP et TCP.</p>
+
+<p>Le BABEL est un système d'audio- conférence multiplateforme qui (grâce à
+l'utilisation d'un modèle client/serveur) est adapté à une exécution sur
+de nombreuses machines, de façon distribuée. Une configuration type comprend
+un processus unique (le serveur) qui fournit un point d'accès pour les
+clients, leur permettant d'obtenir les informations nécessaires à leurs
+connexions.</p>
 
 <h1>Serveur</h1>
 
@@ -33,13 +35,12 @@ supplémentaires.</p>
 
 <h2>Format des messages</h2>
 
-<p><code>
-&lt;MESSAGE&gt;   ::= &lt;COMMAND&gt; &lt;PARAM&gt; &lt;CRLF&gt; <br />
-&lt;COMMAND&gt;   ::= [A-Z]* <br />
-&lt;PARAM&gt;     ::= [A-Z] &lt;ESPACE&gt; [A-Z]+ <br />
-&lt;ESPACE&gt;    ::= [' '] <br />
-&lt;CRLF&gt;      ::= ["CR" + "LF"]
-</code></p>
+<pre><code>&lt;MESSAGE&gt;   ::= &lt;COMMAND&gt; &lt;PARAM&gt; &lt;CRLF&gt;
+&lt;COMMAND&gt;   ::= [A-Z]*
+&lt;PARAM&gt; ::= [A-Z] &lt;ESPACE&gt; [A-Z]+
+&lt;ESPACE&gt;    ::= [' ']
+&lt;CRLF&gt;  ::= ["CR" + "LF"]
+</code></pre>
 
 <p>Note : <code>&lt;ESPACE&gt;</code> ne peut être constitué que du caractère ASCII <code>0x20</code>.</p>
 
