@@ -1,9 +1,14 @@
+<head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
 <h1>Protocole Babel</h1>
 
 <p>Le protocole BABEL est un protocole binaire, développé sur des systèmes
 utilisant le protocole réseau UDP et TCP.</p>
 
-<p>Le BABEL est un système d'audio- conférence multiplateforme qui (grâce à
+<p>Le BABEL est un système d'audio-conférence multiplateforme qui (grâce à
 l'utilisation d'un modèle client/serveur) est adapté à une exécution sur
 de nombreuses machines, de façon distribuée. Une configuration type comprend
 un processus unique (le serveur) qui fournit un point d'accès pour les
@@ -75,7 +80,7 @@ paramètre alors il envoie les informations du login passé en paramètre.</p>
 <h3><code>CL_UPDATE &lt;login&gt;</code></h3>
 
 <p><em>ramnes: commande inutile, si il y a une update à faire, le serveur envoie
-directement un CL</em>INFO <login du client en question> à tout les autres clients._</p>
+directement un <code>CL_INFO &lt;login du client en question&gt;</code> à tout les autres clients.</em></p>
 
 <p>La commande <code>CL_UPDATE</code> est utilisée pour que le serveur fasse savoir au client
 qu'il y a des données à mettre à jour pour sa base (changement d'état, nouveau

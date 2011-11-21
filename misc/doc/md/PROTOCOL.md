@@ -4,7 +4,7 @@ Protocole Babel
 Le protocole BABEL est un protocole binaire, développé sur des systèmes
 utilisant le protocole réseau UDP et TCP.
 
-Le BABEL est un système d'audio- conférence multiplateforme qui (grâce à
+Le BABEL est un système d'audio-conférence multiplateforme qui (grâce à
 l'utilisation d'un modèle client/serveur) est adapté à une exécution sur
 de nombreuses machines, de façon distribuée. Une configuration type comprend
 un processus unique (le serveur) qui fournit un point d'accès pour les
@@ -82,7 +82,7 @@ Réponses numériques : `ERR_UNKNOWNKNLOGIN`
 ### `CL_UPDATE <login>`
 
 _ramnes: commande inutile, si il y a une update à faire, le serveur envoie
-directement un CL_INFO <login du client en question> à tout les autres clients._
+directement un `CL_INFO <login du client en question>` à tout les autres clients._
 
 La commande `CL_UPDATE` est utilisée pour que le serveur fasse savoir au client
 qu'il y a des données à mettre à jour pour sa base (changement d'état, nouveau
