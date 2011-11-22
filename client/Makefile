@@ -5,13 +5,14 @@
 ## Login   <gelin_g@epitech.net>
 ## 
 ## Started on  Fri Apr 22 12:31:53 2011 guillaume gelin
-## Last update Tue Nov 22 19:26:02 2011 ramnes
+## Last update Tue Nov 22 19:57:20 2011 ramnes
 ##
 
 NAME		= babel
 
 DIR		= ./src/
-SRC		= $(DIR)BabelClient.cpp
+SRC		= $(DIR)main.cpp		\
+		  $(DIR)BabelClient.cpp
 
 INCLUDES	= -I./hpp/
 CPPFLAGS	= -W -Wall $(INCLUDES)
