@@ -5,7 +5,7 @@
 // <perso@ramnes.eu>
 // 
 // Started on  Tue Nov 22 18:18:37 2011 by ramnes
-// Last update Thu Nov 24 11:52:11 2011 ramnes
+// Last update Thu Nov 24 12:10:43 2011 ramnes
 //
 
 #ifndef		BABELCLIENT_HPP__
@@ -16,8 +16,8 @@
 # include	"IClient.hpp"
 # include	"BabelProtocol.hpp"
 
-# define	DEF_MASTER "master.babel.net"
-# define	DEF_PORT 8483
+# define	DEFAULT_MASTER "master.babel.net"
+# define	DEFAULT_PORT 8483
 
 class		BabelClient : public IClient
 {
@@ -26,7 +26,7 @@ public:
   ~BabelClient();
 
 private:
-  std::map<std::string, std::string> _cfg;
+  std::map<std::string, std::string> _config;
 
 public:
   virtual bool	run();
@@ -35,7 +35,7 @@ public:
 
 public:
   bool		sendData(const BabelProtocol& data);
-  bool		loadCfg(const std::string& filename);
+  bool		loadConfig(const std::string& filename);
 };
 
 #endif		// BABELCLIENT_HPP__
