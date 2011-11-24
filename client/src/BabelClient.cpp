@@ -5,7 +5,7 @@
 // <perso@ramnes.eu>
 // 
 // Started on  Tue Nov 22 19:23:34 2011 by ramnes
-// Last update Thu Nov 24 12:24:23 2011 ramnes
+// Last update Thu Nov 24 12:33:08 2011 ramnes
 //
 
 #include	<algorithm>
@@ -63,15 +63,6 @@ bool		BabelClient::connectTo()
 // loadConfig : récupère des infos dans le fichier passé en paramètre
 // retourne true si des attributs de BabelClient ont été modifiés 
 
-static void	del(std::string& s, char c)
-{
-  size_t	pos = 0;
-
-  if (!s.empty())
-    while ((pos = s.find(c)) != s.npos)
-      s.erase(pos, 1);
-}
-
 bool     	BabelClient::loadConfig(const std::string& filename)
 {
   size_t	pos = 0;
@@ -85,8 +76,8 @@ bool     	BabelClient::loadConfig(const std::string& filename)
     }
   while (std::getline(ifs, line))
     {
-      del(line, ' ');
-      del(line, '\t');
+      line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
+      line.erase(std::remove(line.begin(), line.end(), '\t'), line.end());
       if (line.substr(0, 2) != "//"
 	  && (pos = line.find("=")) != line.npos)
 	{
