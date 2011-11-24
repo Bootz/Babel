@@ -5,22 +5,21 @@
 // <perso@ramnes.eu>
 // 
 // Started on  Tue Nov 22 19:49:31 2011 by ramnes
-// Last update Tue Nov 22 23:13:50 2011 ramnes
+// Last update Thu Nov 24 11:17:36 2011 ramnes
 //
 
 #include	"BabelClient.hpp"
 #include	<cstdlib>
 #include	<iostream>
 
-# define	MASTER	"192.168.0.1"
-# define	PORT	1337
-
 int		main()
 {
   BabelClient* client = new BabelClient();
+
   if (!client->run())
     return (EXIT_FAILURE);
-  if (!client->connectTo(MASTER, PORT))
+  client->loadCfg("autoexec.cfg");
+  if (!client->connectTo())
     return (EXIT_FAILURE);
   return (EXIT_SUCCESS);
 }

@@ -5,7 +5,7 @@
 // <perso@ramnes.eu>
 // 
 // Started on  Tue Nov 22 21:38:06 2011 by ramnes
-// Last update Tue Nov 22 23:16:27 2011 ramnes
+// Last update Thu Nov 24 08:16:01 2011 ramnes
 //
 
 #ifndef		BABELPROTOCOL_HPP__
