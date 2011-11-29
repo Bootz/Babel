@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Thu Nov 24 13:03:26 2011 koeth_y
-// Last update Fri Nov 25 14:38:07 2011 koeth_y
+// Last update Tue Nov 29 15:48:59 2011 koeth_y
 //
 
 #include <iostream>
@@ -23,20 +23,19 @@ int main(void)
   try
     {
       IAudioIO* audioIO = new PortAudio;
-      std::cout << "Start record" << std::endl;
+      std::cout << "Start record (4 s)" << std::endl;
       AudioData* data = audioIO->record(4000); // 4000 ms == 4 s
-      std::cout << "Start play" << std::endl;
+      std::cout << "Start play (4 s)" << std::endl;
       // Play twice
       audioIO->play(data);
-      std::cout << "Start play 2" << std::endl;
+      std::cout << "Start play 2 (4 s)" << std::endl;
       playAudio(data); // Within a function
       delete data;
       delete audioIO;
     }
-  catch (IAudioIO::Exception* e)
+  catch (const IAudioIO::Exception& e)
     {
-      std::cout << "Babel error: " << e->what() << std::endl;
-      delete e;
+      std::cout << "Babel error: " << e.what() << std::endl;
     }
   return 0;
 }
