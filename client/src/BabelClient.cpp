@@ -5,7 +5,7 @@
 // <perso@ramnes.eu>
 // 
 // Started on  Tue Nov 22 19:23:34 2011 by ramnes
-// Last update Thu Nov 24 12:33:08 2011 ramnes
+// Last update Sat Nov 26 11:47:58 2011 ramnes
 //
 
 #include	<algorithm>
