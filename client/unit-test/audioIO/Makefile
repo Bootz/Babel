@@ -5,23 +5,33 @@
 ## Login   <koeth_y@epitech.net>
 ## 
 ## Started on  Thu Nov 24 13:03:07 2011 koeth_y
-## Last update Fri Nov 25 13:16:53 2011 koeth_y
+## Last update Tue Nov 29 16:06:52 2011 koeth_y
 ##
 
 CXX		= g++
 
-CXXFLAGS	+= -W -Wall -I../../hpp -I../../lib -g3
+LIB		= ../../lib/
+
+INCLUDES	= -I../../hpp -I$(LIB)
+
+ifdef DEBUG
+	CXXFLAGS += -W -Wall -Wextra -g3 $(INCLUDES)
+else
+	CXXFLAGS += -s -O3 $(INCLUDES)
+endif
 
 ARCHI		= `uname -s`
 
-LDFLAGS		+= -pthread -lportaudio -L../../lib/$(ARCHI)
+LDFLAGS		+= -pthread -lportaudio -L$(LIB)$(ARCHI)
 
 NAME		= audioIO-test
 
+DIR		= ../../src/
+
 SOURCES 	= main.cpp			\
-		  ../../src/IAudioIO.cpp	\
-		  ../../src/AudioData.cpp	\
-		  ../../src/PortAudio.cpp
+		  $(DIR)IAudioIO.cpp		\
+		  $(DIR)AudioData.cpp		\
+		  $(DIR)PortAudio.cpp
 
 OBJECTS 	= $(SOURCES:.cpp=.o)
 

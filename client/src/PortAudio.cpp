@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Thu Nov 24 13:28:48 2011 koeth_y
-// Last update Fri Nov 25 14:42:07 2011 koeth_y
+// Last update Mon Nov 28 13:05:11 2011 koeth_y
 //
 
 #include "PortAudio.hpp"
@@ -14,7 +14,7 @@ inline const PaError& PortAudio::handleError(const PaError& error) const
 {
  if (error != paNoError)
     {
-      throw new IAudioIO::Exception(Pa_GetErrorText(error));
+      throw IAudioIO::Exception(Pa_GetErrorText(error));
       Pa_Terminate();
     }
  return error;
@@ -22,7 +22,7 @@ inline const PaError& PortAudio::handleError(const PaError& error) const
 
 inline void PortAudio::handleError(const std::string& s) const
 {
-  throw new IAudioIO::Exception(s.c_str());
+  throw IAudioIO::Exception(s.c_str());
   Pa_Terminate();
 }
 

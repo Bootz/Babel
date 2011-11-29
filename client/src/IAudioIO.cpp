@@ -5,13 +5,17 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Nov 25 11:05:38 2011 koeth_y
-// Last update Fri Nov 25 11:06:19 2011 koeth_y
+// Last update Mon Nov 28 13:07:47 2011 koeth_y
 //
 
 #include "IAudioIO.hpp"
 
-IAudioIO::Exception::Exception(const char* what)
+IAudioIO::Exception::Exception(const char* what) throw()
   : _what(what)
+{
+}
+
+IAudioIO::Exception::~Exception() throw()
 {
 }
 

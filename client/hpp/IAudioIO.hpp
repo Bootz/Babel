@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Nov 25 11:01:46 2011 koeth_y
-// Last update Fri Nov 25 14:04:59 2011 koeth_y
+// Last update Mon Nov 28 13:09:32 2011 koeth_y
 //
 
 #ifndef		__IAUDIO_IO_HPP__
@@ -21,7 +21,11 @@ public:
   {
     const char* _what;
   public:
-    Exception(const char* what);
+    Exception() throw();
+    Exception(const char* what) throw();
+    Exception(const Exception&) throw();
+    Exception& operator=(const Exception&) throw();
+    virtual ~Exception() throw();
     virtual const char* what() const throw();
   };
 
