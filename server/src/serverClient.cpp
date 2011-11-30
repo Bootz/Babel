@@ -23,6 +23,17 @@ ServerClient::ServerClient(std::string pseudo, std::string password, std::string
 {
 }
 
+// ServerClient& ServerClient::operator=(const ServerClient& other)
+//   : _password(other._password),
+//     _connected(other._connected),
+//     _contacts(other._contacts)
+//     _pseudo(other._pseudo),
+//     _ip(other._ip),
+//     _id(other._id),
+//     _socket(other._socket)
+// {
+// }
+
 ServerClient::~ServerClient()
 {
 }

@@ -10,22 +10,20 @@
 
 Server Server::onlyInstance = Server();
 
-Server::Server()
-  : running(true),
-    nbClient(0),
-    proced(this->nbClient)
-{
-
 #ifdef WIN32
-  ISocket *serverSocket = new WSocket();
+typedef WSocket servSocket;
 #else							//unix
-  ISocket *serverSocket = new LSocket();
+typedef LSocket servSocket;
 #endif
-  
-  clientManager clientmanager(this->serverSocket);
-  this->proced.setClientmanager(&this->clientmanager);
-  this->proced.setSocket(this->serverSocket);
- // a checker
+
+
+Server::Server()
+  : serverSocket(new servSocket()),
+    clientmanager(*serverSocket),
+    nbClient(0),
+    proced(*serverSocket, clientmanager, nbClient),
+    running(true)
+{
   if (this->serverSocket->connectToServer("INADDR_ANY", 42420) == false)
     throw babel_exception("[ERROR] Bad network init");
   this->buffer = new char [1024];
@@ -76,10 +74,13 @@ bool Server::main_loop(void)
 	      }
 	  }
     }
+  return true;
 }
 
 bool			Server::connectClients(ServerClient& caller, std::string name)
 {
-  
+  (void) caller;
+  (void) name;
+  return true;  
 }
 

@@ -25,7 +25,6 @@ class			LSocket : public ISocket
 {
  public:
   LSocket();
-  LSocket& operator=(const LSocket&){}
   LSocket(const LSocket & other);
 
 public:

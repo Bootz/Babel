@@ -12,18 +12,21 @@ NAME		= babel
 
 DIR		= ./src/
 
-SRC		= 	$(DIR)server.cpp \
+SRC		= 	$(DIR)main.cpp \
+			$(DIR)server.cpp \
 			$(DIR)processingCore.cpp \
 			$(DIR)clientManager.cpp \
 			$(DIR)serverClient.cpp \
 			$(DIR)lSocket.cpp
 
 
-INCLUDES	= -I./hpp/
+INCLUDES	= -I./hh/
 CPPFLAGS	= -W -Wall $(INCLUDES)
 OBJ		= $(SRC:.cpp=.o)
 CC		= g++
 RM		= rm -rf
+
+DEBUG		= 0
 
 ifdef DEBUG
 	CPPFLAGS += -g -ggdb3

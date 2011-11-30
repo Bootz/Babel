@@ -6,10 +6,11 @@
 
 // }
 
-ProcessingCore::ProcessingCore(short unsigned int nb_client)
-  : _nbClient(nb_client)
+ProcessingCore::ProcessingCore(ISocket & sock, clientManager & cm, unsigned short& nbclient)
+  : _sock(sock),
+    _clientsManager(cm),
+    _nbClient(nbclient)
 {
-
 }
 
 ProcessingCore::~ProcessingCore()
@@ -32,9 +33,10 @@ bool ProcessingCore::cmdRegister(SOCKET fdSock, std::string cmd)
   int			pos;
   int			i;
 
+  (void) cmd;
   i = 0;
-  sock = this->_sock->clientAccept(fdSock);
-  this->_sock->recv_d(sock, this->_buffer);
+  sock = this->_sock.clientAccept(fdSock);
+  this->_sock.recv_d(sock, this->_buffer);
   for (; buf[i] == ' '; ++i);
   pos = i;
   buf.find(' ', i);
@@ -45,15 +47,15 @@ bool ProcessingCore::cmdRegister(SOCKET fdSock, std::string cmd)
     password.assign(buf, pos, buf.size() - pos);
   else
     password.assign(buf, pos, i - pos);
-  this->_clientsManager->add(name, password, "192.168.1.1", sock);
+  this->_clientsManager.add(name, password, "192.168.1.1", sock);
   this->_nbClient++;
+  return true;
 }
 
 bool			ProcessingCore::extractCommand(std::string & command)
 {
-  int			i;
+  size_t		i = 0;
 
-  i = 0;
   while (i < this->_command.size())
     {
       if (command.compare(0, this->_command[i].first.size(), this->_command[i].first) == 0)
@@ -65,19 +67,4 @@ bool			ProcessingCore::extractCommand(std::string & command)
       ++i;
     }
   return (false);
-}
-
-void			ProcessingCore::setSocket(ISocket *sock)
-{
-  this->_sock = sock;
-}
-
-void			ProcessingCore::setClientmanager(clientManager *clientmanager)
-{
-  this->_clientsManager = clientmanager;
-}
-
-void			ProcessingCore::setNbClient(unsigned short nbclient)
-{
-  this->_nbClient = nbclient;
 }

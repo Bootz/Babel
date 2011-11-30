@@ -15,7 +15,7 @@ class			ServerClient
 {
 public:
   ServerClient(std::string pseudo, std::string password, std::string ip, unsigned short id, int socket);
-  ServerClient& operator=(const ServerClient&) {};
+  //  ServerClient& operator=(const ServerClient&);
   ~ServerClient();
 
 public:
@@ -26,12 +26,13 @@ public:
   std::list<int>	getContacts() const;
 
 private:
+
+  std::string		_password;
   bool			_connected;
   std::list<int>	_contacts;
-  std::string		_password;
   std::string		_pseudo;
-  const unsigned short	_id;
   std::string		_ip;
+  unsigned short	_id;
   int			_socket;
 };
 

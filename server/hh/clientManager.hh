@@ -14,13 +14,10 @@
 # include		"serverClient.hh"
 # include		"iSocket.hh"
 
-//class			ServerClient;
-
 class			clientManager
 {
 public:
-  clientManager();
-  clientManager(ISocket * sock);
+  clientManager(ISocket & sock);
   ~clientManager();
 
   bool				add(std::string name, std::string password, std::string ip, int socket);
@@ -33,7 +30,7 @@ public:
 private:
   std::vector<ServerClient>	_clients;
   std::string			_buffer;
-  ISocket		*	_sock;
+  ISocket		&	_sock;
 };
 
 #endif			//__BABEL_CLIENTMANAGER_HH__

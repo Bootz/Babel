@@ -34,7 +34,6 @@ public:
 
 private:
   Server();
-  Server& operator=(const Server&){}
   ~Server();
 
 private:
@@ -46,15 +45,15 @@ public:
   bool			main_loop(void);
 
 private:
-  clientManager		clientmanager;
   ISocket		*serverSocket;
+  clientManager		clientmanager;
   unsigned short	nbClient;
+  ProcessingCore	proced;
   bool			running;
   fd_set		fdwrite;
   fd_set		fdread;
   std::string		buffer;
   std::string		ip;
-  ProcessingCore	proced;
 };
 
 #endif			//__BABEL_SERVER_HH_

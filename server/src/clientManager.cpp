@@ -7,12 +7,7 @@
 
 #include "clientManager.hh"
 
-clientManager::clientManager()
-{
-
-}
-
-clientManager::clientManager(ISocket * sock)
+clientManager::clientManager(ISocket & sock)
   : _sock(sock)
 {
 }
@@ -62,7 +57,7 @@ bool clientManager::deco(int id)
     {
       // envoi de toSend a l'ID [*it].
     }
-  
+  return true;
 }
 
 bool			clientManager::isInList(unsigned short i) // c' est quoi i ?

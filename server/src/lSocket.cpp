@@ -31,6 +31,7 @@ bool			LSocket::connectToServer(std::string const & host, unsigned short port)
   struct sockaddr_in   addr;
   struct protoent*	pe;
 
+  (void) addr;
   pe = getprotobyname("tcp");
   this->ListenSocket = socket(AF_INET, SOCK_STREAM, pe->p_proto);
   if (this->ListenSocket == -1)
@@ -114,7 +115,7 @@ int			LSocket::getSocket() const
 
 unsigned short		LSocket::clientAccept(int s)
 {
-  unsigned int          client_sin_len;
+  size_t          client_sin_len;
   struct sockaddr_in    client_sin;
   unsigned short	cs;
 

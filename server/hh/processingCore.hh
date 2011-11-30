@@ -14,8 +14,7 @@ typedef bool		(ProcessingCore::*fct)(SOCKET sock, std::string cmd);
 class			ProcessingCore
 {
 public:
-  //  ProcessingCore();
-  ProcessingCore(short unsigned int nb_client);
+  ProcessingCore(ISocket &, clientManager &, unsigned short &);
   ~ProcessingCore();
 
 public:
@@ -25,17 +24,12 @@ public:
 public:
   bool			cmdRegister(SOCKET fdSock, std::string cmd);
 
-public:
-  void			setSocket(ISocket *);
-  void			setClientmanager(clientManager *);
-  void			setNbClient(unsigned short int);
-
 private:
+  ISocket &		_sock;
+  clientManager &	_clientsManager;
+  unsigned short &	_nbClient;
   SOCKET		_actSock;
   std::vector<std::pair<std::string, fct> > _command;
-  clientManager *	_clientsManager;
-  unsigned short &	_nbClient;
-  ISocket *		_sock;
   std::string		_buffer;
 };
 
