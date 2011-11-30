@@ -13,11 +13,11 @@ NAME		= babel
 DIR		= ./src/
 
 SRC		= 	$(DIR)main.cpp \
-			$(DIR)server.cpp \
-			$(DIR)processingCore.cpp \
-			$(DIR)clientManager.cpp \
-			$(DIR)serverClient.cpp \
-			$(DIR)lSocket.cpp
+			$(DIR)Server.cpp \
+			$(DIR)ProcessingCore.cpp \
+			$(DIR)ClientManager.cpp \
+			$(DIR)ServerClient.cpp \
+			$(DIR)LSocket.cpp
 
 
 INCLUDES	= -I./hpp/

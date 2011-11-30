@@ -10,9 +10,9 @@
 # define	__BABEL_SERVER_HH_
 
 # ifdef WIN32
-#  include "wSocket.hh"
+#  include "WSocket.hpp"
 #  else //unix
-#  include "lSocket.hh"
+#  include "LSocket.hpp"
 # endif
 
 # include		<string>
@@ -21,10 +21,10 @@
 # include		<sys/types.h>
 # include		<unistd.h>
 
-# include		"serverClient.hh"
-# include		"iSocket.hh"
-# include		"processingCore.hh"
-# include		"clientManager.hh"
+# include		"ServerClient.hpp"
+# include		"ISocket.hpp"
+# include		"ProcessingCore.hpp"
+# include		"ClientManager.hpp"
 
 
 class			Server

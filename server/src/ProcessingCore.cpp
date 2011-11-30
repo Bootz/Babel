@@ -1,5 +1,5 @@
 
-#include		"processingCore.hpp"
+#include		"ProcessingCore.hpp"
 
 // ProcessingCore::ProcessingCore()
 // {

@@ -4,8 +4,8 @@
 #include		<iostream>
 #include		<vector>
 #include		<utility>
-#include		"iSocket.hpp"
-#include		"clientManager.hpp"
+#include		"ISocket.hpp"
+#include		"ClientManager.hpp"
 
 class ProcessingCore;
 

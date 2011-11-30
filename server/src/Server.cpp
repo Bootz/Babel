@@ -5,8 +5,8 @@
  * Purpose: Implementation of the class Server
  ***********************************************************************/
 
-#include "server.hpp"
-#include "exception.hpp"
+#include "Server.hpp"
+#include "Exception.hpp"
 
 Server Server::onlyInstance = Server();
 

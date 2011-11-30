@@ -11,8 +11,8 @@
 # include		<iostream>
 # include		<vector>
 # include		<string>
-# include		"serverClient.hh"
-# include		"iSocket.hh"
+# include		"ServerClient.hpp"
+# include		"ISocket.hpp"
 
 class			clientManager
 {
