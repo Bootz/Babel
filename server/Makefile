@@ -1,33 +1,45 @@
-NAME		=	babel_server
+##
+## Makefile for my_irc in /home/gelin_g/irc/src/client
+## 
+## Made by guillaume gelin
+## Login   <gelin_g@epitech.net>
+## 
+## Started on  Fri Apr 22 12:31:53 2011 guillaume gelin
+## Last update Tue Nov 22 19:57:20 2011 ramnes
+##
 
-SRCS		=	main.cpp \
-			server.cpp \
-			processingCore.cpp \
-			clientManager.cpp \
-			serverClient.cpp \
-			lSocket.cpp
+NAME		= babel
 
-OBJS		=	$(SRCS:.cpp=.o)
+DIR		= ./src/
 
-TRASH		=	$(OBJS) \
-			*.~
+SRC		= 	$(DIR)server.cpp \
+			$(DIR)processingCore.cpp \
+			$(DIR)clientManager.cpp \
+			$(DIR)serverClient.cpp \
+			$(DIR)lSocket.cpp
 
-CC		=	g++
 
-CFLAGS		=	-W -Wall -Wextra
+INCLUDES	= -I./hpp/
+CPPFLAGS	= -W -Wall $(INCLUDES)
+OBJ		= $(SRC:.cpp=.o)
+CC		= g++
+RM		= rm -rf
 
-RM		=	rm -f
+ifdef DEBUG
+	CPPFLAGS += -g -ggdb3
+else
+	CPPFLAGS += -Werror -O3 -ffast-math
+endif
 
-all :	$(NAME)
+$(NAME)	: $(OBJ)
+	$(CC) $(SRC) $(INCLUDES) -o $(NAME)
 
-$(NAME) : $(OBJS)
-	$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
+all	: $(NAME)
 
-clean :
-	$(RM) $(TRASH)
+clean	:
+	$(RM) $(OBJ)
 
-fclean :
+fclean	: clean
 	$(RM) $(NAME)
-	$(RM) $(TRASH)
 
-re : clean all
+re	: fclean all
