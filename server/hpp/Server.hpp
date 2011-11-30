@@ -46,7 +46,7 @@ public:
 
 private:
   ISocket		*serverSocket;
-  clientManager		clientmanager;
+  ClientManager		clientmanager;
   unsigned short	nbClient;
   ProcessingCore	proced;
   bool			running;

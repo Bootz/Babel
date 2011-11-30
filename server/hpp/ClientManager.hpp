@@ -14,11 +14,11 @@
 # include		"ServerClient.hpp"
 # include		"ISocket.hpp"
 
-class			clientManager
+class			ClientManager
 {
 public:
-  clientManager(ISocket & sock);
-  ~clientManager();
+  ClientManager(ISocket & sock);
+  ~ClientManager();
 
   bool				add(std::string name, std::string password, std::string ip, int socket);
   bool				isInList(unsigned short i);

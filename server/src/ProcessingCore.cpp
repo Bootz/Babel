@@ -6,7 +6,7 @@
 
 // }
 
-ProcessingCore::ProcessingCore(ISocket & sock, clientManager & cm, unsigned short& nbclient)
+ProcessingCore::ProcessingCore(ISocket & sock, ClientManager & cm, unsigned short& nbclient)
   : _sock(sock),
     _clientsManager(cm),
     _nbClient(nbclient)

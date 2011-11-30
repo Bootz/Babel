@@ -13,14 +13,14 @@
 
 # include		<stdexcept>
 
-class babel_exception : public std::exception
+class BabelException : public std::exception
 {
 private:
 	std::string _msg;
 
 public:
-	~babel_exception() throw() {}
-	babel_exception(std::string const & errcode)
+	~BabelException() throw() {}
+	BabelException(std::string const & errcode)
 		:_msg(buildMsg(errcode)) {}
 	const char* what() const throw()
 	{

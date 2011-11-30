@@ -35,7 +35,7 @@ bool			LSocket::connectToServer(std::string const & host, unsigned short port)
   pe = getprotobyname("tcp");
   this->ListenSocket = socket(AF_INET, SOCK_STREAM, pe->p_proto);
   if (this->ListenSocket == -1)
-      throw babel_exception("[UNIX] Error at socket()");
+      throw BabelException("[UNIX] Error at socket()");
   this->sin.sin_family = AF_INET;
   if (host != "INADDR_ANY")
     this->sin.sin_addr.s_addr = inet_addr(host.c_str());
@@ -44,9 +44,9 @@ bool			LSocket::connectToServer(std::string const & host, unsigned short port)
   this->sin.sin_port = htons(port);
   // fournir sock !
   // if (bind(sock, (struct sockaddr *) &this->sin.sin_addr.s_addr, sizeof(addr)) != 0)
-  //   throw babel_exception("[UNIX] Error at socket()");
+  //   throw BabelException("[UNIX] Error at socket()");
   if (listen(this->getListenSocket(), 10) != 0)
-    throw babel_exception("[UNIX] Error at socket()");
+    throw BabelException("[UNIX] Error at socket()");
   return (true);
 }
 
@@ -76,7 +76,7 @@ int			LSocket::send_d(SOCKET sock, std::string & str)
     {
       nb_write = send(sock, (this->buffer + tmp), strlen((this->buffer + tmp)), 0);
       if (nb_write == -1)
-	throw babel_exception("[ERROR] send() operation failed");
+	throw BabelException("[ERROR] send() operation failed");
       tmp += nb_write;
     }
   memset(this->buffer, 0, this->SizeInterBuff);
@@ -95,7 +95,7 @@ int			LSocket::recv_d(SOCKET sock, std::string& str)
       nb_read = recv(sock, (this->buffer + nbr), SizeInterBuff - nbr, 0);
       nbr += nb_read;
       if (nb_read < 0)
-	throw babel_exception("[ERROR] recv() operation failed");
+	throw BabelException("[ERROR] recv() operation failed");
       if (nbr >= size || (nbr >= 1 && this->buffer[nbr-1] == '\n') ||
 	  (nbr >= 2 && this->buffer[nbr-2] == '\n' && this->buffer[nbr-1] == '\r'))
 	{
@@ -122,7 +122,7 @@ unsigned short		LSocket::clientAccept(int s)
   client_sin_len = sizeof(client_sin);
   // if ((cs = accept(s, (struct sockaddr *)&client_sin, &client_sin_len)) < 0)
   //   // Il pense que le accept est le this->accept() ...
-  //   throw babel_exception("[ERROR] accept() operation failed");
+  //   throw BabelException("[ERROR] accept() operation failed");
 
   //tmp
   (void) s;

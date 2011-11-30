@@ -25,7 +25,7 @@ Server::Server()
     running(true)
 {
   if (this->serverSocket->connectToServer("INADDR_ANY", 42420) == false)
-    throw babel_exception("[ERROR] Bad network init");
+    throw BabelException("[ERROR] Bad network init");
   this->buffer = new char [1024];
 }
 
@@ -63,7 +63,7 @@ bool Server::main_loop(void)
   while (this->running)
     {
       if (select(this->nbClient + 1, &this->fdread, &this->fdwrite, NULL, NULL) == -1)
-	throw babel_exception("[ERROR] can't perform select");
+	throw BabelException("[ERROR] can't perform select");
       for (int i = 0; i < this->nbClient; ++i)
 	if (FD_ISSET(i, &this->fdread))		//Selection of writing clients
 	  {

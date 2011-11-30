@@ -36,7 +36,7 @@ int			WSocket::getSocket() const
 bool			WSocket::connectToServer(std::string const& host, unsigned short port)
 {
   if ((this->ListenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
-    throw babel_exception("[WINDOWS] Error at WSASocket()");
+    throw BabelException("[WINDOWS] Error at WSASocket()");
   this->sin.sin_family = AF_INET;
   this->sin.sin_addr.s_addr = htonl(INADDR_ANY);
   this->sin.sin_port = htons(port);
@@ -54,7 +54,7 @@ int			WSocket::recv_d(char* buf)
       nb_read = WSARecv(this->ListenSocket, (buf + nbr), SizeInterBuff - nbr, 0, 0, 0);
       nbr += nb_read;
       if (nb_read < 0)
-	throw babel_exception("[ERROR] recv() operation failed");
+	throw BabelException("[ERROR] recv() operation failed");
       if (nbr >= size || (nbr >= 1 && buf[nbr-1] == '\n') ||
 	  (nbr >= 2 && buf[nbr-2] == '\n' && buf[nbr-1] == '\r'))
 	{
@@ -78,7 +78,7 @@ int			WSocket::send_d(SOCKET sock, const char* data)
     {
       nb_write = WSASend(this->ListenSocket, (data + tmp), strlen((data + tmp)), 0, 0, 0);
       if (nb_write == -1)
-	throw babel_exception("[ERROR] send() operation failed");
+	throw BabelException("[ERROR] send() operation failed");
       tmp += nb_write;
     }
   return (nb_write);

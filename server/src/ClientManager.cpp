@@ -7,16 +7,16 @@
 
 #include "ClientManager.hpp"
 
-clientManager::clientManager(ISocket & sock)
+ClientManager::ClientManager(ISocket & sock)
   : _sock(sock)
 {
 }
 
-clientManager::~clientManager()
+ClientManager::~ClientManager()
 {
 }
 
-bool		clientManager::add(std::string name, std::string password, std::string ip, int socket)
+bool		ClientManager::add(std::string name, std::string password, std::string ip, int socket)
 {
   ServerClient		buffer(name, password, ip, this->_clients.size(), socket);
 
@@ -24,17 +24,17 @@ bool		clientManager::add(std::string name, std::string password, std::string ip,
   return (true);
 }
 
-int		clientManager::getSocket(int id)
+int		ClientManager::getSocket(int id)
 {
   return (this->_clients[id].getSocket());
 }
 
-std::string	 clientManager::getName(int id)
+std::string	 ClientManager::getName(int id)
 {
   return (this->_clients[id].getPseudo());
 }
 
-bool clientManager::deco(int id)
+bool ClientManager::deco(int id)
 {
   // TROP LOURD
   // while (!tmp.getContacts().empty())
@@ -60,14 +60,14 @@ bool clientManager::deco(int id)
   return true;
 }
 
-bool			clientManager::isInList(unsigned short i) // c' est quoi i ?
+bool			ClientManager::isInList(unsigned short i) // c' est quoi i ?
 {
   if (i > this->_clients.size()) // || this->_clients[i]) -> vraiment necessaire?
     return (false);
   return (true);
 }
 
-// serverClient &		clientManager::find(std::string & name)
+// serverClient &		ClientManager::find(std::string & name)
 // {
 //   int			i = 0;
 
