@@ -115,15 +115,20 @@ int			LSocket::getSocket() const
 
 unsigned short		LSocket::clientAccept(int s)
 {
-  size_t          client_sin_len;
+  unsigned int		client_sin_len;
   struct sockaddr_in    client_sin;
-  unsigned short	cs;
+  //unsigned short	cs;
 
   client_sin_len = sizeof(client_sin);
-  if ((cs = accept(s, (struct sockaddr *)&client_sin, &client_sin_len)) < 0)
-    // Il pense que le accept est le this->accept() ...
-    throw babel_exception("[ERROR] accept() operation failed");
-  return (cs);
+  // if ((cs = accept(s, (struct sockaddr *)&client_sin, &client_sin_len)) < 0)
+  //   // Il pense que le accept est le this->accept() ...
+  //   throw babel_exception("[ERROR] accept() operation failed");
+
+  //tmp
+  (void) s;
+  return 1;
+
+  //return (cs);
 }
 
 void			LSocket::closeSocket(void)
