@@ -5,7 +5,7 @@
  * Purpose: Implementation of the class clientManager
  ***********************************************************************/
 
-#include "clientManager.hh"
+#include "clientManager.hpp"
 
 clientManager::clientManager(ISocket & sock)
   : _sock(sock)

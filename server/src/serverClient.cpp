@@ -5,7 +5,7 @@
  * Purpose: Implementation of the class serverClient
  ***********************************************************************/
 
-#include "serverClient.hh"
+#include "serverClient.hpp"
 
 ////////////////////////////////////////////////////////////////////////
 // Name:       ServerClient::~ServerClient()

@@ -8,8 +8,8 @@
 // Last update Fri Nov 18 15:38:52 2011 louis lesueur
 //
 
-#include		"exception.hh"
-#include		"wSocket.hh"
+#include		"exception.hpp"
+#include		"wSocket.hpp"
 
 WSocket::WSocket()
   : ListenSocket(-1),

@@ -10,8 +10,8 @@
 
 #include		<string.h>
 #include		<cstring>
-#include		"exception.hh"
-#include		"lSocket.hh"
+#include		"exception.hpp"
+#include		"lSocket.hpp"
 
 LSocket::LSocket()
   : ListenSocket(-1),

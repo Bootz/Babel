@@ -5,7 +5,7 @@
  * Purpose: Launch the whole program
  ***********************************************************************/
 
-#include	"server.hh"
+#include	"server.hpp"
 
 void		launch_program()
 {

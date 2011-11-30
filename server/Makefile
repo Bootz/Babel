@@ -20,7 +20,7 @@ SRC		= 	$(DIR)main.cpp \
 			$(DIR)lSocket.cpp
 
 
-INCLUDES	= -I./hh/
+INCLUDES	= -I./hpp/
 CPPFLAGS	= -W -Wall $(INCLUDES)
 OBJ		= $(SRC:.cpp=.o)
 CC		= g++
