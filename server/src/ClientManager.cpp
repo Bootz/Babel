@@ -67,6 +67,11 @@ bool			ClientManager::isInList(unsigned short i) const // c' est quoi i ?
   return (true);
 }
 
+  // ServerClient &		getClient(std::string & name) const
+  // {
+ 
+  // }
+
 // serverClient &		ClientManager::find(std::string & name)
 // {
 //   int			i = 0;

@@ -12,6 +12,8 @@ NAME		= babel
 
 DIR		= ./src/
 
+COMMON		= ../common/src/
+
 SRC		= 	$(DIR)main.cpp \
 			$(DIR)Server.cpp \
 			$(DIR)ProcessingCore.cpp \
@@ -19,10 +21,10 @@ SRC		= 	$(DIR)main.cpp \
 			$(DIR)ServerClient.cpp \
 			$(DIR)LSocket.cpp \
 			$(DIR)Factory.cpp \
-			$(DIR)ProtocoleClass.cpp
+			$(COMMON)BabelProtocol.cpp
 
 
-INCLUDES	= -I./hpp/
+INCLUDES	= -I./hpp/ -I./../common/hpp/
 CPPFLAGS	= -W -Wall $(INCLUDES)
 OBJ		= $(SRC:.cpp=.o)
 CC		= g++

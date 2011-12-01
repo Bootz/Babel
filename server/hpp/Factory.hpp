@@ -1,6 +1,6 @@
 
 #include		<string>
-#include		"ProtocoleClass.hpp"
+#include		"BabelProtocol.hpp"
  
 class			Factory
 {
@@ -9,5 +9,5 @@ class			Factory
   ~Factory();
 
  public:
-  ProtocoleClass & createProtocolClass(std::string classname);
+  BabelProtocol & createProtocolClass(int id_class, void * data, size_t size);
 };

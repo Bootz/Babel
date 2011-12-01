@@ -10,9 +10,10 @@ Factory::~Factory()
 {
 }
 
-ProtocoleClass & Factory::createProtocolClass(std::string classname)
+BabelProtocol & Factory::createProtocolClass(int id_class, void * data, size_t size)
 {
-  ProtocoleClass * test = new ProtocoleClass(classname);
+  BabelProtocol * test = new BabelProtocol(id_class, data, size);
+  (void) id_class;
 
   return *test;
 }
