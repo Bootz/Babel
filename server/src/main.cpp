@@ -5,6 +5,7 @@
  * Purpose: Launch the whole program
  ***********************************************************************/
 
+#include	<cstdlib>
 #include	"Server.hpp"
 
 void		launch_program()
@@ -14,12 +15,10 @@ void		launch_program()
   ptr1.main_loop();
 }
 
-int		main(int ac, char **av)
+int		 main( __attribute__ ((unused)) int ac, __attribute__ ((unused)) char **av)
 {
-  (void) av;
   if (ac != 1)
-    return 0;
-  else
-    launch_program();
-  return 1;
+    return (EXIT_FAILURE);
+  launch_program();
+  return (EXIT_SUCCESS);
 }
