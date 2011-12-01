@@ -10,32 +10,32 @@
 
 NAME		= babelserver
 
+OS 		= $(shell uname -s || echo Win32)
+
 DIR		= ./src/
 
 COMMON		= ../common/src/
+INCLUDES	= -I./hpp/ -I./../common/hpp/
 
 SRC		= 	$(DIR)main.cpp \
 			$(DIR)Server.cpp \
 			$(DIR)ProcessingCore.cpp \
 			$(DIR)ClientManager.cpp \
 			$(DIR)ServerClient.cpp \
-			$(DIR)LSocket.cpp \
+			$(DIR)Socket_$(OS).cpp \
 			$(DIR)Factory.cpp \
 			$(COMMON)BabelProtocol.cpp
 
-
-INCLUDES	= -I./hpp/ -I./../common/hpp/
-CPPFLAGS	= -W -Wall $(INCLUDES)
-OBJ		= $(SRC:.cpp=.o)
-CC		= g++
-RM		= rm -rf
-
-DEBUG		= 0
-
-ifdef DEBUG
-	CPPFLAGS += -g -ggdb3
+ifeq ($(OS), Win32)
+	CPPFLAGS	= /EHsc $(INCLUDES)
+	OBJ 		= $(SRC:.cpp:.obj)
+	CC		= cl $(CPPFLAGS)
+	RM		= del
 else
-	CPPFLAGS += -Werror -O3 -ffast-math
+	CPPFLAGS	= -W -Wall $(INCLUDES)
+	OBJ		= $(SRC:.cpp=.o)
+	CC		= g++
+	RM		= rm -rf
 endif
 
 $(NAME)	: $(OBJ)
@@ -44,9 +44,19 @@ $(NAME)	: $(OBJ)
 all	: $(NAME)
 
 clean	:
+ifeq ($(OS), Win32)
+	$(RM) *.obj
+else
 	$(RM) $(OBJ)
+endif
 
 fclean	: clean
+ifeq ($(OS), Win32)
+	$(RM) $(NAME).exe
+else
 	$(RM) $(NAME)
+endif
 
 re	: fclean all
+
+.PHONY	: all clean fclean re
