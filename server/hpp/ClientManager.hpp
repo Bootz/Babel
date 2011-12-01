@@ -21,10 +21,10 @@ public:
   ~ClientManager();
 
   bool				add(std::string name, std::string password, std::string ip, int socket);
-  bool				isInList(unsigned short i);
+  bool				isInList(unsigned short i)const;
   ServerClient &		find(std::string & name);
-  int				getSocket(int id);
-  std::string			getName(int id);
+  int				getSocket(int id)const ;
+  std::string			getName(int id)const ;
   bool				deco(int id);
 
 private:

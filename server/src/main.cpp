@@ -11,8 +11,7 @@ void		launch_program()
 {
   Server& ptr1 = Server::getInstance();
 
-  (void) ptr1;
-  //Voila, l'instance de server non reproductible
+  ptr1.main_loop();
 }
 
 int		main(int ac, char **av)

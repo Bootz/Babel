@@ -45,15 +45,15 @@ public:
   bool			main_loop(void);
 
 private:
-  ISocket		*serverSocket;
-  ClientManager		clientmanager;
-  unsigned short	nbClient;
-  ProcessingCore	proced;
-  bool			running;
-  fd_set		fdwrite;
-  fd_set		fdread;
-  std::string		buffer;
-  std::string		ip;
+  ISocket		*_serverSocket;
+  ClientManager		_clientmanager;
+  unsigned short	_nbClient;
+  ProcessingCore	_proced;
+  bool			_running;
+  fd_set		_fdwrite;
+  fd_set		_fdread;
+  std::string		_buffer;
+  std::string		_ip;
 };
 
 #endif			//__BABEL_SERVER_HH_

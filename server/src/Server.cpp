@@ -18,15 +18,15 @@ typedef LSocket servSocket;
 
 
 Server::Server()
-  : serverSocket(new servSocket()),
-    clientmanager(*serverSocket),
-    nbClient(0),
-    proced(*serverSocket, clientmanager, nbClient),
-    running(true)
+  : _serverSocket(new servSocket()),
+    _clientmanager(*_serverSocket),
+    _nbClient(0),
+    _proced(*_serverSocket, _clientmanager, _nbClient),
+    _running(true)
 {
-  if (this->serverSocket->connectToServer("INADDR_ANY", 42420) == false)
+  if (this->_serverSocket->connectToServer("INADDR_ANY", 42420) == false)
     throw BabelException("[ERROR] Bad network init");
-  this->buffer = new char [1024];
+  this->_buffer = new char [1024];
 }
 
 Server::~Server()
@@ -45,31 +45,31 @@ void			Server::setFd(const int fd)
 
   if (fd > 0)
     {
-      FD_SET(fd, &this->fdread);
-      if (fd > this->nbClient)
-	this->nbClient = fd;
+      FD_SET(fd, &this->_fdread);
+      if (fd > this->_nbClient)
+	this->_nbClient = fd;
     }
   if (fd < 0)
     {
-      FD_CLR(-fd, &this->fdread);
-      i = this->nbClient;
-      while (i && !FD_ISSET(i, &this->fdread))
+      FD_CLR(-fd, &this->_fdread);
+      i = this->_nbClient;
+      while (i && !FD_ISSET(i, &this->_fdread))
 	i--;
     }
 }
 
 bool Server::main_loop(void)
 {
-  while (this->running)
+  while (this->_running)
     {
-      if (select(this->nbClient + 1, &this->fdread, &this->fdwrite, NULL, NULL) == -1)
+      if (select(this->_nbClient + 1, &this->_fdread, &this->_fdwrite, NULL, NULL) == -1)
 	throw BabelException("[ERROR] can't perform select");
-      for (int i = 0; i < this->nbClient; ++i)
-	if (FD_ISSET(i, &this->fdread))		//Selection of writing clients
+      for (int i = 0; i < this->_nbClient; ++i)
+	if (FD_ISSET(i, &this->_fdread))		//Selection of writing clients
 	  {
-	    if (this->clientmanager.isInList(i))
+	    if (this->_clientmanager.isInList(i))
 	      {
-		this->serverSocket->recv_d(this->clientmanager.getSocket(i), this->buffer);
+		this->_serverSocket->recv_d(this->_clientmanager.getSocket(i), this->_buffer);
 		//pointeur sur fonction		//send to processing core
 	      }
 	  }

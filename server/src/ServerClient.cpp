@@ -13,10 +13,10 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-ServerClient::ServerClient(std::string pseudo, std::string password, std::string ip, unsigned short id, int socket)
+ServerClient::ServerClient(std::string name, std::string password, std::string ip, unsigned short id, int socket)
   : _password(password),
     _connected(true),
-    _pseudo(pseudo),
+    _name(name),
     _ip(ip),
     _id(id),
     _socket(socket)
@@ -27,7 +27,7 @@ ServerClient::ServerClient(std::string pseudo, std::string password, std::string
 //   : _password(other._password),
 //     _connected(other._connected),
 //     _contacts(other._contacts)
-//     _pseudo(other._pseudo),
+//     _name(other._name),
 //     _ip(other._ip),
 //     _id(other._id),
 //     _socket(other._socket)
@@ -38,9 +38,9 @@ ServerClient::~ServerClient()
 {
 }
 
-std::string	ServerClient::getPseudo() const
+std::string	ServerClient::getName() const
 {
-  return this->_pseudo;
+  return this->_name;
 }
 
 unsigned short	ServerClient::getId() const

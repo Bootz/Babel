@@ -24,14 +24,14 @@ bool		ClientManager::add(std::string name, std::string password, std::string ip,
   return (true);
 }
 
-int		ClientManager::getSocket(int id)
+int		ClientManager::getSocket(int id) const
 {
   return (this->_clients[id].getSocket());
 }
 
-std::string	 ClientManager::getName(int id)
+std::string	 ClientManager::getName(int id) const
 {
-  return (this->_clients[id].getPseudo());
+  return (this->_clients[id].getName());
 }
 
 bool ClientManager::deco(int id)
@@ -50,7 +50,7 @@ bool ClientManager::deco(int id)
  ServerClient		tmp = this->_clients[id]; // tmp = le client traite
   std::string		toSend = "DECO ";
 
-  toSend.append(tmp.getPseudo());
+  toSend.append(tmp.getName());
   for (std::list<int>::iterator it= tmp.getContacts().begin();
        it != tmp.getContacts().end();
        ++it)
@@ -60,7 +60,7 @@ bool ClientManager::deco(int id)
   return true;
 }
 
-bool			ClientManager::isInList(unsigned short i) // c' est quoi i ?
+bool			ClientManager::isInList(unsigned short i) const // c' est quoi i ?
 {
   if (i > this->_clients.size()) // || this->_clients[i]) -> vraiment necessaire?
     return (false);
