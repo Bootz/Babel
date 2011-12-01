@@ -10,13 +10,12 @@ Factory::~Factory()
 {
 }
 
-BabelProtocol & Factory::createProtocolClass(int id_class, void * data, size_t size)
-{
+BabelProtocol & Factory::createProtocolClass(int enum_class, void * data, size_t size)
+{    
+  std::string cmd = server_cmd_str[enum_class];
+  
   BabelProtocol * test = new BabelProtocol();
-  (void) id_class;
-  (void) data;
-  (void) size;
-
+  
   return *test;
 }
 
