@@ -20,13 +20,14 @@ typedef LSocket servSocket;
 Server::Server()
   : _serverSocket(new servSocket()),
     _clientmanager(*_serverSocket),
-    _nbClient(0),
+    _nbClient(1),
     _proced(*_serverSocket, _clientmanager, _nbClient),
     _running(true)
 {
-  if (this->_serverSocket->connectToServer("INADDR_ANY", 42420) == false)
+  if (this->_serverSocket->connectToServer(42420) == false)
     throw BabelException("[ERROR] Bad network init");
   this->_buffer = new char [1024];
+  FD_SET(this->_serverSocket->getListenSocket(), &this->_master);
 }
 
 Server::~Server()
@@ -41,38 +42,41 @@ Server &Server::getInstance()
 
 void			Server::setFd(const int fd)
 {
-  int			i = 0;
-
-  if (fd > 0)
-    {
-      FD_SET(fd, &this->_fdread);
-      if (fd > this->_nbClient)
-	this->_nbClient = fd;
-    }
-  if (fd < 0)
-    {
-      FD_CLR(-fd, &this->_fdread);
-      i = this->_nbClient;
-      while (i && !FD_ISSET(i, &this->_fdread))
-	i--;
-    }
+  this->_tv.tv_sec = 1;
+  this->_tv.tv_usec = 0;
+  FD_ZERO(&this->_fdread);
+  if (this->_clientmanager.isInList(fd))
+    FD_SET(fd, &this->_fdread);
+  else
+    this->_fdread = this->_master;
 }
 
 bool Server::main_loop(void)
 {
+  std::cout << "[main_loop] begin" << std::endl;
+
   while (this->_running)
     {
-      if (select(this->_nbClient + 1, &this->_fdread, &this->_fdwrite, NULL, NULL) == -1)
-	throw BabelException("[ERROR] can't perform select");
-      for (int i = 0; i < this->_nbClient; ++i)
-	if (FD_ISSET(i, &this->_fdread))		//Selection of writing clients
-	  {
-	    if (this->_clientmanager.isInList(i))
-	      {
-		this->_serverSocket->recv_d(this->_clientmanager.getSocket(i), this->_buffer);
-		//pointeur sur fonction		//send to processing core
-	      }
-	  }
+      for (int i = 0; i < 1023 + 1; ++i)
+	{
+	  this->setFd(i);
+	  if (select(i + 1, &this->_fdread, NULL, NULL, &this->_tv) == -1)
+	    throw BabelException("[ERROR] can't perform select");
+	  for (int j = 0; j < 1023 + 1; ++j)
+	    {
+	      if (FD_ISSET(j, &this->_fdread))
+		{
+		  if (this->_clientmanager.isInList(j))
+		    this->_serverSocket->recv_d(this->_clientmanager.getSocket(j), this->_buffer);
+		  else
+		    {
+		      std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl;
+		      this->_serverSocket->clientAccept(j);
+		      this->_nbClient += 1;
+		    }
+		}
+	    }
+	}
     }
   return true;
 }
@@ -81,6 +85,6 @@ bool			Server::connectClients(ServerClient& caller, std::string name)
 {
   (void) caller;
   (void) name;
-  return true;  
+  return true;
 }
 

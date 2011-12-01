@@ -51,9 +51,11 @@ private:
   ProcessingCore	_proced;
   bool			_running;
   fd_set		_fdwrite;
+  fd_set		_master;
   fd_set		_fdread;
   std::string		_buffer;
   std::string		_ip;
+  struct timeval	_tv;
 };
 
 #endif			//__BABEL_SERVER_HH_

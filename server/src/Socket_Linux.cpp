@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:30:07 2011 louis lesueur
-// Last update Tue Nov 22 15:41:50 2011 louis lesueur
+// Last update Thu Dec  1 20:51:35 2011 louis lesueur
 //
 
 #include		<string.h>
@@ -26,26 +26,24 @@ LSocket::~LSocket()
   close(this->ListenSocket);
 }
 
-bool			LSocket::connectToServer(std::string const & host, unsigned short port)
+bool			LSocket::connectToServer(unsigned short port)
 {
   struct sockaddr_in   addr;
   struct protoent*	pe;
 
   (void) addr;
   pe = getprotobyname("tcp");
-  this->ListenSocket = socket(AF_INET, SOCK_STREAM, pe->p_proto);
-  if (this->ListenSocket == -1)
-      throw BabelException("[UNIX] Error at socket()");
+  if ((this->ListenSocket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+    throw BabelException("[UNIX] Error at socket()");
+  if(setsockopt(this->ListenSocket, SOL_SOCKET, SO_REUSEADDR, &this->ListenSocket, sizeof(int)) == -1)
+    throw BabelException("[UNIX] Error at socket()");
+  memset(&this->sin, 0, sizeof(&this->sin));
   this->sin.sin_family = AF_INET;
-  if (host != "INADDR_ANY")
-    this->sin.sin_addr.s_addr = inet_addr(host.c_str());
-  else
-    this->sin.sin_addr.s_addr = INADDR_ANY;
   this->sin.sin_port = htons(port);
-  // fournir sock !
-  // if (bind(sock, (struct sockaddr *) &this->sin.sin_addr.s_addr, sizeof(addr)) != 0)
-  //   throw BabelException("[UNIX] Error at socket()");
-  if (listen(this->getListenSocket(), 10) != 0)
+  this->sin.sin_addr.s_addr = INADDR_ANY;
+  if (bind(this->ListenSocket, (struct sockaddr *)&this->sin, sizeof(addr)) != 0)
+    throw BabelException("[UNIX] Error at socket()");
+  if (listen(this->ListenSocket, 1024) != 0)
     throw BabelException("[UNIX] Error at socket()");
   return (true);
 }
@@ -113,22 +111,17 @@ int			LSocket::getSocket() const
   return (ListenSocket);
 }
 
-unsigned short		LSocket::clientAccept(int s)
+int			LSocket::clientAccept(int s)
 {
   unsigned int		client_sin_len;
   struct sockaddr_in    client_sin;
-  //unsigned short	cs;
+  int			cs;
 
   client_sin_len = sizeof(client_sin);
-  // if ((cs = accept(s, (struct sockaddr *)&client_sin, &client_sin_len)) < 0)
-  //   // Il pense que le accept est le this->accept() ...
-  //   throw BabelException("[ERROR] accept() operation failed");
-
-  //tmp
-  (void) s;
-  return 1;
-
-  //return (cs);
+  if ((cs = accept(s, (struct sockaddr *)&client_sin, &client_sin_len)) < 0)
+    throw BabelException("[ERROR] accept() operation failed");
+  std::cout << "[clientAccept] New client added" << std::endl;
+  return (cs);
 }
 
 void			LSocket::closeSocket(void)
