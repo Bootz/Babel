@@ -10,20 +10,24 @@
 
 NAME		= babel
 
+OS 		= $(shell uname -s || echo Win32)
+
+INCLUDES	= -I./hpp/ -I./../common/hpp/
+
 DIR		= ./src/
 SRC		= $(DIR)main.cpp		\
 		  $(DIR)BabelClient.cpp
 
-INCLUDES	= -I./hpp/ -I./../common/hpp/
-CPPFLAGS	= -W -Wall $(INCLUDES)
-OBJ		= $(SRC:.cpp=.o)
-CC		= g++
-RM		= rm -rf
-
-ifdef DEBUG
-	CPPFLAGS += -g -ggdb3
+ifeq ($(OS), Win32)
+	CPPFLAGS	= /EHsc $(INCLUDES)
+	OBJ 		= $(SRC:.cpp:.obj)
+	CC		= cl $(CPPFLAGS)
+	RM		= del
 else
-	CPPFLAGS += -Werror -O3 -ffast-math
+	CPPFLAGS	= -W -Wall $(INCLUDES)
+	OBJ		= $(SRC:.cpp=.o)
+	CC		= g++
+	RM		= rm -rf
 endif
 
 $(NAME)	: $(OBJ)
@@ -32,10 +36,18 @@ $(NAME)	: $(OBJ)
 all	: $(NAME)
 
 clean	:
+ifeq ($(OS), Win32)
+	$(RM) *.obj
+else
 	$(RM) $(OBJ)
+endif
 
 fclean	: clean
+ifeq ($(OS), Win32)
+	$(RM) $(NAME).exe
+else
 	$(RM) $(NAME)
+endif
 
 re	: fclean all
 
