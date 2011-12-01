@@ -17,7 +17,9 @@ SRC		= 	$(DIR)main.cpp \
 			$(DIR)ProcessingCore.cpp \
 			$(DIR)ClientManager.cpp \
 			$(DIR)ServerClient.cpp \
-			$(DIR)LSocket.cpp
+			$(DIR)LSocket.cpp \
+			$(DIR)Factory.cpp \
+			$(DIR)ProtocoleClass.cpp
 
 
 INCLUDES	= -I./hpp/
