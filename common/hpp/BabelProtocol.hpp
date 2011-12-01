@@ -16,7 +16,7 @@
 class		BabelProtocol
 {
 public:
-  BabelProtocol(int cmd, void * data, size_t size);
+  BabelProtocol(int cmd);
   ~BabelProtocol();
 
 private:

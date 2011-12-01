@@ -1,9 +1,6 @@
 #include		"BabelProtocol.hpp"
 
-BabelProtocol::BabelProtocol(int cmd, void *data, size_t size)
-  : _cmd(cmd),
-    _data(data),
-    _size(size)
+BabelProtocol::BabelProtocol()
 {
 
 }
@@ -11,4 +8,9 @@ BabelProtocol::BabelProtocol(int cmd, void *data, size_t size)
 BabelProtocol::~BabelProtocol()
 {
 
+}
+
+void	BabelProtocol::setRequest(int cmd, void *data, size_t size)
+{
+  
 }
