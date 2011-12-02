@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Dec  2 18:43:25 2011 koeth_y
-// Last update Fri Dec  2 22:11:50 2011 koeth_y
+// Last update Fri Dec  2 22:26:28 2011 koeth_y
 //
 
 #include <iostream>
@@ -17,8 +17,8 @@ int main(void)
     {
       int i = 0;
       AudioData* data1 = NULL;
-      PortAudio* audioIO = new PortAudio;
-      PortAudio* audioIO1 = new PortAudio;
+      IAudioIO* audioIO = new PortAudio;
+      IAudioIO* audioIO1 = new PortAudio;
       while (i < 200)
 	{
 	  if (data1)

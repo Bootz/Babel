@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Dec  2 18:43:25 2011 koeth_y
-// Last update Fri Dec  2 20:20:35 2011 koeth_y
+// Last update Fri Dec  2 22:26:19 2011 koeth_y
 //
 
 #include <iostream>
@@ -15,7 +15,7 @@ int main(void)
 {
   try
     {
-      PortAudio* audioIO = new PortAudio;
+      IAudioIO* audioIO = new PortAudio;
 
       std::cout << "Start record (9 s)" << std::endl;
 

@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Nov 25 11:01:46 2011 koeth_y
-// Last update Fri Dec  2 15:45:51 2011 koeth_y
+// Last update Fri Dec  2 22:27:19 2011 koeth_y
 //
 
 #ifndef		__IAUDIO_IO_HPP__
@@ -17,8 +17,13 @@
 class IAudioIO
 {
 public:
-  //  virtual AudioData* record(long msec) = 0;
-  // virtual void play(const AudioData*) const = 0;
+  virtual void startRecord(long msec) = 0;
+  virtual AudioData* getRecorded() = 0;
+  virtual bool isRecording() const = 0;
+  virtual void stopRecord() = 0;
+  virtual void startPlay(const AudioData&) = 0;
+  virtual bool isPlaying() const = 0;
+  virtual void stopPlay() = 0;
   virtual ~IAudioIO() {};
 
 public:

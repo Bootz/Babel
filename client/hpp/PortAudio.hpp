@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Thu Nov 24 13:24:53 2011 koeth_y
-// Last update Fri Dec  2 18:28:48 2011 koeth_y
+// Last update Fri Dec  2 22:27:22 2011 koeth_y
 //
 
 #ifndef		__PORT_AUDIO_HPP__
