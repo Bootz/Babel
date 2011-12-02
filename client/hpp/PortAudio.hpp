@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Thu Nov 24 13:24:53 2011 koeth_y
-// Last update Fri Nov 25 14:49:07 2011 koeth_y
+// Last update Fri Dec  2 18:28:48 2011 koeth_y
 //
 
 #ifndef		__PORT_AUDIO_HPP__
@@ -13,6 +13,7 @@
 
 #include <string>
 #include "portaudio.h"
+#include "IThread.hpp"
 #include "IAudioIO.hpp"
 
 class PortAudio : public IAudioIO
@@ -35,19 +36,40 @@ private:
 
 private:
   inline const PaError& handleError(const PaError&) const;
-  inline void handleError(const std::string&) const;
-
+  inline void throwError(const std::string&) const;
+  
   // Callbacks
   static int recordCallback(const void *inputBuffer, void *outputBuffer,
-		      unsigned long framesPerBuffer,
-		      const PaStreamCallbackTimeInfo* timeInfo,
-		      PaStreamCallbackFlags statusFlags,
-	       void *userData);
+			    unsigned long framesPerBuffer,
+			    const PaStreamCallbackTimeInfo* timeInfo,
+			    PaStreamCallbackFlags statusFlags,
+			    void *userData);
   static int playCallback(const void *inputBuffer, void *outputBuffer,
-		      unsigned long framesPerBuffer,
-		      const PaStreamCallbackTimeInfo* timeInfo,
-		      PaStreamCallbackFlags statusFlags,
-	       void *userData);
+			  unsigned long framesPerBuffer,
+			  const PaStreamCallbackTimeInfo* timeInfo,
+			  PaStreamCallbackFlags statusFlags,
+			  void *userData);
+
+  struct RecordParameters
+  {
+    long msec;
+    PortAudio* self;
+  };
+
+  struct PlayParameters
+  {
+    const AudioData* data;
+    PortAudio* self;
+  };
+
+  bool _stopRecord;
+  bool _isRecording;
+  bool _stopPlay;
+  bool _isPlaying;
+  IThread* _recordThread;
+  IThread* _playThread;
+  static void* recordThread(void* arg);
+  static void* playThread(void* arg);
 
 public:
   PortAudio();
@@ -56,8 +78,13 @@ public:
   PortAudio& operator=(const PortAudio&);
   virtual ~PortAudio();
 
-  virtual AudioData* record(long msec);
-  virtual void play(const AudioData*) const;
+  virtual void startRecord(long msec);
+  virtual AudioData* getRecorded();
+  virtual bool isRecording() const;
+  virtual void stopRecord();
+  virtual void startPlay(const AudioData&);
+  virtual bool isPlaying() const;
+  virtual void stopPlay();
 };
 
 #endif		// __PORT_AUDIO_HPP__

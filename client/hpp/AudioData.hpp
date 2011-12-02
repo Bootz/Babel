@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Nov 25 14:39:19 2011 koeth_y
-// Last update Mon Nov 28 13:10:35 2011 koeth_y
+// Last update Fri Dec  2 17:59:43 2011 koeth_y
 //
 
 #ifndef		__AUDIO_DATA_HPP__
@@ -32,6 +32,7 @@ public:
   ~AudioData();
 
   long getDuration() const; // in milliseconds
+  void setDuration(long msec);
 
   AudioData::Sample* operator[](unsigned long i) const;
 };

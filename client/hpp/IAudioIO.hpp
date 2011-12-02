@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Nov 25 11:01:46 2011 koeth_y
-// Last update Mon Nov 28 13:09:32 2011 koeth_y
+// Last update Fri Dec  2 15:45:51 2011 koeth_y
 //
 
 #ifndef		__IAUDIO_IO_HPP__
@@ -16,6 +16,11 @@
 
 class IAudioIO
 {
+public:
+  //  virtual AudioData* record(long msec) = 0;
+  // virtual void play(const AudioData*) const = 0;
+  virtual ~IAudioIO() {};
+
 public:
   class Exception : public std::exception
   {
@@ -29,10 +34,6 @@ public:
     virtual const char* what() const throw();
   };
 
-public:
-  virtual AudioData* record(long msec) = 0;
-  virtual void play(const AudioData*) const = 0;
-  virtual ~IAudioIO() {};
 };
 
 #endif		// __IAUDIO_IO_HPP__

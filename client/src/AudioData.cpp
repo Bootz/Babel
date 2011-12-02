@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Nov 25 14:40:43 2011 koeth_y
-// Last update Fri Nov 25 14:40:59 2011 koeth_y
+// Last update Fri Dec  2 18:00:16 2011 koeth_y
 //
 
 #include "AudioData.hpp"
@@ -35,6 +35,11 @@ AudioData::~AudioData()
 long AudioData::getDuration() const
 {
   return this->_msecDuration;
+}
+
+void AudioData::setDuration(long msec)
+{
+  this->_msecDuration = msec;
 }
 
 AudioData::Sample* AudioData::operator[](unsigned long i) const
