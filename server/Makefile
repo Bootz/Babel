@@ -15,6 +15,7 @@ OS 		= $(shell uname -s || echo Win32)
 DIR		= ./src/
 
 COMMON		= ../common/src/
+
 INCLUDES	= -I./hpp/ -I./../common/hpp/
 
 SRC		= 	$(DIR)main.cpp \
@@ -23,7 +24,7 @@ SRC		= 	$(DIR)main.cpp \
 			$(DIR)ClientManager.cpp \
 			$(DIR)ServerClient.cpp \
 			$(COMMON)Socket_$(OS).cpp \
-			$(DIR)Factory.cpp \
+			$(COMMON)Factory.cpp \
 			$(COMMON)BabelProtocol.cpp
 
 ifeq ($(OS), Win32)
