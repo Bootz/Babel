@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class serverClient
  ***********************************************************************/
 
-#ifndef		__BABEL_SERVERCLIENT_HH__
-# define	__BABEL_SERVERCLIENT_HH__
+#ifndef		__BABEL_SERVERCLIENT_HPP__
+# define	__BABEL_SERVERCLIENT_HPP__
 
 # include		<string>
 # include		<list>
@@ -36,4 +36,4 @@ private:
   int			_socket;
 };
 
-#endif			//__BABEL_SERVERCLIENT_HH__
+#endif			//__BABEL_SERVERCLIENT_HPP__

@@ -9,7 +9,7 @@
 //
 
 #include		"Exception.hpp"
-#include		"WSocket.hpp"
+#include		"Socket_Win32.hpp"
 
 WSocket::WSocket()
   : ListenSocket(-1),
@@ -145,7 +145,7 @@ SOCKET			WSocket::getAcceptSocket(void)const
   return (this->AcceptSocket);
 }
 
-struct SOCKADDR_IN*	WSocket::getSin(void)
+struct SOCKADDR_IN*	WSocket::getSin(void) const
 {
   return (&this->sin);
 }

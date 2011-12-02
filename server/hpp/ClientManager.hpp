@@ -5,8 +5,8 @@
  * Purpose: Declaration of the class clientManager
  ***********************************************************************/
 
-#ifndef			__BABEL_CLIENTMANAGER_HH__
-# define		__BABEL_CLIENTMANAGER_HH__
+#ifndef			__BABEL_CLIENTMANAGER_HPP__
+# define		__BABEL_CLIENTMANAGER_HPP__
 
 # include		<iostream>
 # include		<vector>
@@ -33,4 +33,4 @@ private:
   ISocket		&	_sock;
 };
 
-#endif			//__BABEL_CLIENTMANAGER_HH__
+#endif			//__BABEL_CLIENTMANAGER_HPP__

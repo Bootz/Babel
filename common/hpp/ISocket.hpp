@@ -8,8 +8,8 @@
 // Last update Fri Dec  2 11:51:56 2011 louis lesueur
 //
 
-#ifndef			__BABEL_ISOCKET_HH__
-# define		__BABEL_ISOCKET_HH__
+#ifndef			__BABEL_ISOCKET_HHP__
+# define		__BABEL_ISOCKET_HHP__
 
 typedef int		 SOCKET;
 
@@ -30,4 +30,4 @@ class ISocket
   virtual std::string	getIp(void) const = 0;
 };
 
-#endif			/*__BABEL_ISOCKET_HH__*/
+#endif			/*__BABEL_ISOCKET_HHP__*/

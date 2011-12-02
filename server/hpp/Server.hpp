@@ -6,13 +6,13 @@
  ***********************************************************************/
 
 
-#ifndef		__BABEL_SERVER_HH_
-# define	__BABEL_SERVER_HH_
+#ifndef		__BABEL_SERVER_HPP_
+# define	__BABEL_SERVER_HPP_
 
 # ifdef WIN32
-#  include "WSocket.hpp"
+#  include "Socket_Win32.hpp"
 #  else //unix
-#  include "LSocket.hpp"
+#  include "Socket_Linux.hpp"
 # endif
 
 # include		<string>
@@ -58,4 +58,4 @@ private:
   struct timeval	_tv;
 };
 
-#endif			//__BABEL_SERVER_HH_
+#endif			//__BABEL_SERVER_HPP_

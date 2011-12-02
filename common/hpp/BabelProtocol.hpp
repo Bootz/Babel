@@ -8,8 +8,8 @@
 // Last update Thu Nov 24 08:16:01 2011 ramnes
 //
 
-#ifndef		BABELPROTOCOL_HPP__
-# define	BABELPROTOCOL_HPP__
+#ifndef		__BABEL_BABELPROTOCOL_HPP__
+# define	__BABEL_BABELPROTOCOL_HPP__
 
 #include       	<string>
 
@@ -29,4 +29,4 @@ public:
   void		setRequest(int cmd, void* data, size_t size);
 };
 
-#endif		// BABELPROTOCOL_HPP__
+#endif		// __BABEL_BABELPROTOCOL_HPP__

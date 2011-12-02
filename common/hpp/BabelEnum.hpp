@@ -1,5 +1,5 @@
-#ifndef		BABELENUM_HPP__
-# define	BABELENUM_HPP__
+#ifndef		__BABEL_BABELENUM_HPP__
+# define	__BABEL_BABELENUM_HPP__
 
 enum SERVER_CMD
   {
@@ -45,4 +45,4 @@ enum SERVER_CMD
       "SV_END"
     };
 
-#endif		// BABELENUM_HPP__
+#endif		// __BABEL_BABELENUM_HPP__

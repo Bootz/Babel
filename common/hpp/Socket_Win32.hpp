@@ -8,8 +8,8 @@
 // Last update Fri Dec  2 11:50:31 2011 louis lesueur
 //
 
-#ifndef			__BABEL_WSOCKET_HH__
-# define		__BABEL_WSOCKET_HH__
+#ifndef			__BABEL_SOCKET_WIN32_HPP__
+# define		__BABEL_SOCKET_WIN32_HPP__
 
 # include		<winsock2.h>
 
@@ -37,7 +37,7 @@ private:
 
 public:
   void			closeSocket(void);
-  struct sockaddr_in*	getSin(void);
+  struct sockaddr_in*	getSin(void)const ;
 
 private:
   static const int	SizeInterBuff = 8192;
@@ -52,4 +52,4 @@ private:
   std::string		_ip;
 }
 
-#endif			/*__BABEL_WSOCKET_HH*/
+#endif			/*__BABEL_SOCKET_WIN32_HPP__

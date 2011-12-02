@@ -8,8 +8,8 @@
 // Last update Fri Dec  2 11:53:39 2011 louis lesueur
 //
 
-#ifndef			__BABEL_LSOCKET_HH__
-# define		__BABEL_LSOCKET_HH__
+#ifndef			__BABEL_SOCKET_LINUX_HHP__
+# define		__BABEL_SOCKET_LINUX_HHP__
 
 # include		<netinet/in.h>
 # include		<sys/socket.h>
@@ -58,4 +58,4 @@ private:
   std::string		ip;
 };
 
-#endif			//__BABEL_LSOCKET_HH__
+#endif			//__BABEL_SOCKET_LINUX_HHP__

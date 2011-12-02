@@ -11,7 +11,7 @@
 #include		<string.h>
 #include		<cstring>
 #include		"Exception.hpp"
-#include		"LSocket.hpp"
+#include		"Socket_Linux.hpp"
 
 LSocket::LSocket()
   : ListenSocket(-1),

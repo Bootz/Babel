@@ -8,8 +8,8 @@
 // Last update Sun Nov 13 12:39:09 2011 louis lesueur
 //
 
-#ifndef			__BABEL_EXCEPTION_HH__
-# define		__BABEL_EXCEPTION_HH__
+#ifndef			__BABEL_EXCEPTION_HPP__
+# define		__BABEL_EXCEPTION_HPP__
 
 # include		<stdexcept>
 
@@ -34,4 +34,4 @@ private:
 	}
 };
 
-#endif			/*__BABEL_EXCEPTION_HH__*/
+#endif			/*__BABEL_EXCEPTION_HPP__*/
