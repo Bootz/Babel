@@ -5,7 +5,7 @@
 ## <perso@ramnes.eu>
 ## 
 ## Started on  Thu Dec  1 18:02:20 2011 by ramnes
-## Last update Thu Dec  1 18:02:58 2011 ramnes
+## Last update Fri Dec  2 11:59:45 2011 louis lesueur
 ##
 
 NAME		= babelserver
@@ -22,7 +22,7 @@ SRC		= 	$(DIR)main.cpp \
 			$(DIR)ProcessingCore.cpp \
 			$(DIR)ClientManager.cpp \
 			$(DIR)ServerClient.cpp \
-			$(DIR)Socket_$(OS).cpp \
+			$(COMMON)Socket_$(OS).cpp \
 			$(DIR)Factory.cpp \
 			$(COMMON)BabelProtocol.cpp
 

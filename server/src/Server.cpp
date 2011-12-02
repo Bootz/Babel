@@ -70,9 +70,9 @@ bool Server::main_loop(void)
 		    this->_serverSocket->recv_d(this->_clientmanager.getSocket(j), this->_buffer);
 		  else
 		    {
-		      std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl;
 		      this->_serverSocket->clientAccept(j);
 		      this->_nbClient += 1;
+		      std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl << "IP: " << this->_serverSocket->getIp() << std::endl;
 		    }
 		}
 	    }
