@@ -29,7 +29,7 @@ private:
   ClientManager &	_clientsManager;
   unsigned short &	_nbClient;
   SOCKET		_actSock;
-  std::vector<std::pair<int, fct> > _command;
+  std::vector<fct> _command; // c'est quoi cet int?
   std::string		_buffer;
 };
 

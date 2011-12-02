@@ -1,7 +1,7 @@
 #ifndef		__BABEL_BABELENUM_HPP__
 # define	__BABEL_BABELENUM_HPP__
 
-enum SERVER_CMD
+typedef enum 
   {
     // Client->Server commands
     CL_REGISTER = 0,
@@ -21,7 +21,7 @@ enum SERVER_CMD
     CI_ACCEPTED ,
     CI_REFUSED ,
     SV_END
-  };
+  }	ENUM_CMD;
   
   const std::string server_cmd_str[]=
     {

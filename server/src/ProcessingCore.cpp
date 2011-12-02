@@ -20,8 +20,8 @@ ProcessingCore::~ProcessingCore()
 
 void ProcessingCore::initialize()
 {
-  std::pair<int, fct>   tmp(1, &ProcessingCore::cmdRegister);
-  this->_command.push_back(tmp);
+  fct   Register(&ProcessingCore::cmdRegister);
+  this->_command.push_back(Register);
 }
 
 bool ProcessingCore::cmdRegister(SOCKET fdSock, char *cmd)
@@ -55,9 +55,8 @@ bool ProcessingCore::cmdRegister(SOCKET fdSock, char *cmd)
 bool			ProcessingCore::extractCommand(SOCKET sock, void *cmd)
  {
    t_babelProtcol *tmp = reinterpret_cast<t_babelProtcol *>(cmd);
-   size_t test =  tmp->getSize();
-
-   //   if (tmp->getCmd <= this->_command.size())
-   //this->_command.second(sock, tmp->getData);
-   return true;
+   
+   if (tmp->getCmd() <= this->_command.size())
+     return (this->*this->_command[tmp->getCmd()])(sock, tmp->getData());// mon petit bijou
+   return false;
  }

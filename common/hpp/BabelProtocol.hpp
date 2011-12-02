@@ -12,11 +12,12 @@
 # define	__BABEL_BABELPROTOCOL_HPP__
 
 #include       	<string>
+#include	"BabelEnum.hpp"
 
 typedef struct BabelProtocol
 {
 private:
-  int		_cmd;
+  ENUM_CMD	_cmd;
   size_t	_size;
   char*		_data;
   std::string	_checksum;
