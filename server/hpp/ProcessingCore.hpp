@@ -19,7 +19,7 @@ public:
 
 public:
   void			initialize();
-  bool			extractCommand(std::string & command);
+  bool			extractCommand(void *);
 
 public:
   bool			cmdRegister(SOCKET fdSock, char *cmd);

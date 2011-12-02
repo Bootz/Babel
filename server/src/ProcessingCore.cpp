@@ -1,6 +1,6 @@
 
 #include		"ProcessingCore.hpp"
-
+#include		"BabelProtocol.hpp"
 // ProcessingCore::ProcessingCore()
 // {
 
@@ -52,8 +52,10 @@ bool ProcessingCore::cmdRegister(SOCKET fdSock, char *cmd)
   return true;
 }
 
-bool			ProcessingCore::extractCommand(std::string & command)
-{
-  (void)command;
-  return false;
-}
+ bool			ProcessingCore::extractCommand(void *cmd)
+ {
+   t_babelProtcol *tmp = reinterpret_cast<t_babelProtcol *>(cmd);
+   size_t test =  tmp->getSize();
+  
+   return true;
+ }
