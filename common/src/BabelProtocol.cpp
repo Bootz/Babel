@@ -23,7 +23,7 @@ std::string	BabelProtocol::getChecksum(void) const
 
 void		BabelProtocol::setCmd(int cmd)
 {
-  this->_cmd = cmd;
+  //  this->_cmd = cmd;   On ne peut pas assigner l'enum a un int
 }
 
 void		BabelProtocol::setSize(size_t size)

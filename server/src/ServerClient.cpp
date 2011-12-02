@@ -13,8 +13,14 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-ServerClient::ServerClient(unsigned int sock)
-  : _socket(sock);
+ServerClient &	ServerClient::operator=(ServerClient const &c)
+{
+  if (this != &c)
+    this->_socket = c.getSocket();
+}
+
+ServerClient::ServerClient(SOCKET & sock)
+  : _socket(sock)
 {
 }
 

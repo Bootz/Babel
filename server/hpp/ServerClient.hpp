@@ -10,12 +10,14 @@
 
 # include		<string>
 # include		<list>
+# include		"ISocket.hpp"
 
 class			ServerClient
 {
 public:
+  ServerClient(SOCKET & sock);
   ServerClient(std::string name, std::string password, std::string ip, unsigned short id, int socket);
-  //  ServerClient& operator=(const ServerClient&);
+  ServerClient& operator=(const ServerClient&);
   ~ServerClient();
 
 public:

@@ -18,7 +18,9 @@ ClientManager::~ClientManager()
 
 void		ClientManager::createClient(SOCKET sock)
 {
-  this->_clients(sock);
+  ServerClient	cli(sock);
+
+  this->_clients[sock] = cli;
 }
 
 bool		ClientManager::add(std::string name, std::string password, std::string ip, int socket)
@@ -51,7 +53,7 @@ bool ClientManager::deco(int id)
   //     tmp.getContacts().pop_front();
   //   }
   // return (true);
- 
+
  ServerClient		tmp = this->_clients[id]; // tmp = le client traite
   std::string		toSend = "DECO ";
 
@@ -74,5 +76,5 @@ bool			ClientManager::isInList(unsigned short i) const
 
   // ServerClient &		getClient(std::string & name) const
   // {
- 
+
   // }
