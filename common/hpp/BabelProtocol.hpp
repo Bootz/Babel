@@ -16,13 +16,13 @@
 class		BabelProtocol
 {
 public:
-  BabelProtocol();
+  BabelProtocol(int cmd, void * data);
   ~BabelProtocol();
 
 private:
   int		_cmd;
-  void*		_data;
   size_t	_size;
+  void*		_data;
   std::string	_checksum;
 
 public:
