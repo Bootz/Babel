@@ -9,7 +9,7 @@
 
 class ProcessingCore;
 
-typedef bool		(ProcessingCore::*fct)(SOCKET sock, std::string cmd);
+typedef bool		(ProcessingCore::*fct)(SOCKET sock, char *cmd);
 
 class			ProcessingCore
 {
@@ -22,14 +22,14 @@ public:
   bool			extractCommand(std::string & command);
 
 public:
-  bool			cmdRegister(SOCKET fdSock, std::string cmd);
+  bool			cmdRegister(SOCKET fdSock, char *cmd);
 
 private:
   ISocket &		_sock;
   ClientManager &	_clientsManager;
   unsigned short &	_nbClient;
   SOCKET		_actSock;
-  std::vector<std::pair<std::string, fct> > _command;
+  std::vector<std::pair<int, fct> > _command;
   std::string		_buffer;
 };
 

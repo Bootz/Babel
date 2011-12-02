@@ -18,13 +18,13 @@ ProcessingCore::~ProcessingCore()
 
 }
 
+void ProcessingCore::initialize()
+{
+  std::pair<int, fct>   tmp(1, &ProcessingCore::cmdRegister);
+  this->_command.push_back(tmp);
+}
 
-// void ProcessingCore::initialize()
-// {
-//   this->_command.push_back(std::pair<std::string, fct>("REGISTER", ProcessingCore::cmdRegister(this->_actSock, this->_buffer)));
-// }
-
-bool ProcessingCore::cmdRegister(SOCKET fdSock, std::string cmd)
+bool ProcessingCore::cmdRegister(SOCKET fdSock, char *cmd)
 {
   std::string		password;
   unsigned short	sock;
@@ -47,24 +47,13 @@ bool ProcessingCore::cmdRegister(SOCKET fdSock, std::string cmd)
     password.assign(buf, pos, buf.size() - pos);
   else
     password.assign(buf, pos, i - pos);
-  this->_clientsManager.add(name, password, "192.168.1.1", sock);
+  this->_clientsManager.add(name, password, this->_sock.getIp(), sock);
   this->_nbClient++;
   return true;
 }
 
 bool			ProcessingCore::extractCommand(std::string & command)
 {
-  size_t		i = 0;
-
-  while (i < this->_command.size())
-    {
-      if (command.compare(0, this->_command[i].first.size(), this->_command[i].first) == 0)
-	{
-	  command.assign(command, this->_command[i].first.size() + 1, command.size() -
-			 this->_command[i].first.size() + 1);
-	  return (/*this->_command[i].*second(command)*/true);
-	}
-      ++i;
-    }
-  return (false);
+  (void)command;
+  return false;
 }

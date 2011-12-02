@@ -5,7 +5,7 @@
 ## <perso@ramnes.eu>
 ## 
 ## Started on  Thu Dec  1 18:02:20 2011 by ramnes
-## Last update Fri Dec  2 11:59:45 2011 louis lesueur
+## Last update Fri Dec  2 19:50:09 2011 louis lesueur
 ##
 
 NAME		= babelserver
@@ -24,7 +24,6 @@ SRC		= 	$(DIR)main.cpp \
 			$(DIR)ClientManager.cpp \
 			$(DIR)ServerClient.cpp \
 			$(COMMON)Socket_$(OS).cpp \
-			$(COMMON)Factory.cpp \
 			$(COMMON)BabelProtocol.cpp
 
 ifeq ($(OS), Win32)
