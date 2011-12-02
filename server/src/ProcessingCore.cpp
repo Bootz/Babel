@@ -52,10 +52,12 @@ bool ProcessingCore::cmdRegister(SOCKET fdSock, char *cmd)
   return true;
 }
 
- bool			ProcessingCore::extractCommand(void *cmd)
+bool			ProcessingCore::extractCommand(SOCKET sock, void *cmd)
  {
    t_babelProtcol *tmp = reinterpret_cast<t_babelProtcol *>(cmd);
    size_t test =  tmp->getSize();
-  
+
+   //   if (tmp->getCmd <= this->_command.size())
+   //this->_command.second(sock, tmp->getData);
    return true;
  }

@@ -74,6 +74,7 @@ bool Server::main_loop(void)
 			{
 			  this->_nbClient = this->_serverSocket->clientAccept(j);
 			  FD_SET(this->_nbClient, &this->_master);
+			  this->_clientmanager.createClient(this->_nbClient);
 			  std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl;
 			  std::cout << "IP: " << this->_serverSocket->getIp() << std::endl;
 			}

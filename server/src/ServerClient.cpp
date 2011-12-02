@@ -13,6 +13,11 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
+ServerClient::ServerClient(unsigned int sock)
+  : _socket(sock);
+{
+}
+
 ServerClient::ServerClient(std::string name, std::string password, std::string ip, unsigned short id, int socket)
   : _password(password),
     _connected(true),

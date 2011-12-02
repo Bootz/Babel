@@ -26,6 +26,7 @@ public:
   bool				isInList(unsigned short i)const;
   int				getSocket(int id)const ;
   std::string			getName(int id)const ;
+  void				createClient(SOCKET sock);
 
 private:
   std::vector<ServerClient>	_clients;

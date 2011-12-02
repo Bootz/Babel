@@ -19,7 +19,7 @@ public:
 
 public:
   void			initialize();
-  bool			extractCommand(void *);
+  bool			extractCommand(SOCKET sock, void *);
 
 public:
   bool			cmdRegister(SOCKET fdSock, char *cmd);
