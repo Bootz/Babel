@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:28:15 2011 louis lesueur
-// Last update Fri Dec  2 11:21:20 2011 louis lesueur
+// Last update Fri Dec  2 11:53:39 2011 louis lesueur
 //
 
 #ifndef			__BABEL_LSOCKET_HH__
@@ -38,6 +38,7 @@ public:
   virtual int		recv_d(SOCKET sock, std::string & str);
   virtual int		getSocket(void) const;
   virtual int		clientAccept(int s);
+  virtual std::string	getIp(void) const;
 
 public:
   void			closeSocket(void);
@@ -54,6 +55,7 @@ private:
   struct sockaddr_in	SenderAddr;
   struct sockaddr_in	sin;
   char *		buffer;
+  std::string		ip;
 };
 
 #endif			//__BABEL_LSOCKET_HH__

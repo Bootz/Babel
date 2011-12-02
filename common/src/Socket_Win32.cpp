@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:43:15 2011 louis lesueur
-// Last update Fri Dec  2 11:19:59 2011 louis lesueur
+// Last update Fri Dec  2 11:51:15 2011 louis lesueur
 //
 
 #include		"Exception.hpp"
@@ -28,6 +28,11 @@ void			WSocket::closeSocket(void)
   close(this->ListenSocket);
 }
 
+std::string		WSocket::getIp(void) const
+{
+  return (this->_ip);
+}
+
 int			WSocket::getSocket() const
 {
   return (ListenSocket);
@@ -37,6 +42,7 @@ bool			WSocket::connectToServer(std::string const& host, unsigned short port)
 {
   struct protoent*	pe;
 
+  this->_ip = host;
   pe = getprotobyname("tcp");
   if ((this->ListenSocket = WSASocket(AF_INET, SOCK_STREAM, pe->p_proto, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
     throw BabelException("[WINDOWS] Error at WSASocket()");
@@ -51,7 +57,7 @@ bool			WSocket::connectToServer(std::string const& host, unsigned short port)
   return (true);
 }
 
-bool			WSocket::initServer(std::string const& host, unsigned short port)
+bool			WSocket::initServer(unsigned short port)
 {
   struct sockaddr_in   addr;
 
@@ -105,6 +111,7 @@ int			WSocket::clientAccept(int s)
   client_sin_len = sizeof(client_sin);
   if ((cs = WSAAccept(s, (struct sockaddr *)&client_sin, &client_sin_len, NULL, NULL)) < 0)
     throw BabelException("[ERROR] accept() operation failed");
+  this->_ip = inet_ntoa(client_sin.sin_addr); // la
   std::cout << "[clientAccept] New client added" << std::endl;
   return (cs);
 }

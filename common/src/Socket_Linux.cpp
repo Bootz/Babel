@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:30:07 2011 louis lesueur
-// Last update Fri Dec  2 11:22:27 2011 louis lesueur
+// Last update Fri Dec  2 11:54:19 2011 louis lesueur
 //
 
 #include		<string.h>
@@ -134,8 +134,14 @@ int			LSocket::clientAccept(int s)
   client_sin_len = sizeof(client_sin);
   if ((cs = accept(s, (struct sockaddr *)&client_sin, &client_sin_len)) < 0)
     throw BabelException("[ERROR] accept() operation failed");
+  this->ip = inet_ntoa(client_sin.sin_addr); // la
   std::cout << "[clientAccept] New client added" << std::endl;
   return (cs);
+}
+
+std::string		LSocket::getIp(void) const
+{
+  return (this->ip);
 }
 
 void			LSocket::closeSocket(void)

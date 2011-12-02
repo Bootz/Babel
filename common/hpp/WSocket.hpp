@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:43:50 2011 louis lesueur
-// Last update Fri Dec  2 11:18:21 2011 louis lesueur
+// Last update Fri Dec  2 11:50:31 2011 louis lesueur
 //
 
 #ifndef			__BABEL_WSOCKET_HH__
@@ -28,6 +28,7 @@ public:
   virtual int		recv_d(char* buffer);
   virtual int		getSocket(void) const;
   virtual int		clientAccept(int s);
+  virtual std::string	getIp(void) const;
 
 
 private:
@@ -42,12 +43,13 @@ private:
   static const int	SizeInterBuff = 8192;
 
 private:
-  int			SenderAddrSize;
-  SOCKET		ListenSocket;
-  SOCKET		AcceptSocket;
-  struct SOCKADDR_IN	SenderAddr;
-  struct SOCKADDR_IN	sin;
-  char *		buffer;
+  int			_SenderAddrSize;
+  SOCKET		_ListenSocket;
+  SOCKET		_AcceptSocket;
+  struct SOCKADDR_IN	_SenderAddr;
+  struct SOCKADDR_IN	_sin;
+  char *		_buffer;
+  std::string		_ip;
 }
 
 #endif			/*__BABEL_WSOCKET_HH*/

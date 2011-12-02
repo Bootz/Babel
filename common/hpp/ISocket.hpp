@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:28:27 2011 louis lesueur
-// Last update Fri Dec  2 11:14:50 2011 louis lesueur
+// Last update Fri Dec  2 11:51:56 2011 louis lesueur
 //
 
 #ifndef			__BABEL_ISOCKET_HH__
@@ -27,7 +27,7 @@ class ISocket
   virtual int		recv_d(SOCKET sock, std::string &str) = 0;
   virtual int		getSocket() const = 0;
   virtual int		clientAccept(int s) = 0;
-
+  virtual std::string	getIp(void) const = 0;
 };
 
 #endif			/*__BABEL_ISOCKET_HH__*/
