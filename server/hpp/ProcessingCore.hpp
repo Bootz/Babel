@@ -1,5 +1,5 @@
-#ifndef			__BABEL_PROCESSINGCORE_HPP__
-# define		__BABEL_PROCESSINGCORE_HPP__
+#ifndef			__BABEL_PROCESSINGCORE_HH__
+# define		__BABEL_PROCESSINGCORE_HH__
 
 #include		<iostream>
 #include		<vector>
@@ -33,4 +33,4 @@ private:
   std::string		_buffer;
 };
 
-#endif			//__BABEL_PROCESSINGCORE_HPP__
+#endif			//__BABEL_PROCESSINGCORE_HH__

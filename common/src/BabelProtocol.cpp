@@ -1,4 +1,3 @@
-
 #include		"BabelProtocol.hpp"
 
 BabelProtocol::BabelProtocol()

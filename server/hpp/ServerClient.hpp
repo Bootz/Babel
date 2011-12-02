@@ -19,11 +19,12 @@ public:
   ~ServerClient();
 
 public:
+  std::list<int>	getContacts() const;
+  bool			isConnected() const;
+  int			getSocket() const;
   std::string		getName() const;
   unsigned short	getId() const;
   std::string		getIp() const;
-  int			getSocket() const;
-  std::list<int>	getContacts() const;
 
 private:
 

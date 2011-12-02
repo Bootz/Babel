@@ -58,6 +58,11 @@ int		ServerClient::getSocket() const
   return this->_socket;
 }
 
+bool		ServerClient::isConnected() const
+{
+  return this->_connected;
+}
+
 std::list<int>	ServerClient::getContacts() const
 {
   return this->_contacts;

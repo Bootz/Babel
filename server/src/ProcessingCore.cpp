@@ -47,7 +47,7 @@ bool ProcessingCore::cmdRegister(SOCKET fdSock, std::string cmd)
     password.assign(buf, pos, buf.size() - pos);
   else
     password.assign(buf, pos, i - pos);
-  this->_clientsManager.add(name, password, this->_sock.getIp(), sock);
+  this->_clientsManager.add(name, password, "192.168.1.1", sock);
   this->_nbClient++;
   return true;
 }

@@ -20,7 +20,7 @@ typedef LSocket servSocket;
 Server::Server()
   : _serverSocket(new servSocket()),
     _clientmanager(*_serverSocket),
-    _nbClient(1),
+    _nbClient(0),
     _proced(*_serverSocket, _clientmanager, _nbClient),
     _running(true)
 {
@@ -32,7 +32,7 @@ Server::Server()
 
 Server::~Server()
 {
-   // TODO : implement
+  this->_serverSocket->closeSocket();
 }
 
 Server &Server::getInstance()
@@ -70,9 +70,13 @@ bool Server::main_loop(void)
 		    this->_serverSocket->recv_d(this->_clientmanager.getSocket(j), this->_buffer);
 		  else
 		    {
-		      this->_serverSocket->clientAccept(j);
-		      this->_nbClient += 1;
-		      std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl << "IP: " << this->_serverSocket->getIp() << std::endl;
+		      if (!this->_clientmanager.isInList(j))
+			{
+			  this->_nbClient = this->_serverSocket->clientAccept(j);
+			  FD_SET(this->_nbClient, &this->_master);
+			  std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl;
+			  std::cout << "IP: " << this->_serverSocket->getIp() << std::endl;
+			}
 		    }
 		}
 	    }

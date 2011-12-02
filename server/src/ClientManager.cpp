@@ -60,29 +60,14 @@ bool ClientManager::deco(int id)
   return true;
 }
 
-bool			ClientManager::isInList(unsigned short i) const // c' est quoi i ?
+bool			ClientManager::isInList(unsigned short i) const
 {
-  if (i > this->_clients.size()) // || this->_clients[i]) -> vraiment necessaire?
-    return (false);
-  return (true);
+  if (i <= this->_clients.size())
+    return (true);
+  return (false);
 }
 
   // ServerClient &		getClient(std::string & name) const
   // {
  
   // }
-
-// serverClient &		ClientManager::find(std::string & name)
-// {
-//   int			i = 0;
-
-//   while (i < this->_clients.size())
-//     {
-//       if (this->_clients[i].getPseudo().compare(name) == 0)
-// 	return (this->_clients[i]);
-//      ++i;
-//     }
-//   return NULL;
-// }
-
-//A quelle moment on peut avoir besoin de cette fonction? je ne vois pas son interet
