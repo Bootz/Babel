@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:43:15 2011 louis lesueur
-// Last update Fri Nov 18 15:38:52 2011 louis lesueur
+// Last update Fri Dec  2 11:19:59 2011 louis lesueur
 //
 
 #include		"Exception.hpp"
@@ -16,7 +16,7 @@ WSocket::WSocket()
     AcceptSocket(-1)
 {
   this->SenderAddrSize = sizeof(this->SenderAddr);
-}
+  this->buffer = new char[this->SizeInterBuff];}
 
 WSocket::~WSocket()
 {
@@ -35,11 +35,42 @@ int			WSocket::getSocket() const
 
 bool			WSocket::connectToServer(std::string const& host, unsigned short port)
 {
+  struct protoent*	pe;
+
+  pe = getprotobyname("tcp");
+  if ((this->ListenSocket = WSASocket(AF_INET, SOCK_STREAM, pe->p_proto, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
+    throw BabelException("[WINDOWS] Error at WSASocket()");
+  if (this->ListenSocket == -1)
+    throw babel_exception("[WINDOWS] Error at socket()");
+  this->sin.sin_family = AF_INET;
+  if (host != "INADDR_ANY")
+    this->sin.sin_addr.s_addr = inet_addr(host.c_str());
+  else
+    this->sin.sin_addr.s_addr = INADDR_ANY;
+  this->sin.sin_port = htons(port);
+  return (true);
+}
+
+bool			WSocket::initServer(std::string const& host, unsigned short port)
+{
+  struct sockaddr_in   addr;
+
   if ((this->ListenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
     throw BabelException("[WINDOWS] Error at WSASocket()");
+  if(setsockopt(this->ListenSocket, SOL_SOCKET, SO_REUSEADDR, &this->ListenSocket, sizeof(int)) == -1)
+    throw BabelException("[UNIX] Error at socket()");
+
+  memset(&this->sin, 0, sizeof(&this->sin));
+
   this->sin.sin_family = AF_INET;
-  this->sin.sin_addr.s_addr = htonl(INADDR_ANY);
   this->sin.sin_port = htons(port);
+  this->sin.sin_addr.s_addr = INADDR_ANY;
+
+  if (bind(this->ListenSocket, (struct sockaddr *)&this->sin, sizeof(addr)) != 0)
+    throw BabelException("[UNIX] Error at socket()");
+  if (listen(this->ListenSocket, 1024) != 0)
+    throw BabelException("[UNIX] Error at socket()");
+
   return (true);
 }
 
@@ -63,6 +94,19 @@ int			WSocket::recv_d(char* buf)
 	}
     }
   return (nb_read);
+}
+
+int			WSocket::clientAccept(int s)
+{
+  unsigned int		client_sin_len;
+  struct sockaddr_in    client_sin;
+  int			cs;
+
+  client_sin_len = sizeof(client_sin);
+  if ((cs = WSAAccept(s, (struct sockaddr *)&client_sin, &client_sin_len, NULL, NULL)) < 0)
+    throw BabelException("[ERROR] accept() operation failed");
+  std::cout << "[clientAccept] New client added" << std::endl;
+  return (cs);
 }
 
 int			WSocket::send_d(SOCKET sock, const char* data)

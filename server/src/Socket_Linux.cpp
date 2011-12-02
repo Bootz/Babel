@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:30:07 2011 louis lesueur
-// Last update Thu Dec  1 20:51:35 2011 louis lesueur
+// Last update Fri Dec  2 11:22:27 2011 louis lesueur
 //
 
 #include		<string.h>
@@ -26,13 +26,27 @@ LSocket::~LSocket()
   close(this->ListenSocket);
 }
 
-bool			LSocket::connectToServer(unsigned short port)
+bool			LSocket::connectToServer(std::string const& host, unsigned short port)
 {
-  struct sockaddr_in   addr;
   struct protoent*	pe;
 
-  (void) addr;
   pe = getprotobyname("tcp");
+  this->ListenSocket = socket(AF_INET, SOCK_STREAM, pe->p_proto);
+  if (this->ListenSocket == -1)
+    throw BabelException("[UNIX] Error at socket()");
+  this->sin.sin_family = AF_INET;
+  if (host != "INADDR_ANY")
+    this->sin.sin_addr.s_addr = inet_addr(host.c_str());
+  else
+    this->sin.sin_addr.s_addr = INADDR_ANY;
+  this->sin.sin_port = htons(port);
+  return (true);
+}
+
+bool			LSocket::initServer(unsigned short port)
+{
+  struct sockaddr_in   addr;
+
   if ((this->ListenSocket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     throw BabelException("[UNIX] Error at socket()");
   if(setsockopt(this->ListenSocket, SOL_SOCKET, SO_REUSEADDR, &this->ListenSocket, sizeof(int)) == -1)

@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:28:15 2011 louis lesueur
-// Last update Thu Dec  1 20:59:24 2011 louis lesueur
+// Last update Fri Dec  2 11:21:20 2011 louis lesueur
 //
 
 #ifndef			__BABEL_LSOCKET_HH__
@@ -29,7 +29,8 @@ class			LSocket : public ISocket
 
 public:
   virtual ~LSocket();
-  virtual bool		connectToServer(unsigned short port);
+  virtual bool		connectToServer(std::string const & host, unsigned short port);
+  virtual bool		initServer(unsigned short port);
   virtual void		setAcceptSocket(SOCKET _sock);
   virtual SOCKET	getListenSocket(void)const;
   virtual SOCKET	getAcceptSocket(void)const;
