@@ -33,15 +33,39 @@ void ProcessingCore::initialize()
 }
 
 bool			ProcessingCore::extractCommand(SOCKET sock, void *cmd)
- {
-   BabelProtocol *tmp = static_cast<BabelProtocol *>(cmd);
+  {
+  Protocol *protocol = static_cast<Protocol *>(cmd);
    
-   if (static_cast<size_t> (tmp->getCmd()) <= this->_command.size())
-     return (this->*this->_command[tmp->getCmd()])(sock, tmp->getData());// mon petit bijou
-   return false;
+    if (static_cast<size_t> (protocol->cmd) <= this->_command.size())
+      return (this->*this->_command[protocol->cmd])(sock, *protocol);
+    return false;
  }
 
-bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))char *cmd)
+void readProtocol(SOCKET, void * cmd)
+{
+  Protocol *protocol = static_cast<Protocol *>(cmd);
+
+  if (protocol->cmd == CL_REGISTER) // todo : pointers array
+    {
+      const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol->data);
+      std::cout << "login = " << registerParam->login << " password = " << registerParam->password << std::endl;
+      delete registerParam;
+    }
+  else if (protocol->cmd == CL_INFO)
+    {
+      const InfoParam* infoParam = static_cast<const InfoParam*>(protocol->data);
+      size_t loginsOffset = sizeof(*infoParam) - sizeof(infoParam->logins);
+      for (int unsigned i = 0; i < infoParam->clientCount; ++i)
+	{
+	  char* currentLogin = static_cast<char*>(protocol->data) + loginsOffset + LEN_NAME * i;
+	  std::cout << currentLogin << std::endl;
+	}
+      delete infoParam;
+    }
+}
+
+
+bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))Protocol proto)
 {
   std::string		password;
   unsigned short	sock;
@@ -68,22 +92,22 @@ bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))char 
   return true;
 }
 
-bool			 ProcessingCore::cmdLogin(SOCKET fdSock, char *cmd)
+bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol proto)
 {
   return true;  
 }
 
-bool			 ProcessingCore::cmdInfo(SOCKET fdSock, char *cmd)
+bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol proto)
 {
   return true;
 }
 
-bool			 ProcessingCore::cmdQuit(SOCKET fdSock, char *cmd)
+bool			 ProcessingCore::cmdQuit(SOCKET fdSock, Protocol proto)
 {
   return true;  
 }
 
-bool			 ProcessingCore::cmdEnd(SOCKET fdSock, char *cmd)
+bool			 ProcessingCore::cmdEnd(SOCKET fdSock, Protocol proto)
 {
   return true;    
 }

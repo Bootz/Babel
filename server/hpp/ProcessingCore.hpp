@@ -1,3 +1,4 @@
+
 #ifndef			__BABEL_PROCESSINGCORE_HH__
 # define		__BABEL_PROCESSINGCORE_HH__
 
@@ -6,6 +7,7 @@
 #include		<utility>
 #include		"ISocket.hpp"
 #include		"ClientManager.hpp"
+#include		"BabelProtocol.hpp"
 
 class			ProcessingCore
 {
@@ -14,18 +16,18 @@ public:
   ~ProcessingCore();
 
 private:
-typedef bool		(ProcessingCore::*fct)(SOCKET sock, char *cmd);
+typedef bool		(ProcessingCore::*fct)(SOCKET sock, Protocol proto);
 
 public:
   void			initialize();
   bool			extractCommand(SOCKET sock, void *);
 
 public:
-  bool			cmdRegister(SOCKET fdSock, char *cmd);
-  bool			cmdLogin(SOCKET fdSock, char *cmd);
-  bool			cmdInfo(SOCKET fdSock, char *cmd);
-  bool			cmdQuit(SOCKET fdSock, char *cmd);
-  bool			cmdEnd(SOCKET fdSock, char *cmd);
+  bool			cmdRegister(SOCKET fdSock, Protocol proto);
+  bool			cmdLogin(SOCKET fdSock, Protocol proto);
+  bool			cmdInfo(SOCKET fdSock, Protocol proto);
+  bool			cmdQuit(SOCKET fdSock, Protocol proto);
+  bool			cmdEnd(SOCKET fdSock, Protocol proto);
 
 private:
   ISocket &		_sock;
