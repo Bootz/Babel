@@ -6,7 +6,7 @@
  ***********************************************************************/
 
 #include "Server.hpp"
-#include "Exception.hpp"
+#include "BabelException.hpp"
 
 Server Server::onlyInstance = Server();
 
@@ -86,7 +86,7 @@ bool Server::main_loop(void)
   return true;
 }
 
-bool			Server::connectClients(ServerClient& caller, std::string name)
+bool			Server::connectClients(ServerClient& caller, const std::string & name)
 {
   (void) caller;
   (void) name;

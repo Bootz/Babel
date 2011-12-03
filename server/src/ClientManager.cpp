@@ -23,7 +23,10 @@ void		ClientManager::createClient(SOCKET sock)
   this->_clients[sock] = cli;
 }
 
-bool		ClientManager::add(std::string name, std::string password, std::string ip, int socket)
+bool		ClientManager::add(const std::string & name,
+				   const std::string & password,
+				   const std::string & ip,
+				   int socket)
 {
   ServerClient		buffer(name, password, ip, this->_clients.size(), socket);
 

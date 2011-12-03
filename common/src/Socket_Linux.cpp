@@ -10,7 +10,7 @@
 
 #include		<string.h>
 #include		<cstring>
-#include		"Exception.hpp"
+#include		"BabelException.hpp"
 #include		"Socket_Linux.hpp"
 
 LSocket::LSocket()

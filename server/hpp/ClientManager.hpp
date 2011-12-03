@@ -20,7 +20,10 @@ public:
   ClientManager(ISocket & sock);
   ~ClientManager();
 
-  bool				add(std::string name, std::string password, std::string ip, int socket);
+  bool				add(const std::string & name,
+				    const std::string & password,
+				    const std::string & ip,
+				    int socket);
   bool				deco(int id);
   ServerClient &		getClient(std::string & name) const;
   bool				isInList(unsigned short i)const;

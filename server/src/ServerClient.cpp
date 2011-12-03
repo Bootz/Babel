@@ -24,7 +24,11 @@ ServerClient::ServerClient(SOCKET & sock)
 {
 }
 
-ServerClient::ServerClient(std::string name, std::string password, std::string ip, unsigned short id, int socket)
+ServerClient::ServerClient(const std::string & name,
+			   const std::string & password,
+			   const std::string &ip,
+			   unsigned short id,
+			   int socket)
   : _password(password),
     _connected(true),
     _name(name),

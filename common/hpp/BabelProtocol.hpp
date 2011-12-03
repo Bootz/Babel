@@ -14,10 +14,10 @@
 #include       	<string>
 #include	"BabelEnum.hpp"
 
-typedef struct BabelProtocol
+struct BabelProtocol
 {
 private:
-  ENUM_CMD	_cmd;
+  enumCmd	_cmd;
   size_t	_size;
   char*		_data;
   std::string	_checksum;
@@ -36,6 +36,6 @@ public:
 public:
   void		setRequest(int cmd, void* data, size_t size);
 
-} t_babelProtcol;
+};
 
 #endif		// __BABEL_BABELPROTOCOL_HPP__

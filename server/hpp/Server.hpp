@@ -40,7 +40,7 @@ private:
   static Server		onlyInstance;
 
 public:
-  bool			connectClients(ServerClient& caller, std::string name);
+  bool			connectClients(ServerClient& caller, const std::string & name);
   void			setFd(const int fd);
   bool			main_loop(void);
 

@@ -16,7 +16,11 @@ class			ServerClient
 {
 public:
   ServerClient(SOCKET & sock);
-  ServerClient(std::string name, std::string password, std::string ip, unsigned short id, int socket);
+  ServerClient(const std::string & name,
+	       const std::string & password,
+	       const std::string &ip,
+	       unsigned short id,
+	       int socket);
   ServerClient& operator=(const ServerClient&);
   ~ServerClient();
 

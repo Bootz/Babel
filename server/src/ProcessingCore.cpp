@@ -21,10 +21,27 @@ ProcessingCore::~ProcessingCore()
 void ProcessingCore::initialize()
 {
   fct   Register(&ProcessingCore::cmdRegister);
+  fct   Login(&ProcessingCore::cmdLogin);
+  fct   Info(&ProcessingCore::cmdInfo);
+  fct   Quit(&ProcessingCore::cmdQuit);
+  fct   End(&ProcessingCore::cmdEnd);
   this->_command.push_back(Register);
+  this->_command.push_back(Login);
+  this->_command.push_back(Info);
+  this->_command.push_back(Quit);
+  this->_command.push_back(End);
 }
 
-bool ProcessingCore::cmdRegister(SOCKET fdSock, char *cmd)
+bool			ProcessingCore::extractCommand(SOCKET sock, void *cmd)
+ {
+   BabelProtocol *tmp = static_cast<BabelProtocol *>(cmd);
+   
+   if (static_cast<size_t> (tmp->getCmd()) <= this->_command.size())
+     return (this->*this->_command[tmp->getCmd()])(sock, tmp->getData());// mon petit bijou
+   return false;
+ }
+
+bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))char *cmd)
 {
   std::string		password;
   unsigned short	sock;
@@ -33,7 +50,6 @@ bool ProcessingCore::cmdRegister(SOCKET fdSock, char *cmd)
   int			pos;
   int			i;
 
-  (void) cmd;
   i = 0;
   sock = this->_sock.clientAccept(fdSock);
   this->_sock.recv_d(sock, this->_buffer);
@@ -52,11 +68,22 @@ bool ProcessingCore::cmdRegister(SOCKET fdSock, char *cmd)
   return true;
 }
 
-bool			ProcessingCore::extractCommand(SOCKET sock, void *cmd)
- {
-   t_babelProtcol *tmp = reinterpret_cast<t_babelProtcol *>(cmd);
-   
-   if (tmp->getCmd() <= this->_command.size())
-     return (this->*this->_command[tmp->getCmd()])(sock, tmp->getData());// mon petit bijou
-   return false;
- }
+bool			 ProcessingCore::cmdLogin(SOCKET fdSock, char *cmd)
+{
+  return true;  
+}
+
+bool			 ProcessingCore::cmdInfo(SOCKET fdSock, char *cmd)
+{
+  return true;
+}
+
+bool			 ProcessingCore::cmdQuit(SOCKET fdSock, char *cmd)
+{
+  return true;  
+}
+
+bool			 ProcessingCore::cmdEnd(SOCKET fdSock, char *cmd)
+{
+  return true;    
+}
