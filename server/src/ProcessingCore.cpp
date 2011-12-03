@@ -64,7 +64,7 @@ bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))char 
   else
     password.assign(buf, pos, i - pos);
   this->_clientsManager.add(name, password, this->_sock.getIp(), sock);
-  this->_nbClient++;
+  ++this->_nbClient;
   return true;
 }
 
