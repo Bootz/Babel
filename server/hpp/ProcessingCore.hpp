@@ -16,7 +16,7 @@ public:
   ~ProcessingCore();
 
 private:
-typedef bool		(ProcessingCore::*fct)(SOCKET sock, Protocol proto);
+  typedef bool		(ProcessingCore::*fct)(SOCKET sock, Protocol proto);
 
 public:
   void			initialize();
@@ -28,6 +28,12 @@ public:
   bool			cmdInfo(SOCKET fdSock, Protocol proto);
   bool			cmdQuit(SOCKET fdSock, Protocol proto);
   bool			cmdEnd(SOCKET fdSock, Protocol proto);
+  bool			cmdCall(SOCKET fdSock, Protocol protocol);
+  bool			cmdAccept(SOCKET fdSock, Protocol protocol);
+  bool			cmdRefuse(SOCKET fdSock, Protocol protocol);
+  bool			cmdWait(SOCKET fdSock, Protocol protocol);
+  bool			cmdCcEnd(SOCKET fdSock, Protocol protocol);
+  bool			cmdSvEnd(SOCKET fdSock, Protocol protocol);
 
 private:
   ISocket &		_sock;

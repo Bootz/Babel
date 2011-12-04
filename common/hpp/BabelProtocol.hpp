@@ -28,14 +28,17 @@ enum 	ProtocolCommand
     CC_REFUSE ,
     CC_WAIT ,
     CC_END ,
+    SV_END,
 
     // Server->Client commands
+
     CI_INCOMING ,
     CI_PENDING ,
     CI_ENDED ,
     CI_ACCEPTED ,
-    CI_REFUSED ,
-    SV_END
+    CI_REFUSED,
+    CI_CO ,
+    CI_DECO ,
   };
 
 const std::string server_cmd_str[]=

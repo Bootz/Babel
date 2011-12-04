@@ -19,12 +19,22 @@ void ProcessingCore::initialize()
   fct   Login(&ProcessingCore::cmdLogin);
   fct   Info(&ProcessingCore::cmdInfo);
   fct   Quit(&ProcessingCore::cmdQuit);
-  fct   End(&ProcessingCore::cmdEnd);
+  fct   Call(&ProcessingCore::cmdCall);
+  fct   Accept(&ProcessingCore::cmdAccept);
+  fct   Refuse(&ProcessingCore::cmdRefuse);
+  fct   Wait(&ProcessingCore::cmdWait);
+  fct   CcEnd(&ProcessingCore::cmdCcEnd);
+  fct   SvEnd(&ProcessingCore::cmdSvEnd);
   this->_command.push_back(Register);
   this->_command.push_back(Login);
   this->_command.push_back(Info);
   this->_command.push_back(Quit);
-  this->_command.push_back(End);
+  this->_command.push_back(Call);
+  this->_command.push_back(Accept);
+  this->_command.push_back(Refuse);
+  this->_command.push_back(Wait);
+  this->_command.push_back(CcEnd);
+  this->_command.push_back(SvEnd);
 }
 
 bool			ProcessingCore::commandChoice(SOCKET sock, void *cmd)
@@ -40,17 +50,23 @@ bool			ProcessingCore::commandChoice(SOCKET sock, void *cmd)
     return ret;
  }
 
+
+// faire un fct() pour choper le client via le fdSock!
+
+
 bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))Protocol protocol)
 {
-// enregistrer le login et le paswd
-// Louis, je te laisse gerer ça
+  
+  // faire un add du client avec ses parametres
+  // /!\ client->_connected == false
 
   const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
 
   std::string name = registerParam->login;
   std::string password = registerParam->password;
-
   std::cout << "login = " << name << " password = " << password << std::endl;
+
+
   // std::string		password;
   // unsigned short	sock;
   // std::string		name;
@@ -85,9 +101,10 @@ bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol protocol)
 
   const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
 
-// Choper son name, verifier si il existe dans la liste de client
-// si oui, changer son _connected
-// si non, renvoyer 403 ERR_FORBIDDEN -- accès refusé (login ou mot de passe invalide)
+  // Choper un name via le fdSock
+  // existe t'il?
+  // si oui, client->c_connected == true;
+  // si non, renvoyer 403 ERR_FORBIDDEN -- accès refusé (login ou mot de passe invalide)
 
   delete registerParam;
   return true;
@@ -95,37 +112,74 @@ bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol protocol)
 
 bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 {
-// Le serveur envoies les informations de chaque client passé en paramètre. Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.
+  // Le serveur envoies les informations de chaque client passé en paramètre. Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.
 
   const InfoParam* infoParam = static_cast<const InfoParam*>(protocol.data);
-
-  //choper la liste de clients (dans une std::list par exemple)
-  //renvoyer les infos de chacun des clients (quelles infos)
-// si un login n'existe pas, ne pas le prendre en compte ?
+  
+  // checker infoParam->clientCount;
+  // si == 0, creer une structure InfoParam avec tout les clients dont _connected == true
+  //  sinon
+  // choper la liste de clients (dans une std::list par exemple)
+  // renvoyer un liste des login ou _connected == true
 
   size_t loginsOffset = sizeof(*infoParam) - sizeof(infoParam->logins);
-    for (int unsigned i = 0; i < infoParam->clientCount; ++i)
-      {
-	char* currentLogin = static_cast<char*>(protocol.data) + loginsOffset + LEN_NAME * i;
-	std::cout << currentLogin << std::endl;
-      }
-    delete infoParam;
+  for (int unsigned i = 0; i < infoParam->clientCount; ++i)
+    {
+      char* currentLogin = static_cast<char*>(protocol.data) + loginsOffset + LEN_NAME * i;
+      std::cout << currentLogin << std::endl;
+    }
+
+
+  delete infoParam;    
   return true;
 }
 
 
 bool			 ProcessingCore::cmdQuit(SOCKET fdSock, Protocol protocol)
 {
-// le serveur doit rompre la connexion avec ce client et le signaler aux autres. une fin de fichier est renvoyé sur la socket
+  // le serveur doit rompre la connexion avec ce client et le signaler aux autres. une fin de fichier est renvoyé sur la socket
 
-// choper le client dans la liste
-// deconnecter ses sockets proprement
-// Envoyer a tous ses contacts
+  // choper le client dans la liste via fdSock
+  // deconnecter ses sockets proprement
+  // Envoyer a tous ses contacts une commande qui n'existe pas encore
+
+  return true;  
+}
+
+bool			 ProcessingCore::cmdEnd(SOCKET fdSock, Protocol protocol)
+
+{
+  // envoie un msg a tous les clients, fermant la connexion
+  // deconnecter toutes les sockets proprement
+  return true;    
+}
+
+bool			 ProcessingCore::cmdCall(SOCKET fdSock, Protocol protocol)
+{
   return true;
 }
 
-// envoie un msg a tous les clients, fermant la connexion
-bool			 ProcessingCore::cmdEnd(SOCKET fdSock, Protocol protocol)
+bool			 ProcessingCore::cmdAccept(SOCKET fdSock, Protocol protocol)
+{
+  return true;
+}
+
+bool			 ProcessingCore::cmdRefuse(SOCKET fdSock, Protocol protocol)
+{
+  return true;
+}
+
+bool			 ProcessingCore::cmdWait(SOCKET fdSock, Protocol protocol)
+{
+  return true;
+}
+
+bool			 ProcessingCore::cmdCcEnd(SOCKET fdSock, Protocol protocol)
+{
+  return true;
+}
+
+bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, Protocol protocol)
 {
   return true;
 }
