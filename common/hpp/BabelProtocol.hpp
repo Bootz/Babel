@@ -38,7 +38,8 @@ enum 	ProtocolCommand
     CI_ACCEPTED ,
     CI_REFUSED,
     CI_CO ,
-    CI_DECO
+    CI_DECO,
+    CI_ERROR
   };
 
 const std::string server_cmd_str[]=

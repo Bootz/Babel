@@ -1,5 +1,7 @@
 
 #include		<iostream>
+#include		<cstdio>
+#include		<cstring>
 #include		"ProcessingCore.hpp"
 #include		"BabelProtocol.hpp"
 
@@ -38,87 +40,101 @@ void ProcessingCore::initialize()
   this->_command.push_back(SvEnd);
 }
 
-bool			ProcessingCore::commandChoice(SOCKET sock, void *cmd)
+bool			ProcessingCore::commandChoice(SOCKET fdSock, void *cmd)
   {
-    std::cout << "[ProcessingC] Choix de la commande" << std::endl;
     Protocol *protocol = static_cast<Protocol *>(cmd);
-    std::cout << "[ProcessingC] cmd = " << cmd << "."  << std::endl;
     bool ret = false;
     
     if (static_cast<size_t> (protocol->cmd) <= this->_command.size())
-      {
-	ret = (this->*this->_command[protocol->cmd])(sock, *protocol);
-      }
+      ret = (this->*this->_command[protocol->cmd])(fdSock, *protocol);
     else
-      std::cout << "[ProcessingC] Commande inconnue" << std::endl;
+      this->sendError(fdSock, 400);
     return ret;
  }
 
+//Enrgistre un client
 bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))Protocol protocol)
 {
-  //Enrgistre un client
-  // /!\ client->_connected doit etre false
-
-  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-
-  std::string login = registerParam->login;
-  std::string password = registerParam->password;
-  std::cout << "[cmdRegister]login = " << login << " password = " << password << std::endl;
-  this->_clientsManager.add(login, password, this->_sock.getIp(), fdSock);
-  ++this->_nbClient;
-  return true;
+  if (! this->_clientsManager.getClient(fdSock).isConnected())
+    {
+      const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
+      
+      std::string login = registerParam->login;
+      std::string password = registerParam->password;
+      std::cout << "[cmdRegister]login = " << login << " password = " << password << std::endl;
+      this->_clientsManager.add(login, password, this->_sock.getIp(), fdSock);
+      ++this->_nbClient;
+      return true;
+    }
+  this->sendError(fdSock, 400);
+  return false;
 }
 
-
+// Authentifie un client
 bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol protocol)
 {
-// Authentifie un client
   const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-
   std::string login = registerParam->login;
 
   if (this->_clientsManager.isInList(login))
     {
       this->_clientsManager.getClient(fdSock).setConnected(true);
-      // Envoyer a tous ses contacts la commande CI_DECO
+      for (std::list<int>::iterator it = this->_clientsManager.getContacts(fdSock).begin();
+	   it != this->_clientsManager.getContacts(fdSock).end();
+	   ++it)
+	if (this->_clientsManager.getClient(*it).isConnected())
+	  this->sendRequest(*it, CI_DECO);
     }
-  // si non, renvoyer 403 ERR_FORBIDDEN -- accès refusé (login ou mot de passe invalide)
-
+  else
+    this->sendError(fdSock, 403);
   return true;
 }
 
+// Le serveur envoie les informations de chaque client passé en paramètre. Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.
 bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 {
-  // Le serveur envoie les informations de chaque client passé en paramètre. Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.
-  
   const InfoParam* infoParam = static_cast<const InfoParam*>(protocol.data);  
+  
+  //  Protocol protocol;
   InfoParam toSend;
   
-  for (std::vector<ServerClient>::iterator it = this->_clientsManager.getClients().begin();
-       it < this->_clientsManager.getClients().end();
-       ++it)
-    if (infoParam->clientCount == 0)
-      {
-	if (it->isConnected())
-	  {
-	    ;//ajouter le client a la structure toSend, evaec le bon nombre de clients, etc
-	  }
-      }
-    else
-      {
-	;//ajouter le client a la structure toSend, evaec le bon nombre de clients, etc
-      }
+  std::list<int> contacts;
+  // creation de la list d'int correspondant aux login de la cmd
+  if (infoParam->clientCount)
+    {
+      size_t loginsOffset = sizeof(*infoParam) - sizeof(infoParam->logins);
       
-  // envoyer toSend par le reseau;
+      for (int unsigned i = 0; i < infoParam->clientCount; ++i)
+	{
+	  char *tmp = static_cast<char*>(protocol.data) + loginsOffset + LEN_NAME * i;
+	  std::string name = tmp;
+	  //contacts.push_back(this->_clientsManager.getSock(name));
+	}
+    }
   
+  // creer la InfoParam a renvoyer
+  
+
+  // for (std::vector<ServerClient>::iterator it = this->_clientsManager.getClients().begin();
+  //      it < this->_clientsManager.getClients().end();
+  //      ++it)
+  //   if (infoParam->clientCount == 0)
+  //     {
+  // 	if (it->isConnected())
+  // 	  {
+  // 	    ++infoParam->clientCount;
+	    
+  // 	    ;//ajouter le client a la structure toSend, avec le bon nombre de clients, etc
+  // 	  }
+  //     }
+  //   else
+  //     {
+  // 	;//ajouter le client a la structure toSend, evaec le bon nombre de clients, etc
+  //     }
   return true;
+
   // exemple d'utilisation de la struct Protocol
-  // size_t loginsOffset = sizeof(*infoParam) - sizeof(infoParam->logins);
-  // for (int unsigned i = 0; i < infoParam->clientCount; ++i)
-  //   {
-  //     char* currentLogin = static_cast<char*>(protocol.data) + loginsOffset + LEN_NAME * i;
-  //     std::cout << currentLogin << std::endl;
-  //   }
+  //
 }
 
 
@@ -153,38 +169,22 @@ bool			 ProcessingCore::cmdCall(SOCKET fdSock, Protocol protocol)
 
 bool			 ProcessingCore::cmdAccept(SOCKET fdSock, Protocol protocol)
 {
-  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-  
-  std::string login = registerParam->login;
-  //Le serveur envoie alors un CC_ACCEPTED a login 
-  return true;
+  return this->sendRequest(fdSock, CI_ACCEPTED);
 }
 
 bool			 ProcessingCore::cmdRefuse(SOCKET fdSock, Protocol protocol)
 {
-  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-  
-  std::string login = registerParam->login;
-  // Le serveur envoie CC_REFUSE a login.
-  return true;
+ return  this->sendRequest(fdSock, CI_REFUSED);
 }
 
 bool			 ProcessingCore::cmdWait(SOCKET fdSock, Protocol protocol)
 {
-  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-
-  std::string login = registerParam->login;
-  // le serveur transmet un CC_PENDING à login.
-  return true;
+  return  this->sendRequest(fdSock, CI_PENDING);
 }
 
 bool			 ProcessingCore::cmdCcEnd(SOCKET fdSock, Protocol protocol)
 {
-  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-  
-  std::string login = registerParam->login;
-  // Le serveur lance un CC_ENDED à login
-  return true;
+  return  this->sendRequest(fdSock, CI_ENDED);
 }
 
 bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, Protocol protocol)
@@ -194,4 +194,26 @@ bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, Protocol protocol)
   // Le serveur envoie SV_END a tout les clients.
   // Le serveur clos proprement son reseau
   return true;
+}
+
+bool			ProcessingCore::sendError(SOCKET fdSock, int error)
+{
+  Protocol protocol;
+  ErrorParam param;
+      
+  param.error = error;
+  protocol.cmd = CI_ERROR;
+  protocol.size = sizeof(param);
+  std::memcpy(protocol.data, &param, protocol.size);
+  this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
+}
+
+bool			ProcessingCore::sendRequest(SOCKET fdSock, ProtocolCommand cmd)
+{
+  Protocol protocol;
+  
+  protocol.cmd = cmd;
+  protocol.size = 0;
+  protocol.data = NULL;
+  this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
 }

@@ -35,6 +35,10 @@ public:
   bool			cmdCcEnd(SOCKET fdSock, Protocol protocol);
   bool			cmdSvEnd(SOCKET fdSock, Protocol protocol);
 
+public:
+  bool			sendRequest(SOCKET fdSock, ProtocolCommand cmd);
+  bool			sendError(SOCKET fdSock, int error);
+
 private:
   ISocket &		_sock;
   ClientManager &	_clientsManager;
