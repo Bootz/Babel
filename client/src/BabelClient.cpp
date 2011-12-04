@@ -5,15 +5,17 @@
 // <perso@ramnes.eu>
 // 
 // Started on  Tue Nov 22 19:23:34 2011 by ramnes
-// Last update Sat Nov 26 11:47:58 2011 ramnes
+// Last update Sun Dec  4 16:40:52 2011 guillaume gelin
 //
 
 #include	<algorithm>
 #include	<fstream>
 #include	<iostream>
 #include	<sstream>
+#include	<cstring>
 
 #include	"BabelClient.hpp"
+#include	"ISocket.hpp"
 
 BabelClient::BabelClient()
 {
@@ -33,9 +35,23 @@ bool     	BabelClient::run()
 }
 
 bool     	BabelClient::connectTo(const std::string& hostname,
-				       const int port) const
+				       const int port)
 {
+  struct timeval tv;
+  char	buf[8192];
+
+  tv.tv_sec = 1;
+  tv.tv_usec = 0;
+  this->_timeval = tv;
+  FD_ZERO(&this->_fdread);
+  FD_ZERO(&this->_fdwrite);
   std::cout << "Connecting to " << hostname << ":" << port << " ..." << std::endl;
+  this->_socket.connectToServer(hostname, port);
+  if (select(this->_socket.getSocket() + 1, &this->_fdread, &this->_fdwrite, NULL, &this->_timeval) < 0)
+    return (false);
+  if (FD_ISSET(this->_socket.getSocket(), &this->_fdread) == 1)
+    this->_socket.recv_d(this->_socket.getSocket(), buf);
+  this->_socket.send_d(this->_socket.getSocket(), "Salut lol");
   return (true);
 }
 

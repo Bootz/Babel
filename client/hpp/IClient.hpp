@@ -5,7 +5,7 @@
 // <perso@ramnes.eu>
 // 
 // Started on  Tue Nov 22 20:28:19 2011 by ramnes
-// Last update Thu Nov 24 10:51:38 2011 ramnes
+// Last update Sun Dec  4 16:39:08 2011 guillaume gelin
 //
 
 #ifndef		ICLIENT_HPP__
@@ -21,7 +21,7 @@ public:
 public:
   virtual bool	run() = 0;
   virtual bool 	connectTo(const std::string& hostname,
-				  const int port) const = 0;
+				  const int port) = 0;
 };
 
 #endif		// ICLIENT_HPP__
