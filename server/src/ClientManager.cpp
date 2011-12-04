@@ -45,17 +45,6 @@ std::string	 ClientManager::getName(int id) const
 
 bool ClientManager::deco(int id)
 {
-  // TROP LOURD
-  // while (!tmp.getContacts().empty())
-  //   {
-  //     toSend.assign("DECO ");
-  //     toSend.append(this->_clients[tmp.getContacts().front()].getPseudo());
-  //     if (this->_sock(this->_clients[tmp.getContacts()].getSocket(), toSend) <= 5)
-  // 	return (false);
-  //     tmp.getContacts().pop_front();
-  //   }
-  // return (true);
-
  ServerClient		tmp = this->_clients[id]; // tmp = le client traite
   std::string		toSend = "DECO ";
 

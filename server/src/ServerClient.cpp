@@ -14,10 +14,8 @@
 ////////////////////////////////////////////////////////////////////////
 
 ServerClient::ServerClient(SOCKET & sock, std::string name)
-  : _password('\0'),
-    _connected(false),
+  : _connected(false),
     _name(name),
-    _ip('\0'),
     _socket(sock)
 {
 }

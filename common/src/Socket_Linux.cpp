@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:30:07 2011 louis lesueur
-// Last update Sun Dec  4 06:01:34 2011 louis lesueur
+// Last update Sun Dec  4 15:40:20 2011 louis lesueur
 //
 
 #include		<string.h>
@@ -93,7 +93,7 @@ int			LSocket::send_d(SOCKET sock, char *str)
 	throw BabelException("[ERROR] send() operation failed");
       tmp += nb_write;
     }
-  memset(str, 0, this->SizeInterBuff);
+  memset(str, 0, sizeof(str));
   return (nb_write);
 }
 

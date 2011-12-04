@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:43:15 2011 louis lesueur
-// Last update Fri Dec  2 11:51:15 2011 louis lesueur
+// Last update Sun Dec  4 15:13:48 2011 louis lesueur
 //
 
 #include		"Exception.hpp"
@@ -111,7 +111,7 @@ int			WSocket::clientAccept(int s)
   client_sin_len = sizeof(client_sin);
   if ((cs = WSAAccept(s, (struct sockaddr *)&client_sin, &client_sin_len, NULL, NULL)) < 0)
     throw BabelException("[ERROR] accept() operation failed");
-  this->_ip = inet_ntoa(client_sin.sin_addr); // la
+  this->_ip = inet_ntoa(client_sin.sin_addr);
   std::cout << "[clientAccept] New client added" << std::endl;
   return (cs);
 }

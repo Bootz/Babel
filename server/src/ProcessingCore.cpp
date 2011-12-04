@@ -44,11 +44,12 @@ bool			ProcessingCore::commandChoice(SOCKET fdSock, void *cmd)
   {
     Protocol *protocol = static_cast<Protocol *>(cmd);
     bool ret = false;
-    
+
     if (static_cast<size_t> (protocol->cmd) <= this->_command.size())
       ret = (this->*this->_command[protocol->cmd])(fdSock, *protocol);
     else
       this->sendError(fdSock, 400);
+    std::cout << "yoaaa" << std::endl;
     return ret;
  }
 
@@ -58,7 +59,7 @@ bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))Proto
   if (! this->_clientsManager.getClient(fdSock).isConnected())
     {
       const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-      
+
       std::string login = registerParam->login;
       std::string password = registerParam->password;
       std::cout << "[cmdRegister]login = " << login << " password = " << password << std::endl;
@@ -93,17 +94,17 @@ bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol protocol)
 // Le serveur envoie les informations de chaque client passé en paramètre. Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.
 bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 {
-  const InfoParam* infoParam = static_cast<const InfoParam*>(protocol.data);  
-  
+  const InfoParam* infoParam = static_cast<const InfoParam*>(protocol.data);
+
   //  Protocol protocol;
   InfoParam toSend;
-  
+
   std::list<int> contacts;
   // creation de la list d'int correspondant aux login de la cmd
   if (infoParam->clientCount)
     {
       size_t loginsOffset = sizeof(*infoParam) - sizeof(infoParam->logins);
-      
+
       for (int unsigned i = 0; i < infoParam->clientCount; ++i)
 	{
 	  char *tmp = static_cast<char*>(protocol.data) + loginsOffset + LEN_NAME * i;
@@ -111,9 +112,9 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 	  //contacts.push_back(this->_clientsManager.getSock(name));
 	}
     }
-  
+
   // creer la InfoParam a renvoyer
-  
+
 
   // for (std::vector<ServerClient>::iterator it = this->_clientsManager.getClients().begin();
   //      it < this->_clientsManager.getClients().end();
@@ -123,7 +124,7 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
   // 	if (it->isConnected())
   // 	  {
   // 	    ++infoParam->clientCount;
-	    
+
   // 	    ;//ajouter le client a la structure toSend, avec le bon nombre de clients, etc
   // 	  }
   //     }
@@ -139,15 +140,15 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 
 
 bool			 ProcessingCore::cmdQuit(SOCKET fdSock, Protocol protocol)
-{  
+{
   // le serveur doit rompre la connexion avec ce client et le signaler aux autres. une fin de fichier est renvoyé sur la socket
 
   const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
   ServerClient *tmp = new ServerClient(this->_clientsManager.getClient(fdSock));
-  
+
   // deconnecter propremment les sockets de tmp OU mettre tmp->setConneted(false);
   // Envoyer a tous ses contacts la commande CI_DECO
-  return true;  
+  return true;
 }
 
 bool			 ProcessingCore::cmdEnd(SOCKET fdSock, __attribute__((unused))Protocol protocol)
@@ -155,16 +156,16 @@ bool			 ProcessingCore::cmdEnd(SOCKET fdSock, __attribute__((unused))Protocol pr
 {
   // envoie un msg a tous les clients, fermant la connexion
   // deconnecter toutes les sockets proprement
-  return true;    
+  return true;
 }
 
 bool			 ProcessingCore::cmdCall(SOCKET fdSock, Protocol protocol)
 {
   const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-  
+
   std::string login = registerParam->login;
   // Le serveur va transmettre un CC_INCOMING a login
-  return true;  
+  return true;
 }
 
 bool			 ProcessingCore::cmdAccept(SOCKET fdSock, Protocol protocol)
@@ -190,7 +191,7 @@ bool			 ProcessingCore::cmdCcEnd(SOCKET fdSock, Protocol protocol)
 bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, Protocol protocol)
 {
   const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-  
+
   // Le serveur envoie SV_END a tout les clients.
   // Le serveur clos proprement son reseau
   return true;
@@ -200,7 +201,7 @@ bool			ProcessingCore::sendError(SOCKET fdSock, int error)
 {
   Protocol protocol;
   ErrorParam param;
-      
+
   param.error = error;
   protocol.cmd = CI_ERROR;
   protocol.size = sizeof(param);
@@ -211,7 +212,7 @@ bool			ProcessingCore::sendError(SOCKET fdSock, int error)
 bool			ProcessingCore::sendRequest(SOCKET fdSock, ProtocolCommand cmd)
 {
   Protocol protocol;
-  
+
   protocol.cmd = cmd;
   protocol.size = 0;
   protocol.data = NULL;
