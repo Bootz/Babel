@@ -83,7 +83,15 @@ bool			ClientManager::isInList(unsigned short i) const
   return (false);
 }
 
-  // ServerClient &		getClient(std::string & name) const
-  // {
+bool			ClientManager::isInList(std::string & name) const
+{
+  for (unsigned int i = 0; i <= this->_clients.size(); ++i)
+    if (this->_clients[i].getName() == name)
+      return true;
+  return false;
+}
 
-  // }
+ServerClient 		ClientManager::getClient(const SOCKET sock) const
+{
+  return this->_clients[sock];
+}

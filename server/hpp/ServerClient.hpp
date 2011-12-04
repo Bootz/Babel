@@ -28,6 +28,7 @@ public:
   void			setSocket(int sock);
 
   std::list<int>	getContacts() const;
+  std::string		getPassword() const;
   bool			isConnected() const;
   int			getSocket() const;
   std::string		getName() const;

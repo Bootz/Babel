@@ -25,9 +25,9 @@ public:
 				    const std::string & ip,
 				    int socket);
   bool				deco(int id);
-  ServerClient &		getClient(const std::string & name) const;
-  ServerClient &		getClient(const SOCKET sock) const;
+  ServerClient			getClient(const SOCKET sock) const;
   bool				isInList(unsigned short i)const;
+  bool				isInList(std::string & name)const;
   int				getSocket(int id)const ;
   std::string			getName(int id)const ;
   void				createClient(SOCKET sock);
