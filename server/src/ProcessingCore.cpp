@@ -145,21 +145,31 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 }
 
 
+// le serveur doit rompre la connexion avec ce client et le signaler aux autres.
 bool			 ProcessingCore::cmdQuit(SOCKET fdSock, __attribute__((unused))Protocol protocol)
 {
-  // le serveur doit rompre la connexion avec ce client et le signaler aux autres. une fin de fichier est renvoyé sur la socket
 
   ServerClient *tmp = new ServerClient(this->_clientsManager.getClient(fdSock));
 
-  // deconnecter propremment les sockets de tmp OU mettre tmp->setConneted(false);
-  // Envoyer a tous ses contacts la commande CI_DECO
+  tmp->setConnected(false);
+  for (std::list<int>::iterator it = this->_clientsManager.getContacts(fdSock).begin();
+       it != this->_clientsManager.getContacts(fdSock).end();
+       ++it)
+    if (this->_clientsManager.getClient(*it).isConnected())
+      this->sendRequest(*it, CI_DECO);
   return true;
 }
 
 bool			 ProcessingCore::cmdEnd(SOCKET fdSock, __attribute__ ((unused))Protocol protocol)
 
 {
-  // envoie un msg a tous les clients, fermant la connexion
+    for (std::list<int>::iterator it = this->_clientsManager.getContacts(fdSock).begin();
+       it != this->_clientsManager.getContacts(fdSock).end();
+       ++it)
+    {
+      this->sendRequest(*it, SV_END);
+      this->_clientsManager.getClient(*it).setConnected(false);
+    }
   // deconnecter toutes les sockets proprement
   return true;
 }

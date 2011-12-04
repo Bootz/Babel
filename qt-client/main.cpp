@@ -1,10 +1,10 @@
 #include <QtGui/QApplication>
-#include "babalgui.h"
+#include "babelgui.h"
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    BabalGui    *babel = new BabalGui();
+    BabelGui    *babel = new BabelGui();
 
     babel->show();
     return app.exec();
