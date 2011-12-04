@@ -105,19 +105,29 @@ int			LSocket::recv_d(SOCKET sock, char *str)
   int			flag = 1;
 
   memset(str, 0, this->SizeInterBuff);
+  std::cout << "[recv_d] avant la boucle" << std::endl;
   while (flag)
     {
+      // boucle infinie de la
+      std::cout << "[recv_d] boucle 1" << std::endl;
       nb_read = recv(sock, (str + nbr), SizeInterBuff - nbr, 0);
+      std::cout << "[recv_d] boucle 1.1" << std::endl;
       nbr += nb_read;
+      std::cout << "[recv_d] boucle 1.2" << std::endl;
+      // a la
       if (nb_read < 0)
 	throw BabelException("[ERROR] recv() operation failed");
       if (nbr >= size || (nbr >= 1 && str[nbr-1] == '\n') ||
 	  (nbr >= 2 && str[nbr-2] == '\n' && str[nbr-1] == '\r'))
 	{
+	  std::cout << "[recv_d] boucle 1.3" << std::endl;
 	  str[nbr] = '\0';
 	  flag = 0;
 	}
+      if(nb_read == 0)
+        return nb_read;
     }
+  std::cout << "[recv_d] apres la boucle" << std::endl;
   return (nb_read);
 }
 

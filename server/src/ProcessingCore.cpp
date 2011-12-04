@@ -41,24 +41,29 @@ void ProcessingCore::initialize()
 }
 
 bool			ProcessingCore::commandChoice(SOCKET fdSock, void *cmd)
-  {
-    std::cout << "[CMDchoice]" << std::endl;
-    Protocol *protocol = static_cast<Protocol *>(cmd);
-    bool ret = false;
-        std::cout << "[CMDchoice2]" << std::endl;
-    if (static_cast<size_t> (protocol->cmd) <= this->_command.size())
-      {
-	std::cout << "[CMDchoice] commande connue : [" << cmd << "]." << std::endl;
-	ret = (this->*this->_command[protocol->cmd])(fdSock, *protocol);
-      }
-    else
-      {
-	std::cout << "[CMDchoice] commande non connue" << std::endl;
-	this->sendError(fdSock, 400);
-	std::cout << "[CMDchoice] commande non connue2" << std::endl;
-      }
-    return ret;
- }
+{
+  std::cout << "[CMDchoice]" << std::endl;
+  if (cmd)
+    {
+      Protocol *protocol = static_cast<Protocol *>(cmd);
+      bool ret = false;
+      std::cout << "[CMDchoice2]" << std::endl;
+      if (static_cast<size_t> (protocol->cmd) <= this->_command.size())
+	{
+	  std::cout << "[CMDchoice] commande connue : ["<< protocol->cmd << "]"  << std::endl;
+	  ret = (this->*this->_command[protocol->cmd])(fdSock, *protocol);
+	  std::cout << "[CMDchoice] commande traitee : ["<< protocol->cmd << "]"  << std::endl;
+	}
+      else
+	{
+	  std::cout << "[CMDchoice] commande non connue" << std::endl;
+	  this->sendError(fdSock, 400);
+	  std::cout << "[CMDchoice] commande non connue2" << std::endl;
+	}
+      return ret;
+    }
+  return false;
+}
 
 //Enregistre un client : Done
 bool			 ProcessingCore::cmdRegister(SOCKET fdSock, Protocol protocol)
@@ -216,28 +221,28 @@ bool			ProcessingCore::sendError(SOCKET fdSock, int error)
   Protocol *protocol = new Protocol;
   ErrorParam *param = new ErrorParam;
 
-  std::cout << "[sendError]end" << std::endl;
+  //  std::cout << "[sendError]end" << std::endl;
   param->error = error;
-  std::cout << "[sendError]end" << std::endl;
+  //std::cout << "[sendError]end" << std::endl;
   protocol->cmd = CI_ERROR;
-  std::cout << "[sendError]end" << std::endl;
+  //std::cout << "[sendError]end" << std::endl;
   protocol->size = sizeof(*param);
-  std::cout << "[sendError]end" << std::endl;
+  //std::cout << "[sendError]end" << std::endl;
   std::memcpy(&protocol->data, param, protocol->size);
-  std::cout << "[sendError]end" << std::endl;
+  //std::cout << "[sendError]end" << std::endl;
   try
     {
-      std::cout << "[sendError]try" << std::endl;
+      //  std::cout << "[sendError]try" << std::endl;
       this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
     }
   catch (const std::exception &)
     {
-      std::cout << "[sendError]catch" << std::endl;
-      std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
+      //  std::cout << "[sendError]catch" << std::endl;
+      //std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
       this->cmdQuit(fdSock, *protocol);
       return false;
     }
-  std::cout << "[sendError]end" << std::endl;
+  //std::cout << "[sendError]end" << std::endl;
   delete protocol;
   delete param;
   return true;

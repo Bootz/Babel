@@ -73,13 +73,12 @@ bool Server::main_loop(void)
 		}
 	      else
 		{
-		  std::cout << "le client [" << j << "] existe" << std::endl;
+		  std::cout << "le client [" << j << "] existe, je vais recv_d" << std::endl;
 		  this->_serverSocket->recv_d(j, this->_buffer);
-		  std::cout << "le client [" << j << "] existe2" << std::endl;
-		  std::cout << this->_buffer << std::endl;
-		  std::cout << "le client [" << j << "] existe3" << std::endl;
+		  std::cout << "le client [" << j << "] existe, j'ai recv_d" << std::endl;
+		  std::cout << "le client dit : " << this->_buffer << " ." << std::endl;
 		  this->_proced.commandChoice(j, this->_buffer);
-		  std::cout << "le client [" << j << "] existe4" << std::endl;
+		  std::cout << "commande du client [" << j << "] traitee." << std::endl;
 		}
 	    }
 	}
