@@ -18,6 +18,10 @@ public:
 private:
     Ui::WinContact *ui;
 
+public:
+    QString         pseudo;
+    bool            addPseudo;
+
 private slots:
     void on_buttonOk_clicked();
     void on_buttonCancel_clicked();

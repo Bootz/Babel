@@ -39,17 +39,63 @@
     <string>Deconnexion</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="buttonNewContact">
+  <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>50</y>
-     <width>121</width>
+     <y>80</y>
+     <width>161</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEditPseudo">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>130</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttonValid">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>180</y>
+     <width>98</width>
      <height>27</height>
     </rect>
    </property>
    <property name="text">
-    <string>Nouveau contact</string>
+    <string>Ok</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelPseudo">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>90</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Pseudo</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>183</x>
+     <y>30</y>
+     <width>20</width>
+     <height>241</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
    </property>
   </widget>
  </widget>

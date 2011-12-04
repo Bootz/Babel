@@ -15,14 +15,13 @@ WinBabel::~WinBabel()
     delete ui;
 }
 
-void WinBabel::on_buttonNewContact_clicked()
-{
-    WinContact    *winCon = new WinContact();
-
-    winCon->show();
-}
-
 void WinBabel::on_buttonDeco_clicked()
 {
     close();
+}
+
+void WinBabel::on_buttonValid_clicked()
+{
+    QString pseudo = this->ui->lineEditPseudo->text();
+    this->ui->listWidget->addItem(pseudo);
 }

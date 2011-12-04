@@ -6,6 +6,7 @@ WinContact::WinContact(QWidget *parent) :
     ui(new Ui::WinContact)
 {
     ui->setupUi(this);
+    this->addPseudo = false;
 }
 
 WinContact::~WinContact()
@@ -21,8 +22,9 @@ void WinContact::on_buttonCancel_clicked()
 void WinContact::on_buttonOk_clicked()
 {
     //Sauver les contacts
-    QString nom = this->ui->lineEditNom->text();
+    this->pseudo = this->ui->lineEditNom->text();
     QString prenom = this->ui->lineEditPrenom->text();
+    this->addPseudo = true;
 
     close();
 }

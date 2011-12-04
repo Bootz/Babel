@@ -21,11 +21,8 @@ private:
     Ui::WinBabel *ui;
 
 private slots:
+    void on_buttonValid_clicked();
     void on_buttonDeco_clicked();
-    void on_buttonNewContact_clicked();
-    //    void on_pushButton_2_clicked();
-    //void on_pushButton_clicked();
-
 };
 
 #endif // WINBABEL_H
