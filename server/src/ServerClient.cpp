@@ -70,6 +70,11 @@ bool		ServerClient::isConnected() const
   return this->_connected;
 }
 
+void		ServerClient::addContact(int contact)
+{
+  this->_contacts.push_back(contact);
+}
+
 std::list<int>	ServerClient::getContacts() const
 {
   return this->_contacts;

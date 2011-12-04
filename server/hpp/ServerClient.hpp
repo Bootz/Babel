@@ -24,7 +24,10 @@ public:
   ServerClient& operator=(const ServerClient&);
 
 public:
+  void			addContact(int contact);
   void			setConnected(bool);
+
+public:
   std::list<int>	getContacts() const;
   std::string		getPassword() const;
   bool			isConnected() const;

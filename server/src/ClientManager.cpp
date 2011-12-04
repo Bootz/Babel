@@ -93,3 +93,13 @@ std::vector<ServerClient>	ClientManager::getClients() const
 {
   return this->_clients;
 }
+
+void			ClientManager::addContact(int fd, int contact)
+{
+  this->_clients[fd].addContact(contact);
+}
+
+std::list<int>		ClientManager::getContacts(int fd) const
+{
+  return this->_clients[fd].getContacts();
+}

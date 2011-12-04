@@ -27,6 +27,8 @@ public:
   bool				deco(int id);
   ServerClient			getClient(const SOCKET sock) const;
   std::vector<ServerClient>	getClients() const;
+  std::list<int>		getContacts(int fd) const;
+  void				addContact(int fd, int contact);
   bool				isInList(unsigned short i)const;
   bool				isInList(std::string & name)const;
   int				getSocket(int id)const ;
