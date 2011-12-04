@@ -20,7 +20,7 @@ typedef bool		(ProcessingCore::*fct)(SOCKET sock, Protocol proto);
 
 public:
   void			initialize();
-  bool			extractCommand(SOCKET sock, void *);
+  bool			commandChoice(SOCKET sock, void *);
 
 public:
   bool			cmdRegister(SOCKET fdSock, Protocol proto);

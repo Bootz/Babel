@@ -11,24 +11,8 @@
 #ifndef			__BABEL_BABELPROTOCOL_HPP__
 # define		__BABEL_BABELPROTOCOL_HPP__
 
-
 # include		<vector>
 # include		<iostream>
-
-static const int LEN_NAME = 30;
-static const int LEN_PSWD = 30;
-
-struct RegisterParam
-{
-  char login[LEN_NAME];
-  char password[LEN_PSWD];
-};
-
-struct InfoParam
-{
-  unsigned int clientCount;
-  void* logins;
-};
 
 enum 	ProtocolCommand
   {
@@ -77,6 +61,21 @@ const std::string server_cmd_str[]=
     "CI_REFUSED" ,
     "SV_END"
   };
+
+static const int LEN_NAME = 30;
+static const int LEN_PSWD = 30;
+
+struct RegisterParam
+{
+  char login[LEN_NAME];
+  char password[LEN_PSWD];
+};
+
+struct InfoParam
+{
+  unsigned int clientCount;
+  void* logins;
+};
 
 struct Protocol
 {
