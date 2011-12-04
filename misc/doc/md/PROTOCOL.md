@@ -148,6 +148,14 @@ Le serveur prévient le client que <login> a accepté un appel de sa part.
 
 Le serveur prévient le client que <login> a refusé son appel.
 
+### `CI_CO <login>`
+
+Le serveur prévient de la connexion d'un client.
+
+### `CI_DECO <login>`
+
+Le serveur prévient de la déconnexion d'un client.
+
 Commandes `SV_` (serveur)
 -------------------------
 
