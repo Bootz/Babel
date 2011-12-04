@@ -12,6 +12,7 @@
 # include		<vector>
 # include		<string>
 # include		"ServerClient.hpp"
+# include		"BabelProtocol.hpp"
 # include		"ISocket.hpp"
 
 class			ClientManager

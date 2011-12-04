@@ -49,11 +49,10 @@ bool			ProcessingCore::commandChoice(SOCKET fdSock, void *cmd)
       ret = (this->*this->_command[protocol->cmd])(fdSock, *protocol);
     else
       this->sendError(fdSock, 400);
-    std::cout << "yoaaa" << std::endl;
     return ret;
  }
 
-//Enrgistre un client
+//Enrgistre un client : Done
 bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))Protocol protocol)
 {
   if (! this->_clientsManager.getClient(fdSock).isConnected())
@@ -71,7 +70,7 @@ bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))Proto
   return false;
 }
 
-// Authentifie un client
+// Authentifie un client : Done
 bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol protocol)
 {
   const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);

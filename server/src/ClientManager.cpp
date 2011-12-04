@@ -45,15 +45,19 @@ std::string	 ClientManager::getName(int id) const
 
 bool ClientManager::deco(int id)
 {
- ServerClient		tmp = this->_clients[id]; // tmp = le client traite
-  std::string		toSend = "DECO ";
-
-  toSend.append(tmp.getName());
+ ServerClient		tmp = this->_clients[id];
+ Protocol protocol;
+ 
+ protocol.cmd = CI_DECO;
+ protocol.size = 0;
+ protocol.data = NULL;
+  
   for (std::list<int>::iterator it= tmp.getContacts().begin();
        it != tmp.getContacts().end();
        ++it)
     {
-      // envoi de toSend a l'ID [*it].
+      this->_sock.send_d(*it, reinterpret_cast<char *> (&protocol));
+	// envoi de toSend a l'ID [*it].
     }
   return true;
 }
