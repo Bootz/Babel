@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Thu Nov 24 13:24:53 2011 koeth_y
-// Last update Fri Dec  2 22:27:22 2011 koeth_y
+// Last update Sun Dec  4 22:54:11 2011 koeth_y
 //
 
 #ifndef		__PORT_AUDIO_HPP__
@@ -18,7 +18,7 @@
 
 class PortAudio : public IAudioIO
 {
-private:
+public:
   static const double SAMPLE_RATE;
   static const unsigned long FRAMES_PER_BUFFER;
   static const short CHANNEL_COUNT;
@@ -26,6 +26,7 @@ private:
   static const PaSampleFormat SAMPLE_TYPE;
   static const AudioData::Sample SAMPLE_SILENCE;
 
+private:
   struct Data
   {
     int frameIndex;
