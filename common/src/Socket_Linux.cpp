@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:30:07 2011 louis lesueur
-// Last update Sun Dec  4 18:20:38 2011 louis lesueur
+// Last update Sun Dec  4 18:19:21 2011 guillaume gelin
 //
 
 #include		<string.h>
@@ -90,10 +90,10 @@ int			LSocket::send_d(SOCKET sock, char *str)
     {
       nb_write = send(sock, (str + tmp), strlen((str + tmp)), 0);
       if (nb_write == -1)
-	throw std::exception();
+      	throw std::exception();
       tmp += nb_write;
     }
-  memset(str, 0, size);
+  memset(str, 0, sizeof(str));
   return (nb_write);
 }
 

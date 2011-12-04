@@ -5,7 +5,7 @@
 // <perso@ramnes.eu>
 // 
 // Started on  Tue Nov 22 19:23:34 2011 by ramnes
-// Last update Sun Dec  4 16:40:52 2011 guillaume gelin
+// Last update Sun Dec  4 18:16:26 2011 guillaume gelin
 //
 
 #include	<algorithm>
@@ -49,9 +49,9 @@ bool     	BabelClient::connectTo(const std::string& hostname,
   this->_socket.connectToServer(hostname, port);
   if (select(this->_socket.getSocket() + 1, &this->_fdread, &this->_fdwrite, NULL, &this->_timeval) < 0)
     return (false);
+  this->_socket.send_d(this->_socket.getSocket(), const_cast<char*>("Salut lol\r\n"));
   if (FD_ISSET(this->_socket.getSocket(), &this->_fdread) == 1)
     this->_socket.recv_d(this->_socket.getSocket(), buf);
-  this->_socket.send_d(this->_socket.getSocket(), "Salut lol");
   return (true);
 }
 

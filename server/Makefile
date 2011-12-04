@@ -5,7 +5,7 @@
 ## <perso@ramnes.eu>
 ## 
 ## Started on  Thu Dec  1 18:02:20 2011 by ramnes
-## Last update Fri Dec  2 19:50:09 2011 louis lesueur
+## Last update Sun Dec  4 18:26:21 2011 guillaume gelin
 ##
 
 NAME		= babelserver
@@ -26,13 +26,19 @@ SRC		= 	$(DIR)main.cpp \
 			$(COMMON)Socket_$(OS).cpp \
 			$(COMMON)BabelProtocol.cpp
 
+ifdef DEBUG
+	CPPFLAGS = -g -ggdb3
+else
+	CPPFLAGS = -Werror -O3 -ffast-math
+endif
+
 ifeq ($(OS), Win32)
 	CPPFLAGS	= /EHsc $(INCLUDES)
 	OBJ 		= $(SRC:.cpp:.obj)
 	CC		= cl $(CPPFLAGS)
 	RM		= del
 else
-	CPPFLAGS	= -W -Wall $(INCLUDES)
+	CPPFLAGS	+= -W -Wall $(INCLUDES)
 	OBJ		= $(SRC:.cpp=.o)
 	CC		= g++
 	RM		= rm -rf

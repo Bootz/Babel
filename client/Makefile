@@ -5,7 +5,7 @@
 ## <perso@ramnes.eu>
 ## 
 ## Started on  Thu Dec  1 18:01:53 2011 by ramnes
-## Last update Sun Dec  4 17:34:09 2011 guillaume gelin
+## Last update Sun Dec  4 18:26:13 2011 guillaume gelin
 ##
 
 NAME		= babel
@@ -21,13 +21,19 @@ SRC		= $(DIR)main.cpp		\
 		  $(DIR)ProtocolHandler.cpp	\
 		  $(COMMON)Socket_$(OS).cpp	\
 
+ifdef DEBUG
+	CPPFLAGS = -g -ggdb3
+else
+	CPPFLAGS = -Werror -O3 -ffast-math
+endif
+
 ifeq ($(OS), Win32)
 	CPPFLAGS	= /EHsc $(INCLUDES)
 	OBJ 		= $(SRC:.cpp:.obj)
 	CC		= cl $(CPPFLAGS)
 	RM		= del
 else
-	CPPFLAGS	= -W -Wall $(INCLUDES)
+	CPPFLAGS	+= -W -Wall $(INCLUDES)
 	OBJ		= $(SRC:.cpp=.o)
 	CC		= g++
 	RM		= rm -rf
