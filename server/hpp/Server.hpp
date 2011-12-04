@@ -9,7 +9,7 @@
 #ifndef		__BABEL_SERVER_HPP_
 # define	__BABEL_SERVER_HPP_
 
-# ifdef WIN32
+# ifdef _WIN32
 #  include "Socket_Win32.hpp"
 #  else //unix
 #  include "Socket_Linux.hpp"
