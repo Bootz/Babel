@@ -18,9 +18,15 @@ ClientManager::~ClientManager()
 
 void		ClientManager::createClient(SOCKET sock)
 {
-  ServerClient	cli(sock);
+  ServerClient	cli(sock, "Default");
 
-  this->_clients[sock] = cli;
+  for (int i = 0; sock > int(this->_clients.size()); ++i)
+    {
+      cli.setSocket(i);
+      this->_clients.push_back(cli);
+    }
+  cli.setSocket(sock);
+  this->_clients.push_back(cli);
 }
 
 bool		ClientManager::add(const std::string & name,

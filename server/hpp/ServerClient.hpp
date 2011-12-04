@@ -15,16 +15,19 @@
 class			ServerClient
 {
 public:
-  ServerClient(SOCKET & sock);
+  ServerClient(SOCKET & sock, std::string name);
   ServerClient(const std::string & name,
 	       const std::string & password,
 	       const std::string &ip,
 	       unsigned short id,
 	       int socket);
-  ServerClient& operator=(const ServerClient&);
   ~ServerClient();
 
+  ServerClient& operator=(const ServerClient&);
+
 public:
+  void			setSocket(int sock);
+
   std::list<int>	getContacts() const;
   bool			isConnected() const;
   int			getSocket() const;

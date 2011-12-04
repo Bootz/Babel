@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:28:27 2011 louis lesueur
-// Last update Fri Dec  2 15:09:55 2011 louis lesueur
+// Last update Sun Dec  4 02:29:53 2011 louis lesueur
 //
 
 #ifndef			__BABEL_ISOCKET_HHP__
@@ -23,8 +23,8 @@ class ISocket
   virtual void		setAcceptSocket(SOCKET _sock) = 0;
   virtual SOCKET	getListenSocket(void)const = 0;
   virtual SOCKET	getAcceptSocket(void)const = 0;
-  virtual int		send_d(SOCKET sock, std::string& str) = 0;
-  virtual int		recv_d(SOCKET sock, std::string &str) = 0;
+  virtual int		send_d(SOCKET sock, std::string & str) = 0;
+  virtual int		recv_d(SOCKET sock, char * tmp) = 0;
   virtual int		getSocket() const = 0;
   virtual int		clientAccept(int s) = 0;
   virtual void		closeSocket(void) = 0;

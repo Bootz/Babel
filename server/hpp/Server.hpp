@@ -53,7 +53,7 @@ private:
   fd_set		_fdwrite;
   fd_set		_master;
   fd_set		_fdread;
-  std::string		_buffer;
+  char			*_buffer;
   std::string		_ip;
   struct timeval	_tv;
 };

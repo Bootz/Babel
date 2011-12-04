@@ -98,7 +98,7 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 // Le serveur envoies les informations de chaque client passé en paramètre. Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.
 
   const InfoParam* infoParam = static_cast<const InfoParam*>(protocol.data);
-  
+
   //choper la liste de clients (dans une std::list par exemple)
   //renvoyer les infos de chacun des clients (quelles infos)
 // si un login n'existe pas, ne pas le prendre en compte ?
@@ -110,7 +110,6 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 	std::cout << currentLogin << std::endl;
       }
     delete infoParam;
-    
   return true;
 }
 
@@ -121,12 +120,12 @@ bool			 ProcessingCore::cmdQuit(SOCKET fdSock, Protocol protocol)
 
 // choper le client dans la liste
 // deconnecter ses sockets proprement
-// Envoyer a tous ses contacts 
-  return true;  
+// Envoyer a tous ses contacts
+  return true;
 }
 
 // envoie un msg a tous les clients, fermant la connexion
 bool			 ProcessingCore::cmdEnd(SOCKET fdSock, Protocol protocol)
 {
-  return true;    
+  return true;
 }

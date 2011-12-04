@@ -67,17 +67,17 @@ bool Server::main_loop(void)
 	      if (FD_ISSET(j, &this->_fdread))
 		{
 		  if (this->_clientmanager.isInList(j))
-		    this->_serverSocket->recv_d(this->_clientmanager.getSocket(j), this->_buffer);
+		    {
+		      this->_serverSocket->recv_d(j, this->_buffer);
+		      this->_proced.commandChoice(j, this->_buffer);
+		    }
 		  else
 		    {
-		      if (!this->_clientmanager.isInList(j))
-			{
-			  this->_nbClient = this->_serverSocket->clientAccept(j);
-			  FD_SET(this->_nbClient, &this->_master);
-			  this->_clientmanager.createClient(this->_nbClient);
-			  std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl;
-			  std::cout << "IP: " << this->_serverSocket->getIp() << std::endl;
-			}
+		      this->_nbClient = this->_serverSocket->clientAccept(j);
+		      FD_SET(this->_nbClient, &this->_master);
+		      this->_clientmanager.createClient(this->_nbClient);
+		      std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl;
+		      std::cout << "IP: " << this->_serverSocket->getIp() << std::endl;
 		    }
 		}
 	    }

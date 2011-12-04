@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:30:07 2011 louis lesueur
-// Last update Fri Dec  2 11:54:19 2011 louis lesueur
+// Last update Sun Dec  4 02:32:27 2011 louis lesueur
 //
 
 #include		<string.h>
@@ -95,28 +95,27 @@ int			LSocket::send_d(SOCKET sock, std::string & str)
   return (nb_write);
 }
 
-int			LSocket::recv_d(SOCKET sock, std::string& str)
+int			LSocket::recv_d(SOCKET sock, char *str)
 {
   int			nb_read = 0;
   int			nbr = 0;
   int			size = SizeInterBuff;
   int			flag = 1;
 
+  memset(str, 0, this->SizeInterBuff);
   while (flag)
     {
-      nb_read = recv(sock, (this->buffer + nbr), SizeInterBuff - nbr, 0);
+      nb_read = recv(sock, (str + nbr), SizeInterBuff - nbr, 0);
       nbr += nb_read;
       if (nb_read < 0)
 	throw BabelException("[ERROR] recv() operation failed");
-      if (nbr >= size || (nbr >= 1 && this->buffer[nbr-1] == '\n') ||
-	  (nbr >= 2 && this->buffer[nbr-2] == '\n' && this->buffer[nbr-1] == '\r'))
+      if (nbr >= size || (nbr >= 1 && str[nbr-1] == '\n') ||
+	  (nbr >= 2 && str[nbr-2] == '\n' && str[nbr-1] == '\r'))
 	{
-	  this->buffer[nbr] = '\0';
+	  str[nbr] = '\0';
 	  flag = 0;
 	}
     }
-  str = this->buffer;
-  memset(this->buffer, 0, this->SizeInterBuff);
   return (nb_read);
 }
 

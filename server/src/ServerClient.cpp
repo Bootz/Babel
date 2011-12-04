@@ -13,18 +13,18 @@
 // Return:     int
 ////////////////////////////////////////////////////////////////////////
 
-ServerClient::ServerClient(SOCKET & sock)
-  : _socket(sock)
+ServerClient::ServerClient(SOCKET & sock, std::string name)
+  : _name(name),
+    _socket(sock)
 {
 }
 
 ServerClient &	ServerClient::operator=(ServerClient const &c)
 {
-  // if (this != &c)
-  //   this->_socket = c.getSocket();
+  this->_socket = c.getSocket();
+  this->_name = c.getName();
+  return *this;
 }
-
-
 
 ServerClient::ServerClient(const std::string & name,
 			   const std::string & password,
@@ -53,6 +53,11 @@ ServerClient::ServerClient(const std::string & name,
 
 ServerClient::~ServerClient()
 {
+}
+
+void		ServerClient::setSocket(int sock)
+{
+  this->_socket = sock;
 }
 
 std::string	ServerClient::getName() const
