@@ -75,8 +75,11 @@ bool Server::main_loop(void)
 		{
 		  std::cout << "le client [" << j << "] existe" << std::endl;
 		  this->_serverSocket->recv_d(j, this->_buffer);
+		  std::cout << "le client [" << j << "] existe2" << std::endl;
 		  std::cout << this->_buffer << std::endl;
+		  std::cout << "le client [" << j << "] existe3" << std::endl;
 		  this->_proced.commandChoice(j, this->_buffer);
+		  std::cout << "le client [" << j << "] existe4" << std::endl;
 		}
 	    }
 	}
