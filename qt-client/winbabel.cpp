@@ -1,7 +1,5 @@
 #include "winbabel.h"
 #include "ui_winbabel.h"
-#include "wincontact.h"
-#include "ui_wincontact.h"
 
 WinBabel::WinBabel(QWidget *parent) :
     QDialog(parent),

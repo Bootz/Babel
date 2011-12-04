@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>Pseudo</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -37,7 +37,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string>Password</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
     </property>
    </widget>
    <widget class="QPushButton" name="buttonLogin">
