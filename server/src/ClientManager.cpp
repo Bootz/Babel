@@ -60,10 +60,7 @@ bool ClientManager::deco(int id)
   for (std::list<int>::iterator it= tmp.getContacts().begin();
        it != tmp.getContacts().end();
        ++it)
-    {
-      this->_sock.send_d(*it, reinterpret_cast<char *> (&protocol));
-	// envoi de toSend a l'ID [*it].
-    }
+    this->_sock.send_d(*it, reinterpret_cast<char *> (&protocol));
   return true;
 }
 

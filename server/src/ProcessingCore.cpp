@@ -112,7 +112,8 @@ bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol protocol)
   return true;
 }
 
-// Le serveur envoie les informations de chaque client passé en paramètre. Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.
+// Le serveur envoie les informations de chaque client passé en paramètre.
+// Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.
 bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 {
   std::cout << "Traitement de la commande [Info]";
@@ -122,7 +123,6 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
   InfoParam toSendparam;
 
   std::list<int> contacts;
-  // creation de la list d'int correspondant aux login de la cmd
   if (infoParam->clientCount)
     {
       toSendparam.clientCount = infoParam->clientCount;
@@ -132,40 +132,16 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 	{
 	  char *tmp = static_cast<char*>(protocol.data) + loginsOffset + LEN_NAME * i;
 	  std::string name = tmp;
-	  //contacts.push_back(this->_clientsManager.getSock(name));
+	  //contacts.push_back(this->_clientsManager.getSock(name)); Pourquoi ca ne compile pas (adau_m)
 	}
     }
   
   toSendproto.cmd = CL_INFO;
   toSendproto.size = sizeof(toSendparam);
-  // creer la InfoParam a renvoyer
-  //std::memcpy(toSendproto.data, &toSendparam, protocol.size);
   this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
-
-  // for (std::vector<ServerClient>::iterator it = this->_clientsManager.getClients().begin();
-  //      it < this->_clientsManager.getClients().end();
-  //      ++it)
-  //   if (infoParam->clientCount == 0)
-  //     {
-  // 	if (it->isConnected())
-  // 	  {
-  // 	    ++infoParam->clientCount;
-
-  // 	    ;//ajouter le client a la structure toSend, avec le bon nombre de clients, etc
-  // 	  }
-  //     }
-  //   else
-  //     {
-  // 	;//ajouter le client a la structure toSend, evaec le bon nombre de clients, etc
-  //     }
   return true;
-
-  // exemple d'utilisation de la struct Protocol
-  //
 }
 
-
-// Done
 bool			 ProcessingCore::cmdQuit(SOCKET fdSock, __attribute__((unused))Protocol protocol)
 {
   std::cout << "Traitement de la commande [Quit]";
