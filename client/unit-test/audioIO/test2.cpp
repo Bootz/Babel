@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Dec  2 18:43:25 2011 koeth_y
-// Last update Fri Dec  2 22:26:28 2011 koeth_y
+// Last update Sun Dec  4 14:37:33 2011 koeth_y
 //
 
 #include <iostream>
@@ -19,20 +19,16 @@ int main(void)
       AudioData* data1 = NULL;
       IAudioIO* audioIO = new PortAudio;
       IAudioIO* audioIO1 = new PortAudio;
-      while (i < 200)
+      while (i < 50)
 	{
 	  if (data1)
 	    {
 	      audioIO1->startPlay(*data1);
-	      //std::cout << "start play 1" << std::endl;
 	    }
-	  //std::cout << "start record" << std::endl;
-	  audioIO->startRecord(200); // 1000 ms
+	  audioIO->startRecord(600);
 	  AudioData* data = audioIO->getRecorded();
-	  //std::cout << "start play" << std::endl;
 	  audioIO->startPlay(*data);
-	  //std::cout << "start record 1" << std::endl;
-	  audioIO1->startRecord(200); // 1000 ms
+	  audioIO1->startRecord(600);
 	  if (data1)
 	    delete data1;
 	  data1 = audioIO1->getRecorded();

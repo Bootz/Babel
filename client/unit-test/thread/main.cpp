@@ -5,11 +5,20 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Dec  2 12:20:08 2011 koeth_y
-// Last update Fri Dec  2 20:20:21 2011 koeth_y
+// Last update Sun Dec  4 14:40:15 2011 koeth_y
 //
 
 #include <iostream>
-#include "UThread.hpp"
+
+#if defined (_WIN32) || defined (WIN32)
+# include "WThread.hpp"
+typedef WThread Thread;
+# define msleep(X) Sleep(X)
+#else // UNIX
+# include "UThread.hpp"	
+typedef UThread Thread;
+# define msleep(X) usleep((X) * 1000);
+#endif
 
 class Toto
 {
@@ -34,19 +43,19 @@ void* Toto::threadCallback(void* arg)
   while (!*quit)
     {
       std::cout << "thread running" << std::endl;
-      usleep(1000000);
+      msleep(1000);
     }
   quit = false;
   std::cout << "thread end" << std::endl;
 
-  return NULL;
+  return 0;
 }
 
 void Toto::loop()
 {
-  IThread* thread = new UThread;
+  IThread* thread = new Thread;
   IThread::ThreadRoutine callback = &Toto::threadCallback;
-  thread->run(callback, &quit);
+  thread->run(callback, &this->quit);
 }
 
 int main(void)
@@ -59,7 +68,7 @@ int main(void)
       toto.loop();
       while (quit != 'y' && quit != 'n')
 	{
-	  std::cout << "Quit (y or n) > ";
+	  std::cout << "Quit (y or n + <enter>) > ";
 	  std::cin >> quit;
 	  std::cout << "Your choice : " << quit << std::endl;
 	  if (quit == 'y')
@@ -67,11 +76,11 @@ int main(void)
 	}
       std::cout << "main loop" << std::endl;
       while (true)
-	usleep(1000);
+		msleep(100);
     }
   catch (const IThread::Exception& e)
     {
-      std::cerr << "Thread error: " << e.what() << std::endl;
-    }
+      std::cerr << "Thread error: " << e.what() << std::endl; 
+  }
   return 0;
 }

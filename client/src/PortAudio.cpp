@@ -5,11 +5,25 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Thu Nov 24 13:28:48 2011 koeth_y
-// Last update Fri Dec  2 21:11:57 2011 koeth_y
+// Last update Sun Dec  4 14:39:34 2011 koeth_y
 //
 
-#include "UThread.hpp"
 #include "PortAudio.hpp"
+
+#if defined (_WIN32) || defined (WIN32)
+# include "WThread.hpp"
+typedef WThread Thread;
+#else
+# include "UThread.hpp"
+typedef UThread Thread;
+#endif
+
+const double PortAudio::SAMPLE_RATE = 44100.0;
+const unsigned long PortAudio::FRAMES_PER_BUFFER = 512;
+const short PortAudio::CHANNEL_COUNT = 2;
+const short PortAudio::DITHER_FLAG = 0;
+const PaSampleFormat PortAudio::SAMPLE_TYPE = paFloat32;
+const AudioData::Sample PortAudio::SAMPLE_SILENCE = 0.0f;
 
 inline const PaError& PortAudio::handleError(const PaError& error) const
 {
@@ -29,7 +43,7 @@ inline void PortAudio::throwError(const std::string& s) const
 
 PortAudio::PortAudio()
   : _stopRecord(false), _isRecording(false), _stopPlay(false), _isPlaying(false),
-    _recordThread(new UThread), _playThread(new UThread)
+    _recordThread(new Thread), _playThread(new Thread)
 {
   handleError(Pa_Initialize());
 }
@@ -214,7 +228,7 @@ void* PortAudio::recordThread(void* arg)
 
   self._isRecording = true;
 
-  data.maxFrameIndex = msec / 1000.0 * PortAudio::SAMPLE_RATE;
+  data.maxFrameIndex = static_cast<long>(msec / 1000.0 * PortAudio::SAMPLE_RATE);
   data.frameIndex = 0;
   data.recordedData = new AudioData(PortAudio::SAMPLE_RATE, PortAudio::CHANNEL_COUNT, msec);
 
@@ -262,7 +276,7 @@ void* PortAudio::playThread(void* arg)
   PortAudio& self = *playParameters->self;
   delete playParameters;
 
-  data.maxFrameIndex = audioData.getDuration() / 1000.0 * PortAudio::SAMPLE_RATE;
+  data.maxFrameIndex = static_cast<long>(audioData.getDuration() / 1000.0 * PortAudio::SAMPLE_RATE);
   data.frameIndex = 0;
   data.data = &audioData;
 

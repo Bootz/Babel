@@ -5,11 +5,18 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Dec  2 18:43:25 2011 koeth_y
-// Last update Fri Dec  2 22:26:19 2011 koeth_y
+// Last update Sun Dec  4 14:36:43 2011 koeth_y
 //
 
 #include <iostream>
 #include "PortAudio.hpp"
+
+#if defined (_WIN32) || defined (WIN32)
+# include <windows.h>
+# define msleep(X) Sleep(X)
+#else // UNIX
+# define msleep(X) usleep((X) / 1000)
+#endif
 
 int main(void)
 {
@@ -28,7 +35,7 @@ int main(void)
 	    audioIO->stopRecord();
 
 	  std::cout << "Recording... ~ " << i << " s (stop at 6)" << std::endl;
-	  sleep(1);
+	  msleep(1000);
 	  ++i;
 	}
       AudioData* data = audioIO->getRecorded();
@@ -40,7 +47,7 @@ int main(void)
 	    audioIO->stopPlay();
 
 	  std::cout << "Playing... ~ " << j << " s (stop at 3)" << std::endl;
-	  sleep(1);
+	  msleep(1000);
 	  ++j;
 	}
       delete data;

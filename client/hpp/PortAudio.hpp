@@ -19,12 +19,12 @@
 class PortAudio : public IAudioIO
 {
 private:
-  static const double SAMPLE_RATE = 44100.0;
-  static const unsigned long FRAMES_PER_BUFFER = 512;
-  static const short CHANNEL_COUNT = 2;
-  static const short DITHER_FLAG = 0;
-  static const PaSampleFormat SAMPLE_TYPE = paFloat32;
-  static const AudioData::Sample SAMPLE_SILENCE = 0.0f;
+  static const double SAMPLE_RATE;
+  static const unsigned long FRAMES_PER_BUFFER;
+  static const short CHANNEL_COUNT;
+  static const short DITHER_FLAG;
+  static const PaSampleFormat SAMPLE_TYPE;
+  static const AudioData::Sample SAMPLE_SILENCE;
 
   struct Data
   {

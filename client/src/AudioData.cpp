@@ -5,7 +5,7 @@
 // Login   <koeth_y@epitech.net>
 // 
 // Started on  Fri Nov 25 14:40:43 2011 koeth_y
-// Last update Fri Dec  2 18:00:16 2011 koeth_y
+// Last update Sun Dec  4 15:06:27 2011 koeth_y
 //
 
 #include "AudioData.hpp"
@@ -18,7 +18,7 @@ AudioData::AudioData(double sampleRate, short channelCount, long msecDuration)
   int sampleCount;
   int bytesCount;
 
-  totalFrames = msecDuration / 1000.0 * sampleRate;
+  totalFrames = static_cast<int>(msecDuration / 1000.0 * sampleRate);
   sampleCount = totalFrames * channelCount;
   bytesCount = sampleCount * sizeof(AudioData::Sample);
 
