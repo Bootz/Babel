@@ -1,4 +1,4 @@
-
+       
 #include		<iostream>
 #include		<cstdio>
 #include		<cstring>
@@ -52,8 +52,8 @@ bool			ProcessingCore::commandChoice(SOCKET fdSock, void *cmd)
     return ret;
  }
 
-//Enrgistre un client : Done
-bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))Protocol protocol)
+//Enregistre un client : Done
+bool			 ProcessingCore::cmdRegister(SOCKET fdSock, Protocol protocol)
 {
   if (! this->_clientsManager.getClient(fdSock).isConnected())
     {
@@ -145,7 +145,7 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 }
 
 
-// le serveur doit rompre la connexion avec ce client et le signaler aux autres.
+// Done
 bool			 ProcessingCore::cmdQuit(SOCKET fdSock, __attribute__((unused))Protocol protocol)
 {
 
@@ -160,55 +160,47 @@ bool			 ProcessingCore::cmdQuit(SOCKET fdSock, __attribute__((unused))Protocol p
   return true;
 }
 
-bool			 ProcessingCore::cmdEnd(SOCKET fdSock, __attribute__ ((unused))Protocol protocol)
-
+bool			 ProcessingCore::cmdCall(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
 {
-    for (std::list<int>::iterator it = this->_clientsManager.getContacts(fdSock).begin();
+  return this->sendRequest(fdSock, CI_ACCEPTED);
+}
+
+bool			 ProcessingCore::cmdAccept(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
+{
+  return this->sendRequest(fdSock, CI_ACCEPTED);
+}
+
+bool			 ProcessingCore::cmdRefuse(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
+{
+ return  this->sendRequest(fdSock, CI_REFUSED);
+}
+
+bool			 ProcessingCore::cmdWait(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
+{
+  return  this->sendRequest(fdSock, CI_PENDING);
+}
+
+bool			 ProcessingCore::cmdCcEnd(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
+{
+  return  this->sendRequest(fdSock, CI_ENDED);
+}
+
+bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, __attribute__((unused))Protocol protocol)
+{
+  // envoie de SV_END a tout les clients
+  for (std::list<int>::iterator it = this->_clientsManager.getContacts(fdSock).begin();
        it != this->_clientsManager.getContacts(fdSock).end();
        ++it)
     {
       this->sendRequest(*it, SV_END);
       this->_clientsManager.getClient(*it).setConnected(false);
     }
-  // deconnecter toutes les sockets proprement
-  return true;
-}
-
-bool			 ProcessingCore::cmdCall(SOCKET fdSock, Protocol protocol)
-{
-  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-
-  std::string login = registerParam->login;
-  // Le serveur va transmettre un CC_INCOMING a login
-  return true;
-}
-
-bool			 ProcessingCore::cmdAccept(SOCKET fdSock, Protocol protocol)
-{
-  return this->sendRequest(fdSock, CI_ACCEPTED);
-}
-
-bool			 ProcessingCore::cmdRefuse(SOCKET fdSock, Protocol protocol)
-{
- return  this->sendRequest(fdSock, CI_REFUSED);
-}
-
-bool			 ProcessingCore::cmdWait(SOCKET fdSock, Protocol protocol)
-{
-  return  this->sendRequest(fdSock, CI_PENDING);
-}
-
-bool			 ProcessingCore::cmdCcEnd(SOCKET fdSock, Protocol protocol)
-{
-  return  this->sendRequest(fdSock, CI_ENDED);
-}
-
-bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, Protocol protocol)
-{
-  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
-
-  // Le serveur envoie SV_END a tout les clients.
-  // Le serveur clos proprement son reseau
+    
+  // Close() de toutes les sockets ouvertes
+  for (int i = this->_sock.getListenSocket();
+       i != static_cast <int> (this->_clientsManager.getClients().size());
+       ++i)
+    close(i);
   return true;
 }
 
@@ -228,7 +220,7 @@ bool			ProcessingCore::sendError(SOCKET fdSock, int error)
   catch (const std::exception &)
     {
       std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
-      //      this->_clientsManager.setConneted(false); // send au autre client
+      this->cmdQuit(fdSock, protocol);
       return false;
     }
   return true;
