@@ -26,9 +26,11 @@ public:
 				    int socket);
   bool				deco(int id);
   ServerClient			getClient(const SOCKET sock) const;
+  std::vector<ServerClient>	getClients() const;
   bool				isInList(unsigned short i)const;
   bool				isInList(std::string & name)const;
   int				getSocket(int id)const ;
+  SOCKET			getSock(const std::string & name) const;
   std::string			getName(int id)const ;
   void				createClient(SOCKET sock);
 

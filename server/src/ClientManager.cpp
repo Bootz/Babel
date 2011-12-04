@@ -22,10 +22,8 @@ void		ClientManager::createClient(SOCKET sock)
 
   for (int i = 0; sock > int(this->_clients.size()); ++i)
     {
-      cli.setSocket(i);
       this->_clients.push_back(cli);
     }
-  cli.setSocket(sock);
   this->_clients.push_back(cli);
 }
 
@@ -34,15 +32,10 @@ bool		ClientManager::add(const std::string & name,
 				   const std::string & ip,
 				   int socket)
 {
-  ServerClient		buffer(name, password, ip, socket);
+  ServerClient		buffer(name, password, ip);
 
   this->_clients.push_back(buffer);
   return (true);
-}
-
-int		ClientManager::getSocket(int id) const
-{
-  return (this->_clients[id].getSocket());
 }
 
 std::string	 ClientManager::getName(int id) const
@@ -94,4 +87,9 @@ bool			ClientManager::isInList(std::string & name) const
 ServerClient 		ClientManager::getClient(const SOCKET sock) const
 {
   return this->_clients[sock];
+}
+
+std::vector<ServerClient>	ClientManager::getClients() const
+{
+  return this->_clients;
 }

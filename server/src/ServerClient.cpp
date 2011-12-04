@@ -24,7 +24,6 @@ ServerClient::ServerClient(SOCKET & sock, std::string name)
 
 ServerClient &	ServerClient::operator=(ServerClient const &c)
 {
-  this->_socket = c.getSocket();
   this->_name = c.getName();
   this->_password = c.getPassword();
   this->_connected = c.isConnected();
@@ -34,13 +33,11 @@ ServerClient &	ServerClient::operator=(ServerClient const &c)
 
 ServerClient::ServerClient(const std::string & name,
 			   const std::string & password,
-			   const std::string &ip,
-			   int socket)
+			   const std::string &ip)
   : _password(password),
     _connected(true),
     _name(name),
-    _ip(ip),
-    _socket(socket)
+    _ip(ip)
 {
 }
 
@@ -48,24 +45,19 @@ ServerClient::~ServerClient()
 {
 }
 
-void		ServerClient::setSocket(int sock)
-{
-  this->_socket = sock;
-}
-
 std::string	ServerClient::getName() const
 {
   return this->_name;
 }
 
+void		ServerClient::setConnected(bool value)
+{
+  this->_connected = value;
+}
+
 std::string	ServerClient::getIp() const
 {
   return this->_ip;
-}
-
-int		ServerClient::getSocket() const
-{
-  return this->_socket;
 }
 
 std::string	ServerClient::getPassword() const

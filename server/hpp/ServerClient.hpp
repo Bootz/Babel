@@ -18,19 +18,16 @@ public:
   ServerClient(SOCKET & sock, std::string name);
   ServerClient(const std::string & name,
 	       const std::string & password,
-	       const std::string &ip,
-	       int socket);
+	       const std::string &ip);
   ~ServerClient();
 
   ServerClient& operator=(const ServerClient&);
 
 public:
-  void			setSocket(int sock);
-
+  void			setConnected(bool);
   std::list<int>	getContacts() const;
   std::string		getPassword() const;
   bool			isConnected() const;
-  int			getSocket() const;
   std::string		getName() const;
   std::string		getIp() const;
 
