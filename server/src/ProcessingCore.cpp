@@ -206,7 +206,17 @@ bool			ProcessingCore::sendError(SOCKET fdSock, int error)
   protocol.cmd = CI_ERROR;
   protocol.size = sizeof(param);
   std::memcpy(protocol.data, &param, protocol.size);
-  this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
+  try
+    {
+      this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
+    }
+  catch (const std::exception &)
+    {
+      std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
+      this->_clientsManager.setConneted(false); // send au autre client
+      return false;
+    }
+  return true;
 }
 
 bool			ProcessingCore::sendRequest(SOCKET fdSock, ProtocolCommand cmd)
@@ -216,5 +226,15 @@ bool			ProcessingCore::sendRequest(SOCKET fdSock, ProtocolCommand cmd)
   protocol.cmd = cmd;
   protocol.size = 0;
   protocol.data = NULL;
-  this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
+  try
+    {
+      this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
+    }
+  catch (const std::exception &)
+    {
+      std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
+      this->_clientsManager.setConneted(false); // send au autre client
+      return false;
+    }
+  return true;
 }
