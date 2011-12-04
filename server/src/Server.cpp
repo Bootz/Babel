@@ -20,7 +20,6 @@ typedef LSocket servSocket;
 Server::Server()
   : _serverSocket(new servSocket()),
     _clientmanager(*_serverSocket),
-    _nbClient(0),
     _proced(*_serverSocket, _clientmanager, _nbClient),
     _running(true)
 {
@@ -28,6 +27,7 @@ Server::Server()
     throw BabelException("[ERROR] Bad network init");
   this->_buffer = new char [1024];
   FD_SET(this->_serverSocket->getListenSocket(), &this->_master);
+  this->_nbClient = this->_serverSocket->getListenSocket();
 }
 
 Server::~Server()
@@ -40,15 +40,12 @@ Server &Server::getInstance()
   return onlyInstance;
 }
 
-void			Server::setFd(const int fd)
+void			Server::setFd()
 {
   this->_tv.tv_sec = 1;
   this->_tv.tv_usec = 0;
   FD_ZERO(&this->_fdread);
-  if (this->_clientmanager.isInList(fd))
-    FD_SET(fd, &this->_fdread);
-  else
-    this->_fdread = this->_master;
+  this->_fdread = this->_master;
 }
 
 bool Server::main_loop(void)
@@ -57,28 +54,26 @@ bool Server::main_loop(void)
 
   while (this->_running)
     {
-      for (int i = 0; i < 1023 + 1; ++i)
+      this->setFd();
+      if (select(this->_nbClient + 1, &this->_fdread, NULL, NULL, &this->_tv) == -1)
+	throw BabelException("[ERROR] can't perform select");
+      for (int j = 0; j < this->_nbClient + 1; ++j)
 	{
-	  this->setFd(i);
-	  if (select(i + 1, &this->_fdread, NULL, NULL, &this->_tv) == -1)
-	    throw BabelException("[ERROR] can't perform select");
-	  for (int j = 0; j < 1023 + 1; ++j)
+	  if (FD_ISSET(j, &this->_fdread))
 	    {
-	      if (FD_ISSET(j, &this->_fdread))
+	      if (this->_clientmanager.isInList(j))
 		{
-		  if (this->_clientmanager.isInList(j))
-		    {
-		      this->_serverSocket->recv_d(j, this->_buffer);
-		      this->_proced.commandChoice(j, this->_buffer);
-		    }
-		  else
-		    {
-		      this->_nbClient = this->_serverSocket->clientAccept(j);
-		      FD_SET(this->_nbClient, &this->_master);
-		      this->_clientmanager.createClient(this->_nbClient);
-		      std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl;
-		      std::cout << "IP: " << this->_serverSocket->getIp() << std::endl;
-		    }
+		  std::cout << "le client [" << j << "] existe" << std::endl;
+		  this->_serverSocket->recv_d(j, this->_buffer);
+		  std::cout << this->_buffer << std::endl;
+		  this->_proced.commandChoice(j, this->_buffer);
+		}
+	      else
+		{
+		  this->_nbClient = this->_serverSocket->clientAccept(j);
+		  FD_SET(this->_nbClient, &this->_master);
+		  this->_clientmanager.createClient(this->_nbClient);
+		  std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl;
 		}
 	    }
 	}

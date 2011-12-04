@@ -41,7 +41,7 @@ private:
 
 public:
   bool			connectClients(ServerClient& caller, const std::string & name);
-  void			setFd(const int fd);
+  void			setFd();
   bool			main_loop(void);
 
 private:
