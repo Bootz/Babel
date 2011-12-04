@@ -1,4 +1,5 @@
 
+#include		<iostream>
 #include		"ProcessingCore.hpp"
 #include		"BabelProtocol.hpp"
 
@@ -39,14 +40,17 @@ void ProcessingCore::initialize()
 
 bool			ProcessingCore::commandChoice(SOCKET sock, void *cmd)
   {
+    std::cout << "[ProcessingC] Choix de la commande" << std::endl;
     Protocol *protocol = static_cast<Protocol *>(cmd);
+    std::cout << "[ProcessingC] cmd = " << cmd << "."  << std::endl;
     bool ret;
-
+    
     if (static_cast<size_t> (protocol->cmd) <= this->_command.size())
       {
 	ret = (this->*this->_command[protocol->cmd])(sock, *protocol);
       }
-    delete protocol;
+    else
+      std::cout << "[ProcessingC] Commande inconnue" << std::endl;
     return ret;
  }
 
@@ -89,8 +93,6 @@ bool			 ProcessingCore::cmdRegister(SOCKET fdSock, __attribute__ ((unused))Proto
   //   password.assign(buf, pos, i - pos);
   // this->_clientsManager.add(name, password, this->_sock.getIp(), sock);
   // ++this->_nbClient;
-
-  delete registerParam;
   return true;
 }
 
@@ -128,15 +130,14 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
       char* currentLogin = static_cast<char*>(protocol.data) + loginsOffset + LEN_NAME * i;
       std::cout << currentLogin << std::endl;
     }
-
-
-  delete infoParam;    
   return true;
 }
 
 
 bool			 ProcessingCore::cmdQuit(SOCKET fdSock, Protocol protocol)
 {
+  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
+  
   // le serveur doit rompre la connexion avec ce client et le signaler aux autres. une fin de fichier est renvoyé sur la socket
 
   // choper le client dans la liste via fdSock
@@ -146,7 +147,7 @@ bool			 ProcessingCore::cmdQuit(SOCKET fdSock, Protocol protocol)
   return true;  
 }
 
-bool			 ProcessingCore::cmdEnd(SOCKET fdSock, Protocol protocol)
+bool			 ProcessingCore::cmdEnd(SOCKET fdSock, __attribute__((unused))Protocol protocol)
 
 {
   // envoie un msg a tous les clients, fermant la connexion
@@ -156,30 +157,43 @@ bool			 ProcessingCore::cmdEnd(SOCKET fdSock, Protocol protocol)
 
 bool			 ProcessingCore::cmdCall(SOCKET fdSock, Protocol protocol)
 {
-  return true;
+  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
+  
+  return true;  
 }
 
 bool			 ProcessingCore::cmdAccept(SOCKET fdSock, Protocol protocol)
 {
+  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
+  
+  
   return true;
 }
 
 bool			 ProcessingCore::cmdRefuse(SOCKET fdSock, Protocol protocol)
 {
+  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
+  
   return true;
 }
 
 bool			 ProcessingCore::cmdWait(SOCKET fdSock, Protocol protocol)
 {
+  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
+
   return true;
 }
 
 bool			 ProcessingCore::cmdCcEnd(SOCKET fdSock, Protocol protocol)
 {
+  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
+  
   return true;
 }
 
 bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, Protocol protocol)
 {
+  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
+  
   return true;
 }

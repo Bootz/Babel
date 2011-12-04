@@ -50,7 +50,7 @@ void			Server::setFd()
 
 bool Server::main_loop(void)
 {
-  std::cout << "[main_loop] begin" << std::endl;
+  std::cout << "[SERVER][main_loop] begin" << std::endl;
 
   while (this->_running)
     {
@@ -63,17 +63,20 @@ bool Server::main_loop(void)
 	    {
 	      if (this->_clientmanager.isInList(j))
 		{
-		  std::cout << "le client [" << j << "] existe" << std::endl;
+		  std::cout << "[SERVER]le client [" << j << "] existe" << std::endl;
 		  this->_serverSocket->recv_d(j, this->_buffer);
+		  std::cout << "[SERVER]le client [" << j << "] a effectue son recv_d" << std::endl;
 		  std::cout << this->_buffer << std::endl;
 		  this->_proced.commandChoice(j, this->_buffer);
+		  std::cout << "[SERVER] le traitement de commande a ete effectue." << std::endl;
 		}
 	      else
 		{
+		  std::cout << "[SERVER] le client n'est pas dans la liste." << std::endl;
 		  this->_nbClient = this->_serverSocket->clientAccept(j);
 		  FD_SET(this->_nbClient, &this->_master);
 		  this->_clientmanager.createClient(this->_nbClient);
-		  std::cout << "[main_loop] The client [" << j << "] has been add" << std::endl;
+		  std::cout << "[SERVER] le client [" << j << "] a ete ajoute" << std::endl;
 		}
 	    }
 	}
