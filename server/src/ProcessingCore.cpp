@@ -96,13 +96,14 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 {
   const InfoParam* infoParam = static_cast<const InfoParam*>(protocol.data);
 
-  //  Protocol protocol;
-  InfoParam toSend;
+  Protocol toSendproto;
+  InfoParam toSendparam;
 
   std::list<int> contacts;
   // creation de la list d'int correspondant aux login de la cmd
   if (infoParam->clientCount)
     {
+      toSendparam.clientCount = infoParam->clientCount;
       size_t loginsOffset = sizeof(*infoParam) - sizeof(infoParam->logins);
 
       for (int unsigned i = 0; i < infoParam->clientCount; ++i)
@@ -112,9 +113,15 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 	  //contacts.push_back(this->_clientsManager.getSock(name));
 	}
     }
-
+  
   // creer la InfoParam a renvoyer
+  
 
+
+  toSendproto.cmd = CL_INFO;
+  toSendproto.size = sizeof(toSendparam);
+  std::memcpy(toSendproto.data, &toSendparam, protocol.size);
+  this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
 
   // for (std::vector<ServerClient>::iterator it = this->_clientsManager.getClients().begin();
   //      it < this->_clientsManager.getClients().end();
@@ -139,11 +146,10 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 }
 
 
-bool			 ProcessingCore::cmdQuit(SOCKET fdSock, Protocol protocol)
+bool			 ProcessingCore::cmdQuit(SOCKET fdSock, __attribute__((unused))Protocol protocol)
 {
   // le serveur doit rompre la connexion avec ce client et le signaler aux autres. une fin de fichier est renvoyé sur la socket
 
-  const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
   ServerClient *tmp = new ServerClient(this->_clientsManager.getClient(fdSock));
 
   // deconnecter propremment les sockets de tmp OU mettre tmp->setConneted(false);
@@ -151,7 +157,7 @@ bool			 ProcessingCore::cmdQuit(SOCKET fdSock, Protocol protocol)
   return true;
 }
 
-bool			 ProcessingCore::cmdEnd(SOCKET fdSock, __attribute__((unused))Protocol protocol)
+bool			 ProcessingCore::cmdEnd(SOCKET fdSock, __attribute__ ((unused))Protocol protocol)
 
 {
   // envoie un msg a tous les clients, fermant la connexion
@@ -213,7 +219,7 @@ bool			ProcessingCore::sendError(SOCKET fdSock, int error)
   catch (const std::exception &)
     {
       std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
-      this->_clientsManager.setConneted(false); // send au autre client
+      //      this->_clientsManager.setConneted(false); // send au autre client
       return false;
     }
   return true;
@@ -233,7 +239,7 @@ bool			ProcessingCore::sendRequest(SOCKET fdSock, ProtocolCommand cmd)
   catch (const std::exception &)
     {
       std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
-      this->_clientsManager.setConneted(false); // send au autre client
+      (this->*this->_command[CL_QUIT])(fdSock, protocol);
       return false;
     }
   return true;

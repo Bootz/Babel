@@ -30,10 +30,10 @@ void		ClientManager::createClient(SOCKET sock)
 bool		ClientManager::add(const std::string & name,
 				   const std::string & password,
 				   const std::string & ip,
-				   int socket)
+				   __attribute__((unused))int socket)
 {
   ServerClient		buffer(name, password, ip);
-
+ 
   this->_clients.push_back(buffer);
   return (true);
 }
