@@ -34,7 +34,7 @@ bool		ClientManager::add(const std::string & name,
 				   const std::string & ip,
 				   int socket)
 {
-  ServerClient		buffer(name, password, ip, this->_clients.size(), socket);
+  ServerClient		buffer(name, password, ip, socket);
 
   this->_clients.push_back(buffer);
   return (true);

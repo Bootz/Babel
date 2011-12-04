@@ -19,7 +19,6 @@ public:
   ServerClient(const std::string & name,
 	       const std::string & password,
 	       const std::string &ip,
-	       unsigned short id,
 	       int socket);
   ~ServerClient();
 
@@ -32,7 +31,6 @@ public:
   bool			isConnected() const;
   int			getSocket() const;
   std::string		getName() const;
-  unsigned short	getId() const;
   std::string		getIp() const;
 
 private:
@@ -42,7 +40,6 @@ private:
   std::list<int>	_contacts;
   std::string		_name;
   std::string		_ip;
-  unsigned short	_id;
   int			_socket;
 };
 

@@ -29,13 +29,11 @@ ServerClient &	ServerClient::operator=(ServerClient const &c)
 ServerClient::ServerClient(const std::string & name,
 			   const std::string & password,
 			   const std::string &ip,
-			   unsigned short id,
 			   int socket)
   : _password(password),
     _connected(true),
     _name(name),
     _ip(ip),
-    _id(id),
     _socket(socket)
 {
 }
@@ -63,11 +61,6 @@ void		ServerClient::setSocket(int sock)
 std::string	ServerClient::getName() const
 {
   return this->_name;
-}
-
-unsigned short	ServerClient::getId() const
-{
-  return this->_id;
 }
 
 std::string	ServerClient::getIp() const
