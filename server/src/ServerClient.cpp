@@ -5,6 +5,7 @@
  * Purpose: Implementation of the class serverClient
  ***********************************************************************/
 
+#include  <iostream>
 #include "ServerClient.hpp"
 
 ////////////////////////////////////////////////////////////////////////
@@ -18,6 +19,7 @@ ServerClient::ServerClient(SOCKET & sock, std::string name)
     _name(name),
     _socket(sock)
 {
+  std::cerr << "Creation d'un client." << std::endl;
 }
 
 ServerClient &	ServerClient::operator=(ServerClient const &c)
@@ -50,6 +52,7 @@ std::string	ServerClient::getName() const
 
 void		ServerClient::destruct()
 {
+  std::cout << "destruction d'un client" << std::endl;
   this->_name = '\0';
   this->_password = '\0';
   this->_ip = '\0';

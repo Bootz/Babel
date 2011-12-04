@@ -23,6 +23,7 @@ Server::Server()
     _proced(*_serverSocket, _clientmanager, _nbClient),
     _running(true)
 {
+  std::cout << "Creation du serveur." << std::endl;
   this->_buffer = new char [8192];
   if (this->_serverSocket->initServer(42420) == false)
     throw BabelException("[ERROR] Bad network init");
@@ -53,6 +54,7 @@ void			Server::setFd()
 
 bool Server::main_loop(void)
 {
+  std::cout << "Lancement de la main loop du serveur." << std::endl;
   while (this->_running)
     {
       this->setFd();

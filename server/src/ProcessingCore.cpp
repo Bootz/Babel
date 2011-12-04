@@ -10,6 +10,7 @@ ProcessingCore::ProcessingCore(ISocket & sock, ClientManager & cm, unsigned shor
     _clientsManager(cm),
     _nbClient(nbclient)
 {
+  std::cout << "Initialisation du Processing Core." << std::endl;
 }
 
 ProcessingCore::~ProcessingCore()
@@ -42,24 +43,22 @@ void ProcessingCore::initialize()
 
 bool			ProcessingCore::commandChoice(SOCKET fdSock, void *cmd)
 {
-  std::cout << "[CMDchoice]" << std::endl;
+  std::cout << "Traitement de la commande." << std::endl;
   if (cmd)
     {
       Protocol *protocol = static_cast<Protocol *>(cmd);
       bool ret = false;
-      std::cout << "[CMDchoice2]" << std::endl;
       if (static_cast<size_t> (protocol->cmd) <= this->_command.size())
 	{
-	  std::cout << "[CMDchoice] commande connue : ["<< protocol->cmd << "]"  << std::endl;
+	  std::cout << "Commande reconnu, en cours de traitement." << std::endl;
 	  ret = (this->*this->_command[protocol->cmd])(fdSock, *protocol);
-	  std::cout << "[CMDchoice] commande traitee : ["<< protocol->cmd << "]"  << std::endl;
 	}
       else
 	{
-	  std::cout << "[CMDchoice] commande non connue" << std::endl;
+	  std::cout << "Commande non reconnu, en cours de traitement." << std::endl;
 	  this->sendError(fdSock, 400);
-	  std::cout << "[CMDchoice] commande non connue2" << std::endl;
 	}
+      std::cout << "Commande traitee." << std::endl;
       return ret;
     }
   return false;
@@ -68,26 +67,25 @@ bool			ProcessingCore::commandChoice(SOCKET fdSock, void *cmd)
 //Enregistre un client : Done
 bool			 ProcessingCore::cmdRegister(SOCKET fdSock, Protocol protocol)
 {
-  std::cout << "[cmdRegister]";
+  std::cout << "Traitement de la commande [Register]";
   if (! this->_clientsManager.getClient(fdSock).isConnected())
     {
       const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
 
       std::string login = registerParam->login;
       std::string password = registerParam->password;
-      std::cout << "[cmdRegister]login = " << login << " password = " << password << std::endl;
       this->_clientsManager.add(login, password, this->_sock.getIp(), fdSock);
       ++this->_nbClient;
       return true;
     }
   this->sendError(fdSock, 400);
-  std::cout << "[cmdRegister] end";
   return false;
 }
 
 // Authentifie un client : Done
 bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol protocol)
 {
+  std::cout << "Traitement de la commande [Login]";
   const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
   std::string login = registerParam->login;
   std::string pswd = registerParam->password;
@@ -117,6 +115,7 @@ bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol protocol)
 // Le serveur envoie les informations de chaque client passé en paramètre. Si aucun paramètre, le serveur envoie les infos de tous les clients connectés.
 bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 {
+  std::cout << "Traitement de la commande [Info]";
   const InfoParam* infoParam = static_cast<const InfoParam*>(protocol.data);
 
   Protocol toSendproto;
@@ -169,7 +168,7 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 // Done
 bool			 ProcessingCore::cmdQuit(SOCKET fdSock, __attribute__((unused))Protocol protocol)
 {
-
+  std::cout << "Traitement de la commande [Quit]";
   ServerClient *tmp = new ServerClient(this->_clientsManager.getClient(fdSock));
 
   tmp->setConnected(false);
@@ -183,31 +182,37 @@ bool			 ProcessingCore::cmdQuit(SOCKET fdSock, __attribute__((unused))Protocol p
 
 bool			 ProcessingCore::cmdCall(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
 {
+  std::cout << "Traitement de la commande [Call]";
   return this->sendRequest(fdSock, CI_ACCEPTED);
 }
 
 bool			 ProcessingCore::cmdAccept(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
 {
+  std::cout << "Traitement de la commande [Accept]";
   return this->sendRequest(fdSock, CI_ACCEPTED);
 }
 
 bool			 ProcessingCore::cmdRefuse(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
 {
+  std::cout << "Traitement de la commande [Refuse]";
  return  this->sendRequest(fdSock, CI_REFUSED);
 }
 
 bool			 ProcessingCore::cmdWait(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
 {
+  std::cout << "Traitement de la commande [Wait]";
   return  this->sendRequest(fdSock, CI_PENDING);
 }
 
 bool			 ProcessingCore::cmdCcEnd(SOCKET fdSock, __attribute__((unused)) Protocol protocol)
 {
+  std::cout << "Traitement de la commande [CC_END]";
   return  this->sendRequest(fdSock, CI_ENDED);
 }
 
 bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, __attribute__((unused))Protocol protocol)
 {
+  std::cout << "Traitement de la commande [SV_END]";
   // envoie de SV_END a tout les clients
   for (std::list<int>::iterator it = this->_clientsManager.getContacts(fdSock).begin();
        it != this->_clientsManager.getContacts(fdSock).end();
@@ -227,6 +232,7 @@ bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, __attribute__((unused))Protocol 
 
 bool			ProcessingCore::sendError(SOCKET fdSock, int error)
 {
+  std::cout << "Envois d'erreur numero " << error << ".";
   Protocol *protocol = new Protocol;
   ErrorParam *param = new ErrorParam;
 
@@ -250,6 +256,7 @@ bool			ProcessingCore::sendError(SOCKET fdSock, int error)
 
 bool			ProcessingCore::sendRequest(SOCKET fdSock, ProtocolCommand cmd)
 {
+  std::cout << "Envoie de la commande " << cmd << ".";
   Protocol protocol;
 
   protocol.cmd = cmd;
@@ -261,7 +268,6 @@ bool			ProcessingCore::sendRequest(SOCKET fdSock, ProtocolCommand cmd)
     }
   catch (const std::exception &)
     {
-      std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
       (this->*this->_command[CL_QUIT])(fdSock, protocol);
       return false;
     }
