@@ -74,7 +74,9 @@ bool Server::main_loop(void)
 	      else
 		{
 		  std::cout << "le client [" << j << "] existe, je vais recv_d" << std::endl;
-		  this->_serverSocket->recv_d(j, this->_buffer);
+		  if (this->_serverSocket->recv_d(j, this->_buffer) == 0)
+		    close(j);
+		  else
 		  std::cout << "le client [" << j << "] existe, j'ai recv_d" << std::endl;
 		  std::cout << "le client dit : " << this->_buffer << " ." << std::endl;
 		  this->_proced.commandChoice(j, this->_buffer);

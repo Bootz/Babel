@@ -90,15 +90,24 @@ bool			 ProcessingCore::cmdLogin(SOCKET fdSock, Protocol protocol)
 {
   const RegisterParam* registerParam = static_cast<const RegisterParam*>(protocol.data);
   std::string login = registerParam->login;
-
+  std::string pswd = registerParam->password;
+    
   if (this->_clientsManager.isInList(login))
     {
-      this->_clientsManager.getClient(fdSock).setConnected(true);
-      for (std::list<int>::iterator it = this->_clientsManager.getContacts(fdSock).begin();
-	   it != this->_clientsManager.getContacts(fdSock).end();
-	   ++it)
-	if (this->_clientsManager.getClient(*it).isConnected())
-	  this->sendRequest(*it, CI_DECO);
+      if (pswd == _clientsManager.getClient(fdSock).getPassword())
+	{
+	  this->_clientsManager.getClient(fdSock).setConnected(true);
+	  for (std::list<int>::iterator it = this->_clientsManager.getContacts(fdSock).begin();
+	       it != this->_clientsManager.getContacts(fdSock).end();
+	       ++it)
+	    if (this->_clientsManager.getClient(*it).isConnected())
+	      this->sendRequest(*it, CI_CO);
+	}
+      else
+	{
+	  this->sendError(fdSock, 403);
+	  return true;
+	}
     }
   else
     this->sendError(fdSock, 403);
@@ -221,28 +230,19 @@ bool			ProcessingCore::sendError(SOCKET fdSock, int error)
   Protocol *protocol = new Protocol;
   ErrorParam *param = new ErrorParam;
 
-  //  std::cout << "[sendError]end" << std::endl;
   param->error = error;
-  //std::cout << "[sendError]end" << std::endl;
   protocol->cmd = CI_ERROR;
-  //std::cout << "[sendError]end" << std::endl;
   protocol->size = sizeof(*param);
-  //std::cout << "[sendError]end" << std::endl;
   std::memcpy(&protocol->data, param, protocol->size);
-  //std::cout << "[sendError]end" << std::endl;
   try
     {
-      //  std::cout << "[sendError]try" << std::endl;
       this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
     }
   catch (const std::exception &)
     {
-      //  std::cout << "[sendError]catch" << std::endl;
-      //std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
       this->cmdQuit(fdSock, *protocol);
       return false;
     }
-  //std::cout << "[sendError]end" << std::endl;
   delete protocol;
   delete param;
   return true;
