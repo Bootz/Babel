@@ -212,6 +212,7 @@ bool			ProcessingCore::sendError(SOCKET fdSock, int error)
   param.error = error;
   protocol.cmd = CI_ERROR;
   protocol.size = sizeof(param);
+  std::cout << "size = " << protocol.size << std::endl;
   std::memcpy(protocol.data, &param, protocol.size);
   try
     {
