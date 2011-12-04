@@ -23,9 +23,9 @@ Server::Server()
     _proced(*_serverSocket, _clientmanager, _nbClient),
     _running(true)
 {
+  this->_buffer = new char [8192];
   if (this->_serverSocket->initServer(42420) == false)
     throw BabelException("[ERROR] Bad network init");
-  this->_buffer = new char [1024];
   FD_ZERO(&this->_master);
   FD_SET(this->_serverSocket->getListenSocket(), &this->_master);
   this->_nbClient = this->_serverSocket->getListenSocket();
@@ -33,7 +33,9 @@ Server::Server()
 
 Server::~Server()
 {
+  delete this->_buffer;
   this->_serverSocket->closeSocket();
+  delete this->_serverSocket;
 }
 
 Server &Server::getInstance()

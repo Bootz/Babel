@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:28:15 2011 louis lesueur
-// Last update Sun Dec  4 02:30:13 2011 louis lesueur
+// Last update Sun Dec  4 06:01:53 2011 louis lesueur
 //
 
 #ifndef			__BABEL_SOCKET_LINUX_HHP__
@@ -34,8 +34,8 @@ public:
   virtual void		setAcceptSocket(SOCKET _sock);
   virtual SOCKET	getListenSocket(void)const;
   virtual SOCKET	getAcceptSocket(void)const;
-  virtual int		send_d(SOCKET sock, std::string & str);
-  virtual int		recv_d(SOCKET sock, char * tmp);
+  virtual int		send_d(SOCKET sock, char *tmp);
+  virtual int		recv_d(SOCKET sock, char *tmp);
   virtual int		getSocket(void) const;
   virtual int		clientAccept(int s);
   virtual std::string	getIp(void) const;
@@ -54,7 +54,6 @@ private:
   SOCKET		AcceptSocket;
   struct sockaddr_in	SenderAddr;
   struct sockaddr_in	sin;
-  char *		buffer;
   std::string		ip;
 };
 

@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:30:07 2011 louis lesueur
-// Last update Sun Dec  4 02:32:27 2011 louis lesueur
+// Last update Sun Dec  4 06:01:34 2011 louis lesueur
 //
 
 #include		<string.h>
@@ -18,7 +18,6 @@ LSocket::LSocket()
     AcceptSocket(-1)
 {
   this->SenderAddrSize = sizeof(this->SenderAddr);
-  this->buffer = new char[this->SizeInterBuff];
 }
 
 LSocket::~LSocket()
@@ -77,21 +76,24 @@ SOCKET			LSocket::getAcceptSocket(void)const
   return (this->AcceptSocket);
 }
 
-int			LSocket::send_d(SOCKET sock, std::string & str)
+int			LSocket::send_d(SOCKET sock, char *str)
 {
   int			nb_write = 0;
   int			tmp = 0;
-  int			size = str.size();
+  int			size;
 
-  str.copy(this->buffer, 0, size);
+  if (str)
+    size = strlen(str);
+  else
+    size = 0;
   while (tmp != size)
     {
-      nb_write = send(sock, (this->buffer + tmp), strlen((this->buffer + tmp)), 0);
+      nb_write = send(sock, (str + tmp), strlen((str + tmp)), 0);
       if (nb_write == -1)
 	throw BabelException("[ERROR] send() operation failed");
       tmp += nb_write;
     }
-  memset(this->buffer, 0, this->SizeInterBuff);
+  memset(str, 0, this->SizeInterBuff);
   return (nb_write);
 }
 
@@ -133,7 +135,7 @@ int			LSocket::clientAccept(int s)
   client_sin_len = sizeof(client_sin);
   if ((cs = accept(s, (struct sockaddr *)&client_sin, &client_sin_len)) < 0)
     throw BabelException("[ERROR] accept() operation failed");
-  this->ip = inet_ntoa(client_sin.sin_addr); // la
+  this->ip = inet_ntoa(client_sin.sin_addr);
   std::cout << "[clientAccept] New client added" << std::endl;
   return (cs);
 }
