@@ -5,7 +5,7 @@
 // Login   <lesueu_l@epitech.net>
 // 
 // Started on  Sun Nov 13 12:30:07 2011 louis lesueur
-// Last update Sun Dec  4 18:19:21 2011 guillaume gelin
+// Last update Sun Dec  4 19:46:40 2011 louis lesueur
 //
 
 #include		<string.h>
@@ -90,10 +90,10 @@ int			LSocket::send_d(SOCKET sock, char *str)
     {
       nb_write = send(sock, (str + tmp), strlen((str + tmp)), 0);
       if (nb_write == -1)
-      	throw std::exception();
+	throw std::exception();
       tmp += nb_write;
     }
-  memset(str, 0, sizeof(str));
+  memset(str, 0, size);
   return (nb_write);
 }
 
@@ -105,29 +105,19 @@ int			LSocket::recv_d(SOCKET sock, char *str)
   int			flag = 1;
 
   memset(str, 0, this->SizeInterBuff);
-  std::cout << "[recv_d] avant la boucle" << std::endl;
   while (flag)
     {
-      // boucle infinie de la
-      std::cout << "[recv_d] boucle 1" << std::endl;
       nb_read = recv(sock, (str + nbr), SizeInterBuff - nbr, 0);
-      std::cout << "[recv_d] boucle 1.1" << std::endl;
       nbr += nb_read;
-      std::cout << "[recv_d] boucle 1.2" << std::endl;
-      // a la
       if (nb_read < 0)
 	throw BabelException("[ERROR] recv() operation failed");
-      if (nbr >= size || (nbr >= 1 && str[nbr-1] == '\n') ||
+      if (nb_read == 0 || nbr >= size || (nbr >= 1 && str[nbr-1] == '\n') ||
 	  (nbr >= 2 && str[nbr-2] == '\n' && str[nbr-1] == '\r'))
 	{
-	  std::cout << "[recv_d] boucle 1.3" << std::endl;
 	  str[nbr] = '\0';
 	  flag = 0;
 	}
-      if(nb_read == 0)
-        return nb_read;
     }
-  std::cout << "[recv_d] apres la boucle" << std::endl;
   return (nb_read);
 }
 

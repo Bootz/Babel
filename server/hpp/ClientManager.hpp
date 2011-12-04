@@ -32,6 +32,7 @@ public:
   void				addContact(int fd, int contact);
   bool				isInList(unsigned short i)const;
   bool				isInList(std::string & name)const;
+  void				delClient(int fd);
   int				getSocket(int id)const ;
   SOCKET			getSock(const std::string & name) const;
   std::string			getName(int id)const ;

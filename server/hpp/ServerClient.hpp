@@ -30,6 +30,7 @@ public:
 public:
   std::list<int>	getContacts() const;
   std::string		getPassword() const;
+  void			destruct();
   bool			isConnected() const;
   std::string		getName() const;
   std::string		getIp() const;

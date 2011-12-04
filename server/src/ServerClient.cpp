@@ -48,6 +48,14 @@ std::string	ServerClient::getName() const
   return this->_name;
 }
 
+void		ServerClient::destruct()
+{
+  this->_name = '\0';
+  this->_password = '\0';
+  this->_ip = '\0';
+  this->_connected = false;
+}
+
 void		ServerClient::setConnected(bool value)
 {
   this->_connected = value;

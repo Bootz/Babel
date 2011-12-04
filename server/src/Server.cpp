@@ -53,8 +53,6 @@ void			Server::setFd()
 
 bool Server::main_loop(void)
 {
-  std::cout << "[main_loop] begin" << std::endl;
-
   while (this->_running)
     {
       this->setFd();
@@ -69,18 +67,17 @@ bool Server::main_loop(void)
 		  this->_nbClient = this->_serverSocket->clientAccept(j);
 		  FD_SET(this->_nbClient, &this->_master);
 		  this->_clientmanager.createClient(this->_nbClient);
-		  std::cout << "[main_loop] The client [" << this->_nbClient << "] has been add" << std::endl;
 		}
 	      else
 		{
-		  std::cout << "le client [" << j << "] existe, je vais recv_d" << std::endl;
-		  if (this->_serverSocket->recv_d(j, this->_buffer) == 0)
-		    close(j);
+		  if ((this->_serverSocket->recv_d(j, this->_buffer)) == 0)
+		    {
+		      FD_CLR(j, &this->_master);
+		      this->_clientmanager.delClient(j);
+		      close(j);
+		    }
 		  else
-		  std::cout << "le client [" << j << "] existe, j'ai recv_d" << std::endl;
-		  std::cout << "le client dit : " << this->_buffer << " ." << std::endl;
-		  this->_proced.commandChoice(j, this->_buffer);
-		  std::cout << "commande du client [" << j << "] traitee." << std::endl;
+		    this->_proced.commandChoice(j, this->_buffer);
 		}
 	    }
 	}

@@ -27,13 +27,18 @@ void		ClientManager::createClient(SOCKET sock)
   this->_clients.push_back(cli);
 }
 
+void			ClientManager::delClient(int fd)
+{
+  this->_clients[fd].destruct();
+}
+
 bool		ClientManager::add(const std::string & name,
 				   const std::string & password,
 				   const std::string & ip,
 				   __attribute__((unused))int socket)
 {
   ServerClient		buffer(name, password, ip);
- 
+
   this->_clients.push_back(buffer);
   return (true);
 }
@@ -47,11 +52,11 @@ bool ClientManager::deco(int id)
 {
  ServerClient		tmp = this->_clients[id];
  Protocol protocol;
- 
+
  protocol.cmd = CI_DECO;
  protocol.size = 0;
  protocol.data = NULL;
-  
+
   for (std::list<int>::iterator it= tmp.getContacts().begin();
        it != tmp.getContacts().end();
        ++it)
