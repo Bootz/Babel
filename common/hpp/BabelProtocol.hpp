@@ -38,7 +38,7 @@ enum 	ProtocolCommand
     CI_ACCEPTED ,
     CI_REFUSED,
     CI_CO ,
-    CI_DECO ,
+    CI_DECO
   };
 
 const std::string server_cmd_str[]=
@@ -62,7 +62,7 @@ const std::string server_cmd_str[]=
     "CI_ENDED",
     "CI_ACCEPTED",
     "CI_REFUSED" ,
-    "SV_END"
+    "SV_END",
   };
 
 static const int LEN_NAME = 30;
@@ -80,6 +80,11 @@ struct InfoParam
   void* logins;
 };
 
+struct ErrorParam
+{
+  unsigned int error;
+};
+
 struct Protocol
 {
   ProtocolCommand cmd;
@@ -87,7 +92,7 @@ struct Protocol
   void* data;
 };
 
-void readProtocol(const Protocol& protocol);
-Protocol getRegisterProtocol(const std::string& login, const std::string& password);
+//void readProtocol(const Protocol& protocol);
+//Protocol getRegisterProtocol(const std::string& login, const std::string& password);
 
 #endif			// __BABEL_BABELPROTOCOL_HPP__
