@@ -48,7 +48,7 @@ bool			ProcessingCore::commandChoice(SOCKET fdSock, void *cmd)
         std::cout << "[CMDchoice2]" << std::endl;
     if (static_cast<size_t> (protocol->cmd) <= this->_command.size())
       {
-	    std::cout << "[CMDchoice] commande connue" << std::endl;
+	std::cout << "[CMDchoice] commande connue : [" << cmd << "]." << std::endl;
 	ret = (this->*this->_command[protocol->cmd])(fdSock, *protocol);
       }
     else
@@ -123,13 +123,10 @@ bool			 ProcessingCore::cmdInfo(SOCKET fdSock, Protocol protocol)
 	}
     }
   
-  // creer la InfoParam a renvoyer
-  
-
-
   toSendproto.cmd = CL_INFO;
   toSendproto.size = sizeof(toSendparam);
-  std::memcpy(toSendproto.data, &toSendparam, protocol.size);
+  // creer la InfoParam a renvoyer
+  //std::memcpy(toSendproto.data, &toSendparam, protocol.size);
   this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
 
   // for (std::vector<ServerClient>::iterator it = this->_clientsManager.getClients().begin();
@@ -216,32 +213,34 @@ bool			 ProcessingCore::cmdSvEnd(SOCKET fdSock, __attribute__((unused))Protocol 
 
 bool			ProcessingCore::sendError(SOCKET fdSock, int error)
 {
-  // Protocol *protocol;
-  // ErrorParam *param;
+  Protocol *protocol = new Protocol;
+  ErrorParam *param = new ErrorParam;
 
-  // std::cout << "[sendError]end" << std::endl;
-  // param->error = error;
-  // std::cout << "[sendError]end" << std::endl;
-  // protocol->cmd = CI_ERROR;
-  // std::cout << "[sendError]end" << std::endl;
-  // protocol->size = sizeof(*param);
-  // std::cout << "[sendError]end" << std::endl;
-  // std::memcpy(&protocol->data, *param, protocol->size);
-  // std::cout << "[sendError]end" << std::endl;
-  // try
-  //   {
-  //     std::cout << "[sendError]try" << std::endl;
-  //     this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
-  //   }
-  // catch (const std::exception &)
-  //   {
-  //     std::cout << "[sendError]catch" << std::endl;
-  //     std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
-  //     this->cmdQuit(fdSock, protocol);
-  //     return false;
-  //   }
-  // std::cout << "[sendError]end" << std::endl;
-  // return true;
+  std::cout << "[sendError]end" << std::endl;
+  param->error = error;
+  std::cout << "[sendError]end" << std::endl;
+  protocol->cmd = CI_ERROR;
+  std::cout << "[sendError]end" << std::endl;
+  protocol->size = sizeof(*param);
+  std::cout << "[sendError]end" << std::endl;
+  std::memcpy(&protocol->data, param, protocol->size);
+  std::cout << "[sendError]end" << std::endl;
+  try
+    {
+      std::cout << "[sendError]try" << std::endl;
+      this->_sock.send_d(fdSock, reinterpret_cast<char *> (&protocol));
+    }
+  catch (const std::exception &)
+    {
+      std::cout << "[sendError]catch" << std::endl;
+      std::cerr << "[ERROR] Client [" << fdSock << "] has been disconnected" << std::endl;
+      this->cmdQuit(fdSock, *protocol);
+      return false;
+    }
+  std::cout << "[sendError]end" << std::endl;
+  delete protocol;
+  delete param;
+  return true;
 }
 
 bool			ProcessingCore::sendRequest(SOCKET fdSock, ProtocolCommand cmd)
